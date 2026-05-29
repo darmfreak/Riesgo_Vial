@@ -956,8 +956,10 @@ function initDashboard() {
   if (dashInit) return;
   dashInit = true;
   _hmCache = null;
-  buildHourChart();
-  buildTrendChart();
+  if (hourChartInst)  { hourChartInst.destroy();  hourChartInst  = null; }
+  if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
+  buildHourChart(currentRange);
+  buildTrendChart(currentRange);
   loadDashboardFromAPI();
 }
 
@@ -1175,31 +1177,51 @@ function buildZonesTableStatic() {
     <td><span class="risk-pill rp-${z.level}">${z.level}</span></td></tr>`).join('');
 }
 
-function buildHourChart() {
-  const ctx  = document.getElementById('hourChart');
-  const hours = Array.from({length:24}, (_,i) => i + ':00');
-  const data  = [12,8,5,4,3,6,24,42,38,32,28,30,34,36,40,44,52,58,62,54,46,38,30,22];
-  new Chart(ctx, {type:'bar', data:{labels:hours, datasets:[{data,
-    backgroundColor:data.map(v=>v>50?'rgba(255,77,109,0.7)':v>35?'rgba(255,169,64,0.6)':'rgba(124,109,250,0.5)'),
-    borderRadius:2, borderSkipped:false}]},
-    options:{responsive:true, plugins:{legend:{display:false}},
+// Datos base por hora (promedio histórico)
+const HOUR_BASE = [12,8,5,4,3,6,24,42,38,32,28,30,34,36,40,44,52,58,62,54,46,38,30,22];
+
+function buildHourChart(r = '7d') {
+  const ctx   = document.getElementById('hourChart');
+  const scale = r === '7d' ? 1 : r === '30d' ? 4.3 : 13;
+  const data  = HOUR_BASE.map(v => Math.round(v * scale));
+  const title = r === '7d' ? 'promedio semanal' : r === '30d' ? 'promedio mensual' : 'promedio trimestral';
+
+  hourChartInst = new Chart(ctx, {
+    type:'bar',
+    data:{labels: Array.from({length:24},(_,i)=>i+':00'), datasets:[{data,
+      backgroundColor:data.map(v=>v>Math.max(...data)*.8?'rgba(255,77,109,0.7)':v>Math.max(...data)*.55?'rgba(255,169,64,0.6)':'rgba(124,109,250,0.5)'),
+      borderRadius:2, borderSkipped:false}]},
+    options:{responsive:true, plugins:{legend:{display:false},
+      title:{display:true, text: 'Incidentes por hora — ' + title,
+             color:'#5a5870', font:{size:10, family:'Inter'}, padding:{bottom:6}}},
       scales:{x:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}},
               y:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}}}}
   });
 }
 
-function buildTrendChart() {
+function buildTrendChart(r = '7d') {
   const ctx  = document.getElementById('trendChart');
-  const days = Array.from({length:14}, (_,i) => {
-    const d = new Date(); d.setDate(d.getDate()-13+i);
+  const nDays = r === '7d' ? 7 : r === '30d' ? 30 : 90;
+  const labels = Array.from({length: nDays}, (_,i) => {
+    const d = new Date(); d.setDate(d.getDate() - (nDays-1) + i);
     return d.toLocaleDateString('es', {day:'2-digit', month:'2-digit'});
   });
-  const data = [45,38,52,61,55,48,70,62,58,44,50,67,59,48];
-  new Chart(ctx, {type:'line', data:{labels:days, datasets:[{data,
-    borderColor:'#7c6dfa', backgroundColor:'rgba(124,109,250,0.08)',
-    tension:0.4, fill:true, pointRadius:3, pointBackgroundColor:'#7c6dfa'}]},
-    options:{responsive:true, plugins:{legend:{display:false}},
-      scales:{x:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}},
+  // Generar datos simulados coherentes con el rango
+  const seed = [45,38,52,61,55,48,70,62,58,44,50,67,59,48,53,41,66,72,58,45,51,63,49,57,44,60,68,55,47,52,
+                43,38,55,64,58,50,73,65,61,46,53,70,62,51,47,64,71,58,49,55,46,42,58,67,61,53,76,68,64,49,
+                56,73,65,54,50,67,74,61,52,58,49,45,61,70,64,56,79,71,67,52,59,76,68,57,53,70,77,64,55,61];
+  const data = labels.map((_,i) => seed[i % seed.length]);
+
+  trendChartInst = new Chart(ctx, {
+    type:'line',
+    data:{labels, datasets:[{data,
+      borderColor:'#7c6dfa', backgroundColor:'rgba(124,109,250,0.08)',
+      tension:0.4, fill:true, pointRadius: nDays > 30 ? 0 : 2, pointBackgroundColor:'#7c6dfa'}]},
+    options:{responsive:true, plugins:{legend:{display:false},
+      title:{display:true, text: `Tendencia — últimos ${nDays} días`,
+             color:'#5a5870', font:{size:10, family:'Inter'}, padding:{bottom:6}}},
+      scales:{x:{ticks:{font:{size:9},color:'#5a5870', maxTicksLimit: nDays > 30 ? 10 : nDays},
+                 grid:{color:'rgba(255,255,255,0.04)'}},
               y:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}}}}
   });
 }
