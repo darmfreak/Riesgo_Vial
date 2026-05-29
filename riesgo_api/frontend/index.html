@@ -309,31 +309,19 @@ canvas{border-radius:4px}
       </div>
 
       <div class="field-group">
-        <label class="field-label">Día de la semana</label>
-        <select class="field-select" id="diaSemana">
-          <option>Lunes</option>
-          <option>Martes</option>
-          <option>Miércoles</option>
-          <option>Jueves</option>
-          <option selected>Viernes</option>
-          <option>Sábado</option>
-          <option>Domingo</option>
-        </select>
+        <label class="field-label">Fecha</label>
+        <input type="date" class="field-input" id="fecha" oninput="onFechaChange(this.value)" required>
+        <div id="diaIndicador" style="margin-top:6px;font-size:12px;color:var(--accent2);font-family:var(--mono)"></div>
       </div>
 
       <div class="field-group">
         <label class="field-label">Hora del día</label>
-        <div class="time-display" id="timeDisplay">23:00</div>
-        <input type="range" class="field-input" id="horaSlider" min="0" max="23" value="23" step="1"
+        <div class="time-display" id="timeDisplay">08:00</div>
+        <input type="range" class="field-input" id="horaSlider" min="0" max="23" value="8" step="1"
           oninput="updateHour(this.value)">
         <div class="time-labels">
           <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
         </div>
-      </div>
-
-      <div class="field-group">
-        <label class="field-label">Fecha (opcional — mejora estacionalidad)</label>
-        <input type="date" class="field-input" id="fecha">
       </div>
 
       <button class="predict-btn" id="predictBtn" onclick="runPrediction()">Calcular probabilidad</button>
@@ -344,7 +332,7 @@ canvas{border-radius:4px}
 
       <hr class="divider">
       <div style="font-size:11px;color:var(--text3);line-height:1.7">
-        Modelo activo: <span style="color:var(--accent2);font-family:var(--mono)">XGBoost v2.1</span><br>
+        Modelo activo: <span style="color:var(--accent2);font-family:var(--mono)" id="modeloActivoBadge">XGBoost v1.0</span><br>
         Datos: <span style="color:var(--text2)">Medellín 2008–2025</span><br>
         ROC AUC: <span style="color:var(--accent2);font-family:var(--mono)">0.9182</span>
       </div>
@@ -839,14 +827,26 @@ function updateHour(v) {
   document.getElementById('timeDisplay').textContent = String(v).padStart(2,'0') + ':00';
 }
 
+function dayOfWeekFromDate(fechaStr) {
+  // JS getDay(): 0=Dom...6=Sab  →  modelo: 0=Lun...6=Dom
+  const d = new Date(fechaStr + 'T12:00:00');
+  return (d.getDay() + 6) % 7;
+}
+
+function onFechaChange(val) {
+  if (!val) { document.getElementById('diaIndicador').textContent = ''; return; }
+  const dow = dayOfWeekFromDate(val);
+  document.getElementById('diaIndicador').textContent = '↳ ' + DAYS[dow];
+}
+
 // ─── CONSULTA ────────────────────────────────────────────────────
 async function runPrediction() {
   const barrio      = document.getElementById('barrio').value;
-  const dia         = document.getElementById('diaSemana').value;
   const hora        = parseInt(document.getElementById('horaSlider').value);
   const fecha       = document.getElementById('fecha').value || null;
   const city        = document.getElementById('cityGlobal').value;
-  const day_of_week = DAYS.indexOf(dia);
+  const day_of_week = fecha ? dayOfWeekFromDate(fecha) : new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
+  const dia         = DAYS[day_of_week];
 
   const btn    = document.getElementById('predictBtn');
   const bar    = document.getElementById('loadingBar');
@@ -1144,22 +1144,17 @@ function renderHeatmap(data) {
 }
 
 function selectFromHeatmap(nb, franja) {
-  // Calcular hora desde franja (ej: '22-24h' → 22)
   const hour = parseInt(franja.split('-')[0]);
-
-  // Ir a Consulta
   const consultBtn = document.querySelector('.nav-link');
   showPage('consult', consultBtn);
 
-  // Rellenar formulario
   const sel = document.getElementById('barrio');
   for (const opt of sel.options) {
     if (opt.value === nb) { sel.value = nb; break; }
   }
   document.getElementById('horaSlider').value = hour;
   updateHour(hour);
-
-  // Ejecutar predicción automáticamente
+  // La fecha ya tiene hoy por defecto → día se deriva de ahí
   runPrediction();
 }
 
@@ -1456,7 +1451,10 @@ async function loadNeighborhoods(city) {
 
 // ─── INIT ─────────────────────────────────────────────────────────
 (async function initApp() {
-  document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('fecha').value = today;
+  onFechaChange(today);
+  updateHour(8);
   const city = document.getElementById('cityGlobal').value;
 
   // Cargar barrios y datos de ciudad en paralelo
