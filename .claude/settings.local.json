@@ -12,7 +12,9 @@
       "Bash(pip install *)",
       "Bash(python rag/build_index.py)",
       "Bash(python3)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -X POST http://localhost/api/v1/explain -H \"Content-Type: application/json\" -d '{\"city\":\"medellin\",\"neighborhood\":\"La Candelaria\",\"day_of_week\":5,\"hour\":23}')",
+      "Bash(python3 -c \"import json,sys; print\\(json.load\\(sys.stdin\\)['rag_explanation']\\)\")"
     ]
   }
 }

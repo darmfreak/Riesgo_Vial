@@ -58,6 +58,46 @@ class RiskExplainer:
         except Exception as e:
             logger.warning(f"No se pudo cargar embeddings: {e}. Usando fallback basado en reglas.")
 
+    def _load_barrio_docs(self, city: str) -> dict:
+        """Carga lookup directo barrio→texto desde los documentos fuente."""
+        cache_key = f"_barrios_{city}"
+        if hasattr(self, cache_key):
+            return getattr(self, cache_key)
+
+        lookup = {}
+        docs_path = RAG_DIR / "documents" / city / "todos_los_barrios.txt"
+        if not docs_path.exists():
+            setattr(self, cache_key, lookup)
+            return lookup
+
+        try:
+            text = docs_path.read_text(encoding="utf-8")
+            blocks = text.strip().split("\n\n")
+            for block in blocks:
+                lines = block.strip().split("\n")
+                name = None
+                desc = []
+                for line in lines:
+                    if line.startswith("BARRIO:"):
+                        name = line[len("BARRIO:"):].strip()
+                    elif line.startswith("DESCRIPCIÓN:"):
+                        desc.append(line[len("DESCRIPCIÓN:"):].strip())
+                    elif line.startswith(("TASA_HISTORICA:", "NIVEL_RIESGO:")):
+                        desc.append(line.strip())
+                if name and desc:
+                    # Solo guardar líneas que no sean claves técnicas
+                    clean = []
+                    for d in desc:
+                        if d.startswith(('TASA_HISTORICA:', 'NIVEL_RIESGO:', 'ZONA:', 'FACTORES:')):
+                            continue
+                        clean.append(d)
+                    lookup[name] = " ".join(clean) if clean else " ".join(desc)
+        except Exception as e:
+            logger.warning(f"Error cargando lookup de barrios: {e}")
+
+        setattr(self, cache_key, lookup)
+        return lookup
+
     def _get_index(self, city: str):
         if city in self._indexes:
             return self._indexes[city]
@@ -79,10 +119,22 @@ class RiskExplainer:
             return None
 
     def _rag_context(self, city: str, neighborhood: str, day_of_week: int, hour: int) -> str:
+        # 1. Búsqueda directa exacta por nombre de barrio (siempre primero)
+        lookup = self._load_barrio_docs(city)
+        if neighborhood in lookup:
+            return lookup[neighborhood]
+
+        # 2. Búsqueda case-insensitive como fallback
+        nb_lower = neighborhood.lower()
+        for name, text in lookup.items():
+            if name.lower() == nb_lower:
+                return text
+
+        # 3. FAISS semántico solo si no hay coincidencia directa
         db = self._get_index(city)
         if db is None:
             return ""
-        query = (f"riesgo vial accidente {neighborhood} "
+        query = (f"{neighborhood} riesgo vial accidente "
                  f"hora {hour} {hour_label(hour)} "
                  f"día {DAYS_ES[day_of_week] if 0 <= day_of_week <= 6 else ''}")
         try:
@@ -134,12 +186,24 @@ class RiskExplainer:
         if self._llm_available:
             return self._llm_enrich(base, neighborhood, day_label, hour)
 
-        # Fallback: resumen limpio sin el bloque de contexto crudo
+        # Fallback: construir texto legible filtrando claves técnicas del RAG
         if rag_ctx:
-            lines = [l.strip() for l in rag_ctx.split('\n') if l.strip() and not l.startswith('BARRIO:') and not l.startswith('COMUNA:')]
-            summary = ' '.join(lines[:4])[:400]
-            return (f"{summary} "
-                    f"Consulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}").strip()
+            SKIP_PREFIXES = ('BARRIO:', 'ZONA:', 'TASA_HISTORICA:', 'NIVEL_RIESGO:', 'COMUNA:', 'FACTORES:')
+            lines = []
+            for l in rag_ctx.split('\n'):
+                l = l.strip()
+                if not l:
+                    continue
+                if any(l.startswith(p) for p in SKIP_PREFIXES):
+                    continue
+                # Limpiar prefijo DESCRIPCIÓN: si aparece
+                if l.startswith('DESCRIPCIÓN:'):
+                    l = l[len('DESCRIPCIÓN:'):].strip()
+                lines.append(l)
+            summary = ' '.join(lines)[:450].strip()
+            if summary:
+                return (f"{summary} "
+                        f"Consulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}").strip()
         return base
 
     def _llm_enrich(self, context: str, neighborhood: str, day: str, hour: int) -> str:

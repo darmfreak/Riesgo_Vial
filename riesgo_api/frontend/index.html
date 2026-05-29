@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RiesgoVial — Plataforma de Predicción Urbana</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -233,6 +234,21 @@ canvas{border-radius:4px}
 .comp-table td:first-child{color:var(--text);font-family:var(--body);font-size:13px}
 .winner{color:var(--accent2) !important}
 
+/* Leaflet dark theme overrides */
+.leaflet-container{background:#0a0a0f!important;font-family:var(--body)}
+.leaflet-tile-pane{filter:brightness(.55) saturate(.4) hue-rotate(200deg)}
+.leaflet-popup-content-wrapper{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.leaflet-popup-tip{background:var(--surface)}
+.leaflet-popup-content{margin:10px 14px;font-family:var(--body);font-size:13px}
+.map-popup-title{font-weight:600;margin-bottom:4px}
+.map-popup-score{font-family:var(--mono);font-size:18px;font-weight:500}
+.map-popup-btn{display:inline-block;margin-top:8px;padding:4px 10px;background:var(--accent);color:#fff;border-radius:5px;font-size:11px;cursor:pointer;border:none;font-family:var(--body)}
+.leaflet-control-zoom a{background:var(--surface)!important;color:var(--text2)!important;border-color:var(--border2)!important}
+.leaflet-control-zoom a:hover{background:var(--surface2)!important;color:var(--text)!important}
+.leaflet-control-attribution{background:rgba(10,10,15,.7)!important;color:var(--text3)!important;font-size:9px!important}
+.leaflet-control-attribution a{color:var(--text3)!important}
+#mapContainer{height:400px;border-radius:8px;overflow:hidden}
+
 /* Heatmap selected row */
 .hm-row.selected-nb .hm-row-label { color: var(--accent2) !important; font-weight: 600; }
 .hm-row.selected-nb .hm-cell.active-cell {
@@ -423,6 +439,12 @@ canvas{border-radius:4px}
         <div class="chart-card-title">Tendencia diaria <span class="ct-sub">últimos 14 días</span></div>
         <canvas id="trendChart" height="90"></canvas>
       </div>
+    </div>
+
+    <!-- Mapa de Medellín -->
+    <div class="chart-card" style="margin-bottom:12px">
+      <div class="chart-card-title">Mapa de riesgo — Medellín <span class="ct-sub">clic en barrio para consultar</span></div>
+      <div id="mapContainer"></div>
     </div>
 
     <div class="dash-grid-3">
@@ -743,6 +765,7 @@ canvas{border-radius:4px}
   </div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 // ─── STATE ───────────────────────────────────────────────────────
@@ -960,6 +983,7 @@ function initDashboard() {
   if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
   buildHourChart(currentRange);
   buildTrendChart(currentRange);
+  initMap();
   loadDashboardFromAPI();
 }
 
@@ -1014,6 +1038,17 @@ async function loadDashboardFromAPI() {
   _hmCache = data;
   renderHeatmap(data);
   renderZonesTable(data);
+
+  // Alimentar el mapa con riesgo promedio por barrio
+  const nbAvg = {};
+  const nbCnt = {};
+  for (const row of data.matrix) {
+    nbAvg[row.neighborhood] = (nbAvg[row.neighborhood] || 0) + row.risk_score;
+    nbCnt[row.neighborhood] = (nbCnt[row.neighborhood] || 0) + 1;
+  }
+  const scores = {};
+  for (const nb of Object.keys(nbAvg)) scores[nb] = nbAvg[nb] / nbCnt[nb];
+  updateMapRisk(scores);
 
   // Update KPIs from real data
   const nbSet     = new Set(data.matrix.map(r => r.neighborhood));
@@ -1275,6 +1310,123 @@ function archDetail(layer) {
 
 function addCity() {
   alert('Funcionalidad: sube un CSV con columnas\n[FECHA, HORA, BARRIO, CLASE, GRAVEDAD]\ny el pipeline entrena automáticamente un nuevo modelo.');
+}
+
+// ─── MAPA LEAFLET ─────────────────────────────────────────────────
+const BARRIO_COORDS = {
+  'La Candelaria':         [6.2518, -75.5636],
+  'El Chagualo':           [6.2601, -75.5680],
+  'Perpetuo Socorro':      [6.2478, -75.5604],
+  'Villa Nueva':           [6.2545, -75.5622],
+  'El Centro':             [6.2530, -75.5640],
+  'El Poblado':            [6.2082, -75.5683],
+  'Manila':                [6.2141, -75.5715],
+  'Astorga':               [6.2013, -75.5651],
+  'Altos del Poblado':     [6.1960, -75.5600],
+  'Laureles Estadio':      [6.2569, -75.5898],
+  'Los Conquistadores':    [6.2620, -75.5940],
+  'Florida Nueva':         [6.2540, -75.5860],
+  'El Velodromo':          [6.2480, -75.5870],
+  'Belén':                 [6.2344, -75.6018],
+  'La Mota':               [6.2300, -75.5980],
+  'Los Alpes':             [6.2280, -75.6060],
+  'Rosales':               [6.2400, -75.6040],
+  'Guayabal':              [6.2147, -75.5914],
+  'La Colina':             [6.2100, -75.5880],
+  'Castilla':              [6.3183, -75.5849],
+  'Florencia':             [6.3210, -75.5890],
+  'Manrique':              [6.2699, -75.5415],
+  'Versalles':             [6.2740, -75.5380],
+  'Aranjuez':              [6.2905, -75.5651],
+  'San Isidro':            [6.2880, -75.5610],
+  'Robledo':               [6.2893, -75.5993],
+  'Pajarito':              [6.2850, -75.6050],
+  'San Javier':            [6.2651, -75.6132],
+  'El Salado':             [6.2620, -75.6180],
+  'Doce de Octubre':       [6.3018, -75.5732],
+  'Kennedy':               [6.3040, -75.5770],
+  'Villa Hermosa':         [6.2489, -75.5435],
+  'La Ladera':             [6.2510, -75.5400],
+  'Buenos Aires':          [6.2334, -75.5568],
+  'Los Mangos':            [6.2310, -75.5530],
+  'La América':            [6.2569, -75.5849],
+  'Santa Lucía':           [6.2540, -75.5820],
+  'Corregimiento de San Cristóbal': [6.2800, -75.6400],
+  'Altavista':             [6.2200, -75.6200],
+  'San Antonio de Prado':  [6.1780, -75.6150],
+  'San Sebastián de Palmitas': [6.3500, -75.6800],
+  'Caribe':                [6.2680, -75.5640],
+  'Moravia':               [6.2790, -75.5610],
+  'Campo Valdés':          [6.2610, -75.5540],
+  'Prado':                 [6.2650, -75.5660],
+  'Jesús Nazareno':        [6.2480, -75.5700],
+};
+
+let mapInst = null;
+let mapMarkers = {};
+
+function initMap() {
+  if (mapInst) return;
+  mapInst = L.map('mapContainer', { zoomControl: true, attributionControl: true })
+    .setView([6.2518, -75.5636], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 18,
+  }).addTo(mapInst);
+}
+
+function updateMapRisk(nbAvgScores) {
+  if (!mapInst) initMap();
+
+  // Limpiar marcadores anteriores
+  Object.values(mapMarkers).forEach(m => m.remove());
+  mapMarkers = {};
+
+  for (const [nb, score] of Object.entries(nbAvgScores)) {
+    const coords = BARRIO_COORDS[nb];
+    if (!coords) continue;
+
+    const pct   = Math.round(score * 100);
+    const color = score >= 0.7 ? '#ff4d6d' : score >= 0.4 ? '#ffa940' : '#52c41a';
+    const level = score >= 0.7 ? 'alto' : score >= 0.4 ? 'medio' : 'bajo';
+    const r     = Math.max(8, Math.min(22, score * 28));
+
+    const circle = L.circleMarker(coords, {
+      radius: r, color, fillColor: color,
+      fillOpacity: 0.75, weight: 1.5, opacity: 0.9,
+    });
+
+    circle.bindPopup(`
+      <div class="map-popup-title">${nb}</div>
+      <div class="map-popup-score" style="color:${color}">${pct}%</div>
+      <div style="font-size:11px;color:#9896a8;margin-top:2px">Riesgo ${level} — promedio del día</div>
+      <button class="map-popup-btn" onclick="selectFromMap('${nb.replace(/'/g,"\\'")}')">
+        Consultar →
+      </button>
+    `, { maxWidth: 180 });
+
+    circle.addTo(mapInst);
+    mapMarkers[nb] = circle;
+  }
+}
+
+function selectFromMap(nb) {
+  // Cierra popup y va a Consulta
+  mapInst && mapInst.closePopup();
+  const consultBtn = document.querySelector('.nav-link');
+  showPage('consult', consultBtn);
+  const sel = document.getElementById('barrio');
+  for (const opt of sel.options) {
+    if (opt.value === nb) { sel.value = nb; break; }
+  }
+  runPrediction();
+}
+
+function highlightMapBarrio(nb) {
+  if (!mapInst || !mapMarkers[nb]) return;
+  mapInst.setView(BARRIO_COORDS[nb] || [6.2518, -75.5636], 14, { animate: true });
+  mapMarkers[nb].openPopup();
 }
 
 // ─── NEIGHBORHOODS ────────────────────────────────────────────────
