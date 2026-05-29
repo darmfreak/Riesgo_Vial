@@ -594,6 +594,63 @@ canvas{border-radius:4px}
       </div>
     </div>
 
+    <!-- VISUALIZACIONES DASHBOARD -->
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Visualizaciones del Dashboard</div>
+    <div class="docs-cols" style="margin-bottom:12px">
+      <div class="docs-card">
+        <div class="docs-card-title">Mapa de riesgo — Medellín</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          Muestra los barrios como <strong style="color:var(--text)">círculos de color</strong> sobre mapa base OpenStreetMap. El color y tamaño del círculo reflejan el riesgo promedio del barrio para el día actual.<br><br>
+          <span style="color:var(--red)">● Rojo (≥70%)</span> alto &nbsp;·&nbsp; <span style="color:var(--amber)">● Naranja (40–69%)</span> medio &nbsp;·&nbsp; <span style="color:var(--green)">● Verde (&lt;40%)</span> bajo<br><br>
+          El riesgo se calcula promediando las 12 franjas horarias del heatmap del día. <strong style="color:var(--text)">Clic en un círculo</strong> muestra nombre, porcentaje y botón para ir directo a Consulta con ese barrio.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Incidentes por hora</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          Distribución histórica del <strong style="color:var(--text)">volumen de incidentes por hora del día</strong> (0h–23h) para el período seleccionado.<br><br>
+          Los colores indican intensidad relativa: <span style="color:var(--red)">rojo</span> = muy alto, <span style="color:var(--amber)">naranja</span> = medio-alto, <span style="color:var(--accent2)">morado</span> = bajo.<br><br>
+          <strong style="color:var(--text)">Patrones típicos:</strong> doble pico en hora pico matutina (6–8h) y vespertina (17–20h). La madrugada tiene menor volumen pero mayor gravedad. Los botones 7d / 30d / 90d escalan los valores al período manteniendo la misma distribución relativa.
+        </div>
+      </div>
+    </div>
+    <div class="docs-cols" style="margin-bottom:12px">
+      <div class="docs-card">
+        <div class="docs-card-title">Tendencia diaria</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          Evolución del <strong style="color:var(--text)">número de incidentes día a día</strong> para el período elegido (7, 30 o 90 días). El eje X muestra fechas DD/MM y el eje Y el conteo de incidentes.<br><br>
+          Las oscilaciones reflejan el <strong style="color:var(--text)">patrón semanal</strong>: fines de semana nocturnos concentran más incidentes que días laborales. Con 90 días los puntos individuales se ocultan para mostrar solo la curva de tendencia general.<br><br>
+          <strong style="color:var(--text)">Nota:</strong> los valores son representativos del patrón histórico — factores externos como eventos, clima o feriados pueden generar variaciones no capturadas.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Mapa de calor — franjas horarias</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          Matriz <strong style="color:var(--text)">barrios × franjas horarias</strong> con la probabilidad predicha por XGBoost para el día actual. Muestra los 7 barrios de mayor riesgo promedio más el barrio consultado (marcado ◉).<br><br>
+          Cada celda es el porcentaje de probabilidad de accidente en ese barrio en esa franja de 2 horas. <strong style="color:var(--text)">Clic en cualquier celda</strong> → navega a Consulta con barrio y hora pre-cargados y ejecuta la predicción automáticamente.
+        </div>
+      </div>
+    </div>
+    <div class="docs-cols" style="margin-bottom:24px">
+      <div class="docs-card">
+        <div class="docs-card-title">KPIs — indicadores superiores</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          <strong style="color:var(--text)">Zonas activas</strong> — barrios con modelo entrenado (369). Dato estático del modelo.<br>
+          <strong style="color:var(--text)">Slots de alto riesgo hoy</strong> — combinaciones barrio × franja que superan el 70% en el día actual. Calculado del heatmap en tiempo real.<br>
+          <strong style="color:var(--text)">Predicciones realizadas</strong> — contador referencial que cambia con el rango 7d / 30d / 90d.<br>
+          <strong style="color:var(--text)">Precisión modelo</strong> — F1-score del conjunto de test (84.0%). Fijo del entrenamiento.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Zonas de mayor riesgo</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          Tabla con los <strong style="color:var(--text)">10 barrios de mayor riesgo promedio</strong> del día actual, ordenados de mayor a menor.<br><br>
+          El <strong style="color:var(--text)">score</strong> es el promedio de las 12 franjas horarias para ese barrio. La columna <strong style="color:var(--text)">nivel</strong> clasifica en <span style="color:var(--red)">alto</span>, <span style="color:var(--amber)">medio</span> o <span style="color:var(--green)">bajo</span>.<br><br>
+          Usa la misma respuesta del endpoint <code style="font-family:var(--mono);font-size:11px">/api/v1/heatmap</code> que el mapa de calor — no genera una consulta adicional.
+        </div>
+      </div>
+    </div>
+
     <!-- DATOS -->
     <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Datos y almacenamiento</div>
     <div class="docs-cols" style="margin-bottom:12px">
