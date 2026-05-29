@@ -1,0 +1,2213 @@
+BARRIO: Aguas Frías
+ZONA: Medellín
+TASA_HISTORICA: 14% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Aguas Frías (Medellín) tiene una tasa histórica de accidentabilidad del 14%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Aldea Pablo VI
+ZONA: Medellín
+TASA_HISTORICA: 13% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Aldea Pablo VI (Medellín) tiene una tasa histórica de accidentabilidad del 13%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Alejandro Echavarría
+ZONA: Medellín
+TASA_HISTORICA: 59% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Alejandro Echavarría (Medellín) tiene una tasa histórica de accidentabilidad del 59%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Alejandría
+ZONA: Medellín
+TASA_HISTORICA: 50% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Alejandría (Medellín) tiene una tasa histórica de accidentabilidad del 50%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Alfonso López
+ZONA: Medellín
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Alfonso López (Medellín) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Altamira
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Altamira (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Altavista
+ZONA: Medellín
+TASA_HISTORICA: 56% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Altavista (Medellín) tiene una tasa histórica de accidentabilidad del 56%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Altavista Sector Central
+ZONA: Medellín
+TASA_HISTORICA: 54% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Altavista Sector Central (Medellín) tiene una tasa histórica de accidentabilidad del 54%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Altos del Poblado
+ZONA: El Poblado
+TASA_HISTORICA: 63% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Altos del Poblado (El Poblado) tiene una tasa histórica de accidentabilidad del 63%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Andalucía
+ZONA: Medellín
+TASA_HISTORICA: 61% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Andalucía (Medellín) tiene una tasa histórica de accidentabilidad del 61%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Antonio Nariño
+ZONA: Medellín
+TASA_HISTORICA: 50% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Antonio Nariño (Medellín) tiene una tasa histórica de accidentabilidad del 50%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Aranjuez
+ZONA: Aranjuez
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Aranjuez (Aranjuez) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Asomadera No. 1
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Asomadera No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Asomadera No. 2
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Asomadera No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Asomadera No. 3
+ZONA: Medellín
+TASA_HISTORICA: 18% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Asomadera No. 3 (Medellín) tiene una tasa histórica de accidentabilidad del 18%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Astorga
+ZONA: El Poblado
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Astorga (El Poblado) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Aures No. 1
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Aures No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Aures No. 2
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Aures No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: B. Cerro El Volador
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: B. Cerro El Volador (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Barrio Caicedo
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Barrio Caicedo (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Barrio Colombia
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Barrio Colombia (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Barrio Colón
+ZONA: Medellín
+TASA_HISTORICA: 92% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Barrio Colón (Medellín) tiene una tasa histórica de accidentabilidad del 92%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Barrio Cristóbal
+ZONA: Medellín
+TASA_HISTORICA: 26% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Barrio Cristóbal (Medellín) tiene una tasa histórica de accidentabilidad del 26%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Barrio de Jesús
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Barrio de Jesús (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Barro Blanco
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Barro Blanco (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Batallón Cuarta Brigada
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Batallón Cuarta Brigada (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Batallón Girardot
+ZONA: Medellín
+TASA_HISTORICA: 7% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Batallón Girardot (Medellín) tiene una tasa histórica de accidentabilidad del 7%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Belalcázar
+ZONA: Medellín
+TASA_HISTORICA: 62% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Belalcázar (Medellín) tiene una tasa histórica de accidentabilidad del 62%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Belencito
+ZONA: Medellín
+TASA_HISTORICA: 46% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Belencito (Medellín) tiene una tasa histórica de accidentabilidad del 46%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Bello Horizonte
+ZONA: Medellín
+TASA_HISTORICA: 55% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Bello Horizonte (Medellín) tiene una tasa histórica de accidentabilidad del 55%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Belén
+ZONA: Belén
+TASA_HISTORICA: 92% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Belén (Belén) tiene una tasa histórica de accidentabilidad del 92%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Berlín
+ZONA: Aranjuez
+TASA_HISTORICA: 76% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Berlín (Aranjuez) tiene una tasa histórica de accidentabilidad del 76%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Bermejal-Los Álamos
+ZONA: Medellín
+TASA_HISTORICA: 52% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Bermejal-Los Álamos (Medellín) tiene una tasa histórica de accidentabilidad del 52%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Betania
+ZONA: Medellín
+TASA_HISTORICA: 44% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Betania (Medellín) tiene una tasa histórica de accidentabilidad del 44%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Blanquizal
+ZONA: Medellín
+TASA_HISTORICA: 34% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Blanquizal (Medellín) tiene una tasa histórica de accidentabilidad del 34%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Bolivariana
+ZONA: Medellín
+TASA_HISTORICA: 79% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Bolivariana (Medellín) tiene una tasa histórica de accidentabilidad del 79%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Bomboná No. 1
+ZONA: Medellín
+TASA_HISTORICA: 82% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Bomboná No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 82%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Bomboná No. 2
+ZONA: Medellín
+TASA_HISTORICA: 62% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Bomboná No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 62%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Boqueron
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Boqueron (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Boquerón
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Boquerón (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Bosques de San Pablo
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Bosques de San Pablo (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Boston
+ZONA: Medellín
+TASA_HISTORICA: 91% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Boston (Medellín) tiene una tasa histórica de accidentabilidad del 91%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Boyacá
+ZONA: Medellín
+TASA_HISTORICA: 64% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Boyacá (Medellín) tiene una tasa histórica de accidentabilidad del 64%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Brasilia
+ZONA: Medellín
+TASA_HISTORICA: 84% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Brasilia (Medellín) tiene una tasa histórica de accidentabilidad del 84%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Buenos Aires
+ZONA: Buenos Aires
+TASA_HISTORICA: 88% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Buenos Aires (Buenos Aires) tiene una tasa histórica de accidentabilidad del 88%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Buga Patio Bonito
+ZONA: Medellín
+TASA_HISTORICA: 11% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Buga Patio Bonito (Medellín) tiene una tasa histórica de accidentabilidad del 11%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Cabecera San Antonio de Prado
+ZONA: Medellín
+TASA_HISTORICA: 84% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Cabecera San Antonio de Prado (Medellín) tiene una tasa histórica de accidentabilidad del 84%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Cabecera Urbana Corregimiento San Cristóbal
+ZONA: Medellín
+TASA_HISTORICA: 10% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Cabecera Urbana Corregimiento San Cristóbal (Medellín) tiene una tasa histórica de accidentabilidad del 10%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Cabecera Urbana San Cristobal
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Cabecera Urbana San Cristobal (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Calasanz
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Calasanz (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Calasanz Parte Alta
+ZONA: Medellín
+TASA_HISTORICA: 60% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Calasanz Parte Alta (Medellín) tiene una tasa histórica de accidentabilidad del 60%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Calle Nueva
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Calle Nueva (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Campo Alegre
+ZONA: Medellín
+TASA_HISTORICA: 69% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Campo Alegre (Medellín) tiene una tasa histórica de accidentabilidad del 69%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Campo Amor
+ZONA: Medellín
+TASA_HISTORICA: 93% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Campo Amor (Medellín) tiene una tasa histórica de accidentabilidad del 93%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Campo Valdés No. 1
+ZONA: Medellín
+TASA_HISTORICA: 89% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Campo Valdés No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 89%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Campo Valdés No. 2
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Campo Valdés No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Caribe
+ZONA: Aranjuez
+TASA_HISTORICA: 94% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Caribe (Aranjuez) tiene una tasa histórica de accidentabilidad del 94%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Carlos E. Restrepo
+ZONA: Medellín
+TASA_HISTORICA: 92% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Carlos E. Restrepo (Medellín) tiene una tasa histórica de accidentabilidad del 92%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Carpinelo
+ZONA: Medellín
+TASA_HISTORICA: 34% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Carpinelo (Medellín) tiene una tasa histórica de accidentabilidad del 34%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Castilla
+ZONA: Castilla
+TASA_HISTORICA: 93% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Castilla (Castilla) tiene una tasa histórica de accidentabilidad del 93%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Castropol
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Castropol (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Cataluña
+ZONA: Medellín
+TASA_HISTORICA: 62% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Cataluña (Medellín) tiene una tasa histórica de accidentabilidad del 62%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Cementerio Universal
+ZONA: Medellín
+TASA_HISTORICA: 59% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Cementerio Universal (Medellín) tiene una tasa histórica de accidentabilidad del 59%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Centro Administrativo
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Centro Administrativo (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Cerro Nutibara
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Cerro Nutibara (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Corazón de Jesús
+ZONA: Medellín
+TASA_HISTORICA: 89% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Corazón de Jesús (Medellín) tiene una tasa histórica de accidentabilidad del 89%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Corregimiento de Altavista
+ZONA: Medellín
+TASA_HISTORICA: 13% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Corregimiento de Altavista (Medellín) tiene una tasa histórica de accidentabilidad del 13%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Corregimiento de San Antonio de Prado
+ZONA: Medellín
+TASA_HISTORICA: 33% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Corregimiento de San Antonio de Prado (Medellín) tiene una tasa histórica de accidentabilidad del 33%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Corregimiento de San Cristóbal
+ZONA: Medellín
+TASA_HISTORICA: 65% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Corregimiento de San Cristóbal (Medellín) tiene una tasa histórica de accidentabilidad del 65%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Corregimiento de San Sebastián de Palmitas
+ZONA: Medellín
+TASA_HISTORICA: 35% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Corregimiento de San Sebastián de Palmitas (Medellín) tiene una tasa histórica de accidentabilidad del 35%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Corregimiento de Santa Elena
+ZONA: Medellín
+TASA_HISTORICA: 52% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Corregimiento de Santa Elena (Medellín) tiene una tasa histórica de accidentabilidad del 52%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Cristo Rey
+ZONA: Medellín
+TASA_HISTORICA: 90% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Cristo Rey (Medellín) tiene una tasa histórica de accidentabilidad del 90%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Cuarta Brigada
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Cuarta Brigada (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Cucaracho
+ZONA: Medellín
+TASA_HISTORICA: 78% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Cucaracho (Medellín) tiene una tasa histórica de accidentabilidad del 78%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Córdoba
+ZONA: Medellín
+TASA_HISTORICA: 42% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Córdoba (Medellín) tiene una tasa histórica de accidentabilidad del 42%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Diego Echavarría
+ZONA: Medellín
+TASA_HISTORICA: 64% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Diego Echavarría (Medellín) tiene una tasa histórica de accidentabilidad del 64%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Doce de Octubre
+ZONA: Doce de Octubre
+TASA_HISTORICA: 27% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Doce de Octubre (Doce de Octubre) tiene una tasa histórica de accidentabilidad del 27%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Doce de Octubre No.1
+ZONA: Medellín
+TASA_HISTORICA: 78% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Doce de Octubre No.1 (Medellín) tiene una tasa histórica de accidentabilidad del 78%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Doce de Octubre No.2
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Doce de Octubre No.2 (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Ecoparque Cerro El Volador
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Ecoparque Cerro El Volador (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Eduardo Santos
+ZONA: Medellín
+TASA_HISTORICA: 15% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Eduardo Santos (Medellín) tiene una tasa histórica de accidentabilidad del 15%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Astillero
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Astillero (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Carmelo
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Carmelo (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Castillo
+ZONA: Medellín
+TASA_HISTORICA: 54% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Castillo (Medellín) tiene una tasa histórica de accidentabilidad del 54%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Cerro
+ZONA: Medellín
+TASA_HISTORICA: 13% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Cerro (Medellín) tiene una tasa histórica de accidentabilidad del 13%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Chagualo
+ZONA: Aranjuez
+TASA_HISTORICA: 90% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: El Chagualo (Aranjuez) tiene una tasa histórica de accidentabilidad del 90%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: El Compromiso
+ZONA: Medellín
+TASA_HISTORICA: 26% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: El Compromiso (Medellín) tiene una tasa histórica de accidentabilidad del 26%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: El Corazon El Morro 
+ZONA: Medellín
+TASA_HISTORICA: 16% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Corazon El Morro  (Medellín) tiene una tasa histórica de accidentabilidad del 16%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Corazón
+ZONA: Medellín
+TASA_HISTORICA: 31% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: El Corazón (Medellín) tiene una tasa histórica de accidentabilidad del 31%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: El Corazón El Morro
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Corazón El Morro (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Danubio
+ZONA: Medellín
+TASA_HISTORICA: 63% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Danubio (Medellín) tiene una tasa histórica de accidentabilidad del 63%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Diamante
+ZONA: Medellín
+TASA_HISTORICA: 82% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: El Diamante (Medellín) tiene una tasa histórica de accidentabilidad del 82%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: El Diamante No. 2
+ZONA: Medellín
+TASA_HISTORICA: 56% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Diamante No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 56%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Estadio
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Estadio (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Jardín
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Jardín (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Llano
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Llano (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Llano SE
+ZONA: Medellín
+TASA_HISTORICA: 5% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Llano SE (Medellín) tiene una tasa histórica de accidentabilidad del 5%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Nogal-Los Almendros
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Nogal-Los Almendros (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Patio
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Patio (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Pesebre
+ZONA: Medellín
+TASA_HISTORICA: 60% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Pesebre (Medellín) tiene una tasa histórica de accidentabilidad del 60%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Picacho
+ZONA: Medellín
+TASA_HISTORICA: 27% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: El Picacho (Medellín) tiene una tasa histórica de accidentabilidad del 27%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: El Pinal
+ZONA: Medellín
+TASA_HISTORICA: 76% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Pinal (Medellín) tiene una tasa histórica de accidentabilidad del 76%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Placer
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Placer (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Plan
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Plan (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Poblado
+ZONA: El Poblado
+TASA_HISTORICA: 91% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: El Poblado (El Poblado) tiene una tasa histórica de accidentabilidad del 91%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: El Pomar
+ZONA: Medellín
+TASA_HISTORICA: 55% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Pomar (Medellín) tiene una tasa histórica de accidentabilidad del 55%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Progreso
+ZONA: Medellín
+TASA_HISTORICA: 88% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: El Progreso (Medellín) tiene una tasa histórica de accidentabilidad del 88%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: El Progreso No.2
+ZONA: Medellín
+TASA_HISTORICA: 26% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: El Progreso No.2 (Medellín) tiene una tasa histórica de accidentabilidad del 26%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: El Raizal
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Raizal (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Rincón
+ZONA: Medellín
+TASA_HISTORICA: 79% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Rincón (Medellín) tiene una tasa histórica de accidentabilidad del 79%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Rodeo
+ZONA: Medellín
+TASA_HISTORICA: 50% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Rodeo (Medellín) tiene una tasa histórica de accidentabilidad del 50%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Salado
+ZONA: San Javier
+TASA_HISTORICA: 51% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: El Salado (San Javier) tiene una tasa histórica de accidentabilidad del 51%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: El Salvador
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Salvador (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Socorro
+ZONA: Medellín
+TASA_HISTORICA: 22% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Socorro (Medellín) tiene una tasa histórica de accidentabilidad del 22%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Tesoro
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Tesoro (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Triunfo
+ZONA: Medellín
+TASA_HISTORICA: 15% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Triunfo (Medellín) tiene una tasa histórica de accidentabilidad del 15%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Uvito
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Uvito (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: El Velódromo
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: El Velódromo (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: El Vergel
+ZONA: Medellín
+TASA_HISTORICA: 12% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: El Vergel (Medellín) tiene una tasa histórica de accidentabilidad del 12%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Enciso
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Enciso (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Estación Villa
+ZONA: Medellín
+TASA_HISTORICA: 90% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Estación Villa (Medellín) tiene una tasa histórica de accidentabilidad del 90%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Estadio
+ZONA: Medellín
+TASA_HISTORICA: 14% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Estadio (Medellín) tiene una tasa histórica de accidentabilidad del 14%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Facultad Veterinaria y Zootecnia U.de.A.
+ZONA: Medellín
+TASA_HISTORICA: 30% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Facultad Veterinaria y Zootecnia U.de.A. (Medellín) tiene una tasa histórica de accidentabilidad del 30%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Facultad de Minas U. Nacional
+ZONA: Medellín
+TASA_HISTORICA: 11% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Facultad de Minas U. Nacional (Medellín) tiene una tasa histórica de accidentabilidad del 11%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Facultad de Minas U. Nacional U. Nacional
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Facultad de Minas U. Nacional U. Nacional (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Ferrini
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Ferrini (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Florencia
+ZONA: Castilla
+TASA_HISTORICA: 60% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Florencia (Castilla) tiene una tasa histórica de accidentabilidad del 60%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Florida Nueva
+ZONA: Laureles - Estadio
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Florida Nueva (Laureles - Estadio) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Francisco Antonio Zea
+ZONA: Medellín
+TASA_HISTORICA: 77% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Francisco Antonio Zea (Medellín) tiene una tasa histórica de accidentabilidad del 77%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Fuente Clara
+ZONA: Medellín
+TASA_HISTORICA: 37% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Fuente Clara (Medellín) tiene una tasa histórica de accidentabilidad del 37%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Fátima
+ZONA: Medellín
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Fátima (Medellín) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Gerona
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Gerona (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Girardot
+ZONA: Medellín
+TASA_HISTORICA: 88% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Girardot (Medellín) tiene una tasa histórica de accidentabilidad del 88%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Granada
+ZONA: Medellín
+TASA_HISTORICA: 53% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Granada (Medellín) tiene una tasa histórica de accidentabilidad del 53%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Granizal
+ZONA: Medellín
+TASA_HISTORICA: 59% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Granizal (Medellín) tiene una tasa histórica de accidentabilidad del 59%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Guayabal
+ZONA: Guayabal
+TASA_HISTORICA: 89% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Guayabal (Guayabal) tiene una tasa histórica de accidentabilidad del 89%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Guayaquil
+ZONA: Medellín
+TASA_HISTORICA: 87% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Guayaquil (Medellín) tiene una tasa histórica de accidentabilidad del 87%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Hospital San Vicente de Paúl
+ZONA: Medellín
+TASA_HISTORICA: 78% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Hospital San Vicente de Paúl (Medellín) tiene una tasa histórica de accidentabilidad del 78%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Héctor Abad Gómez
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Héctor Abad Gómez (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Jardín Botánico
+ZONA: Medellín
+TASA_HISTORICA: 51% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Jardín Botánico (Medellín) tiene una tasa histórica de accidentabilidad del 51%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Jesús Nazareno
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Jesús Nazareno (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Juan Pablo II
+ZONA: Medellín
+TASA_HISTORICA: 18% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Juan Pablo II (Medellín) tiene una tasa histórica de accidentabilidad del 18%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Juan XXIII La Quiebra
+ZONA: Medellín
+TASA_HISTORICA: 42% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Juan XXIII La Quiebra (Medellín) tiene una tasa histórica de accidentabilidad del 42%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Kennedy
+ZONA: Medellín
+TASA_HISTORICA: 87% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Kennedy (Medellín) tiene una tasa histórica de accidentabilidad del 87%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Aguacatala
+ZONA: Medellín
+TASA_HISTORICA: 88% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Aguacatala (Medellín) tiene una tasa histórica de accidentabilidad del 88%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Aldea
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Aldea (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Alpujarra
+ZONA: Medellín
+TASA_HISTORICA: 86% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Alpujarra (Medellín) tiene una tasa histórica de accidentabilidad del 86%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La América
+ZONA: La América
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La América (La América) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Avanzada
+ZONA: Medellín
+TASA_HISTORICA: 38% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: La Avanzada (Medellín) tiene una tasa histórica de accidentabilidad del 38%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: La Candelaria
+ZONA: Centro
+TASA_HISTORICA: 96% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Candelaria (Centro) tiene una tasa histórica de accidentabilidad del 96%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Castellana
+ZONA: Medellín
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Castellana (Medellín) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Colina
+ZONA: Guayabal
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Colina (Guayabal) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Cruz
+ZONA: Medellín
+TASA_HISTORICA: 42% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: La Cruz (Medellín) tiene una tasa histórica de accidentabilidad del 42%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: La Cuchilla
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Cuchilla (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Esperanza
+ZONA: Medellín
+TASA_HISTORICA: 82% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Esperanza (Medellín) tiene una tasa histórica de accidentabilidad del 82%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Esperanza No. 2
+ZONA: Medellín
+TASA_HISTORICA: 36% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: La Esperanza No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 36%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: La Floresta
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Floresta (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Florida
+ZONA: Medellín
+TASA_HISTORICA: 76% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Florida (Medellín) tiene una tasa histórica de accidentabilidad del 76%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Francia
+ZONA: Medellín
+TASA_HISTORICA: 62% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: La Francia (Medellín) tiene una tasa histórica de accidentabilidad del 62%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: La Frisola
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Frisola (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Frontera
+ZONA: Medellín
+TASA_HISTORICA: 65% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Frontera (Medellín) tiene una tasa histórica de accidentabilidad del 65%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Gloria
+ZONA: Medellín
+TASA_HISTORICA: 86% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: La Gloria (Medellín) tiene una tasa histórica de accidentabilidad del 86%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: La Hondonada
+ZONA: Medellín
+TASA_HISTORICA: 51% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: La Hondonada (Medellín) tiene una tasa histórica de accidentabilidad del 51%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: La Ilusión
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Ilusión (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Isla
+ZONA: Medellín
+TASA_HISTORICA: 53% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: La Isla (Medellín) tiene una tasa histórica de accidentabilidad del 53%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: La Ladera
+ZONA: Medellín
+TASA_HISTORICA: 20% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Ladera (Medellín) tiene una tasa histórica de accidentabilidad del 20%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Libertad
+ZONA: Medellín
+TASA_HISTORICA: 49% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: La Libertad (Medellín) tiene una tasa histórica de accidentabilidad del 49%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: La Loma
+ZONA: Medellín
+TASA_HISTORICA: 19% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Loma (Medellín) tiene una tasa histórica de accidentabilidad del 19%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Loma Oriental
+ZONA: Medellín
+TASA_HISTORICA: 19% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Loma Oriental (Medellín) tiene una tasa histórica de accidentabilidad del 19%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Loma de Los Bernal
+ZONA: Medellín
+TASA_HISTORICA: 7% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Loma de Los Bernal (Medellín) tiene una tasa histórica de accidentabilidad del 7%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Mansión
+ZONA: Medellín
+TASA_HISTORICA: 66% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Mansión (Medellín) tiene una tasa histórica de accidentabilidad del 66%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Milagrosa
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Milagrosa (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Mota
+ZONA: Belén
+TASA_HISTORICA: 10% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Mota (Belén) tiene una tasa histórica de accidentabilidad del 10%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Oculta
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Oculta (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Palma
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Palma (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Palma-El Patio
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Palma-El Patio (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Pilarica
+ZONA: Medellín
+TASA_HISTORICA: 69% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Pilarica (Medellín) tiene una tasa histórica de accidentabilidad del 69%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Piñuela
+ZONA: Medellín
+TASA_HISTORICA: 78% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Piñuela (Medellín) tiene una tasa histórica de accidentabilidad del 78%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Pradera
+ZONA: Medellín
+TASA_HISTORICA: 61% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: La Pradera (Medellín) tiene una tasa histórica de accidentabilidad del 61%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: La Rosa
+ZONA: Medellín
+TASA_HISTORICA: 58% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: La Rosa (Medellín) tiene una tasa histórica de accidentabilidad del 58%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: La Salle
+ZONA: Medellín
+TASA_HISTORICA: 75% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La Salle (Medellín) tiene una tasa histórica de accidentabilidad del 75%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: La Sierra
+ZONA: Medellín
+TASA_HISTORICA: 7% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Sierra (Medellín) tiene una tasa histórica de accidentabilidad del 7%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Sucia
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Sucia (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Suiza
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Suiza (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La Verde
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: La Verde (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: La mota
+ZONA: Medellín
+TASA_HISTORICA: 66% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: La mota (Medellín) tiene una tasa histórica de accidentabilidad del 66%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Lalinde
+ZONA: Medellín
+TASA_HISTORICA: 61% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Lalinde (Medellín) tiene una tasa histórica de accidentabilidad del 61%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Las Acacias
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Las Acacias (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Las Brisas
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Las Brisas (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Las Esmeraldas
+ZONA: Medellín
+TASA_HISTORICA: 57% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Las Esmeraldas (Medellín) tiene una tasa histórica de accidentabilidad del 57%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Las Estancias
+ZONA: Medellín
+TASA_HISTORICA: 60% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Las Estancias (Medellín) tiene una tasa histórica de accidentabilidad del 60%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Las Granjas
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Las Granjas (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Las Independencias
+ZONA: Medellín
+TASA_HISTORICA: 33% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Las Independencias (Medellín) tiene una tasa histórica de accidentabilidad del 33%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Las Lomas No.1
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Las Lomas No.1 (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Las Lomas No.2
+ZONA: Medellín
+TASA_HISTORICA: 42% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Las Lomas No.2 (Medellín) tiene una tasa histórica de accidentabilidad del 42%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Las Mercedes
+ZONA: Medellín
+TASA_HISTORICA: 61% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Las Mercedes (Medellín) tiene una tasa histórica de accidentabilidad del 61%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Las Palmas
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Las Palmas (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Las Playas
+ZONA: Medellín
+TASA_HISTORICA: 71% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Las Playas (Medellín) tiene una tasa histórica de accidentabilidad del 71%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Las Violetas
+ZONA: Medellín
+TASA_HISTORICA: 66% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Las Violetas (Medellín) tiene una tasa histórica de accidentabilidad del 66%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Laureles
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Laureles (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Laureles Estadio
+ZONA: Laureles - Estadio
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Laureles Estadio (Laureles - Estadio) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Llanaditas
+ZONA: Medellín
+TASA_HISTORICA: 37% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Llanaditas (Medellín) tiene una tasa histórica de accidentabilidad del 37%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Loma de los Bernal
+ZONA: Medellín
+TASA_HISTORICA: 76% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Loma de los Bernal (Medellín) tiene una tasa histórica de accidentabilidad del 76%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Lorena
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Lorena (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Loreto
+ZONA: Medellín
+TASA_HISTORICA: 79% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Loreto (Medellín) tiene una tasa histórica de accidentabilidad del 79%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Los Alcázares
+ZONA: Medellín
+TASA_HISTORICA: 63% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Los Alcázares (Medellín) tiene una tasa histórica de accidentabilidad del 63%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Los Alpes
+ZONA: Belén
+TASA_HISTORICA: 63% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Los Alpes (Belén) tiene una tasa histórica de accidentabilidad del 63%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Los Balsos No.1
+ZONA: Medellín
+TASA_HISTORICA: 64% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Los Balsos No.1 (Medellín) tiene una tasa histórica de accidentabilidad del 64%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Los Balsos No.2
+ZONA: Medellín
+TASA_HISTORICA: 64% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Los Balsos No.2 (Medellín) tiene una tasa histórica de accidentabilidad del 64%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Los Cerros El Vergel
+ZONA: Medellín
+TASA_HISTORICA: 69% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Los Cerros El Vergel (Medellín) tiene una tasa histórica de accidentabilidad del 69%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Los Colores
+ZONA: Medellín
+TASA_HISTORICA: 84% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Los Colores (Medellín) tiene una tasa histórica de accidentabilidad del 84%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Los Conquistadores
+ZONA: Laureles - Estadio
+TASA_HISTORICA: 92% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Los Conquistadores (Laureles - Estadio) tiene una tasa histórica de accidentabilidad del 92%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Los Mangos
+ZONA: Medellín
+TASA_HISTORICA: 84% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Los Mangos (Medellín) tiene una tasa histórica de accidentabilidad del 84%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Los Naranjos
+ZONA: Medellín
+TASA_HISTORICA: 71% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Los Naranjos (Medellín) tiene una tasa histórica de accidentabilidad del 71%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Los Pinos
+ZONA: Medellín
+TASA_HISTORICA: 76% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Los Pinos (Medellín) tiene una tasa histórica de accidentabilidad del 76%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Los Ángeles
+ZONA: Medellín
+TASA_HISTORICA: 61% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Los Ángeles (Medellín) tiene una tasa histórica de accidentabilidad del 61%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: López de Mesa
+ZONA: Medellín
+TASA_HISTORICA: 60% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: López de Mesa (Medellín) tiene una tasa histórica de accidentabilidad del 60%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Manila
+ZONA: El Poblado
+TASA_HISTORICA: 84% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Manila (El Poblado) tiene una tasa histórica de accidentabilidad del 84%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Manrique
+ZONA: Manrique
+TASA_HISTORICA: 25% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Manrique (Manrique) tiene una tasa histórica de accidentabilidad del 25%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Manrique Central No. 1
+ZONA: Medellín
+TASA_HISTORICA: 90% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Manrique Central No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 90%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Manrique Central No. 2
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Manrique Central No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Manrique Oriental
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Manrique Oriental (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: María Cano Carambolas
+ZONA: Medellín
+TASA_HISTORICA: 21% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: María Cano Carambolas (Medellín) tiene una tasa histórica de accidentabilidad del 21%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Mazo
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Mazo (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Media Luna
+ZONA: Medellín
+TASA_HISTORICA: 12% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Media Luna (Medellín) tiene una tasa histórica de accidentabilidad del 12%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Metropolitano
+ZONA: Medellín
+TASA_HISTORICA: 10% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Metropolitano (Medellín) tiene una tasa histórica de accidentabilidad del 10%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Mirador del Doce
+ZONA: Medellín
+TASA_HISTORICA: 32% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Mirador del Doce (Medellín) tiene una tasa histórica de accidentabilidad del 32%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Miraflores
+ZONA: Medellín
+TASA_HISTORICA: 82% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Miraflores (Medellín) tiene una tasa histórica de accidentabilidad del 82%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Miranda
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Miranda (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Miravalle
+ZONA: Medellín
+TASA_HISTORICA: 37% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Miravalle (Medellín) tiene una tasa histórica de accidentabilidad del 37%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Montañita
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Montañita (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Monteclaro
+ZONA: Medellín
+TASA_HISTORICA: 28% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Monteclaro (Medellín) tiene una tasa histórica de accidentabilidad del 28%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Moravia
+ZONA: Aranjuez
+TASA_HISTORICA: 90% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Moravia (Aranjuez) tiene una tasa histórica de accidentabilidad del 90%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Moscú No. 1
+ZONA: Medellín
+TASA_HISTORICA: 50% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Moscú No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 50%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Moscú No. 2
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Moscú No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Naranjal
+ZONA: Medellín
+TASA_HISTORICA: 86% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Naranjal (Medellín) tiene una tasa histórica de accidentabilidad del 86%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Nueva Villa de La Iguaná
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Nueva Villa de La Iguaná (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Nueva Villa de la Iguaná
+ZONA: Medellín
+TASA_HISTORICA: 58% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Nueva Villa de la Iguaná (Medellín) tiene una tasa histórica de accidentabilidad del 58%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Nueva Villa del Aburrá
+ZONA: Medellín
+TASA_HISTORICA: 39% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Nueva Villa del Aburrá (Medellín) tiene una tasa histórica de accidentabilidad del 39%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Nuevos Conquistadores
+ZONA: Medellín
+TASA_HISTORICA: 30% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Nuevos Conquistadores (Medellín) tiene una tasa histórica de accidentabilidad del 30%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Ocho de Marzo
+ZONA: Medellín
+TASA_HISTORICA: 17% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Ocho de Marzo (Medellín) tiene una tasa histórica de accidentabilidad del 17%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Olaya Herrera
+ZONA: Medellín
+TASA_HISTORICA: 53% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Olaya Herrera (Medellín) tiene una tasa histórica de accidentabilidad del 53%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Oleoducto
+ZONA: Medellín
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Oleoducto (Medellín) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Oriente
+ZONA: Medellín
+TASA_HISTORICA: 12% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Oriente (Medellín) tiene una tasa histórica de accidentabilidad del 12%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Pablo VI
+ZONA: Medellín
+TASA_HISTORICA: 26% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Pablo VI (Medellín) tiene una tasa histórica de accidentabilidad del 26%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Pajarito
+ZONA: Robledo
+TASA_HISTORICA: 46% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Pajarito (Robledo) tiene una tasa histórica de accidentabilidad del 46%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Palenque
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Palenque (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Palermo
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Palermo (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Palmitas Sector Central
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Palmitas Sector Central (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Parque Juan Pablo II
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Parque Juan Pablo II (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Parque Norte
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Parque Norte (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Patio Bonito
+ZONA: El Poblado
+TASA_HISTORICA: 87% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Patio Bonito (El Poblado) tiene una tasa histórica de accidentabilidad del 87%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Pedregal
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Pedregal (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Pedregal Alto
+ZONA: Medellín
+TASA_HISTORICA: 22% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Pedregal Alto (Medellín) tiene una tasa histórica de accidentabilidad del 22%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Pedregal Bajo
+ZONA: Medellín
+TASA_HISTORICA: 11% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Pedregal Bajo (Medellín) tiene una tasa histórica de accidentabilidad del 11%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Perpetuo Socorro
+ZONA: Centro
+TASA_HISTORICA: 94% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Perpetuo Socorro (Centro) tiene una tasa histórica de accidentabilidad del 94%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Picachito
+ZONA: Medellín
+TASA_HISTORICA: 25% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Picachito (Medellín) tiene una tasa histórica de accidentabilidad del 25%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Picacho
+ZONA: Medellín
+TASA_HISTORICA: 82% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Picacho (Medellín) tiene una tasa histórica de accidentabilidad del 82%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Piedra Gorda
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Piedra Gorda (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Piedras Blancas
+ZONA: Medellín
+TASA_HISTORICA: 29% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Piedras Blancas (Medellín) tiene una tasa histórica de accidentabilidad del 29%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Piedras Blancas - Matasano
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Piedras Blancas - Matasano (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Piedras Blancas Represa
+ZONA: Medellín
+TASA_HISTORICA: 18% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Piedras Blancas Represa (Medellín) tiene una tasa histórica de accidentabilidad del 18%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Playón de Los Comuneros
+ZONA: Medellín
+TASA_HISTORICA: 38% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Playón de Los Comuneros (Medellín) tiene una tasa histórica de accidentabilidad del 38%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Plaza de Ferias
+ZONA: Medellín
+TASA_HISTORICA: 71% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Plaza de Ferias (Medellín) tiene una tasa histórica de accidentabilidad del 71%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Popular
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Popular (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Potrera Miserenga
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Potrera Miserenga (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Potrerito
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Potrerito (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Prado
+ZONA: Medellín
+TASA_HISTORICA: 91% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Prado (Medellín) tiene una tasa histórica de accidentabilidad del 91%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Progreso No.2
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Progreso No.2 (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Robledo
+ZONA: Robledo
+TASA_HISTORICA: 91% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Robledo (Robledo) tiene una tasa histórica de accidentabilidad del 91%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Rosales
+ZONA: Belén
+TASA_HISTORICA: 89% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Rosales (Belén) tiene una tasa histórica de accidentabilidad del 89%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: SUBURB El Plan
+ZONA: Medellín
+TASA_HISTORICA: 36% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: SUBURB El Plan (Medellín) tiene una tasa histórica de accidentabilidad del 36%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: San Antonio
+ZONA: Medellín
+TASA_HISTORICA: 21% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San Antonio (Medellín) tiene una tasa histórica de accidentabilidad del 21%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San Antonio de Prado
+ZONA: Medellín
+TASA_HISTORICA: 37% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: San Antonio de Prado (Medellín) tiene una tasa histórica de accidentabilidad del 37%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: San Benito
+ZONA: Medellín
+TASA_HISTORICA: 93% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: San Benito (Medellín) tiene una tasa histórica de accidentabilidad del 93%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: San Bernardo
+ZONA: Medellín
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: San Bernardo (Medellín) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: San Diego
+ZONA: Medellín
+TASA_HISTORICA: 88% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: San Diego (Medellín) tiene una tasa histórica de accidentabilidad del 88%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: San Germán
+ZONA: Medellín
+TASA_HISTORICA: 77% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Germán (Medellín) tiene una tasa histórica de accidentabilidad del 77%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: San Isidro
+ZONA: Medellín
+TASA_HISTORICA: 79% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Isidro (Medellín) tiene una tasa histórica de accidentabilidad del 79%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: San Javier
+ZONA: San Javier
+TASA_HISTORICA: 29% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: San Javier (San Javier) tiene una tasa histórica de accidentabilidad del 29%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: San Javier No.1
+ZONA: Medellín
+TASA_HISTORICA: 78% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Javier No.1 (Medellín) tiene una tasa histórica de accidentabilidad del 78%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: San Javier No.2
+ZONA: Medellín
+TASA_HISTORICA: 44% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: San Javier No.2 (Medellín) tiene una tasa histórica de accidentabilidad del 44%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: San Joaquín
+ZONA: Medellín
+TASA_HISTORICA: 88% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: San Joaquín (Medellín) tiene una tasa histórica de accidentabilidad del 88%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: San José
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San José (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San José de La Montaña
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San José de La Montaña (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San José de la Montaña
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San José de la Montaña (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San José del Manzanillo
+ZONA: Medellín
+TASA_HISTORICA: 7% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San José del Manzanillo (Medellín) tiene una tasa histórica de accidentabilidad del 7%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San José la Cima No. 1
+ZONA: Medellín
+TASA_HISTORICA: 13% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San José la Cima No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 13%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San José la Cima No. 2
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: San José la Cima No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: San Lucas
+ZONA: Medellín
+TASA_HISTORICA: 51% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: San Lucas (Medellín) tiene una tasa histórica de accidentabilidad del 51%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: San Martín de Porres
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Martín de Porres (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: San Miguel
+ZONA: Medellín
+TASA_HISTORICA: 76% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Miguel (Medellín) tiene una tasa histórica de accidentabilidad del 76%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: San Pablo
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Pablo (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: San Pedro
+ZONA: Medellín
+TASA_HISTORICA: 71% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: San Pedro (Medellín) tiene una tasa histórica de accidentabilidad del 71%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Santa Cruz
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Santa Cruz (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Santa Elena Sector Central
+ZONA: Medellín
+TASA_HISTORICA: 7% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Santa Elena Sector Central (Medellín) tiene una tasa histórica de accidentabilidad del 7%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Santa Fé
+ZONA: Medellín
+TASA_HISTORICA: 91% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Santa Fé (Medellín) tiene una tasa histórica de accidentabilidad del 91%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Santa Inés
+ZONA: Medellín
+TASA_HISTORICA: 69% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Santa Inés (Medellín) tiene una tasa histórica de accidentabilidad del 69%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Santa Lucía
+ZONA: La América
+TASA_HISTORICA: 57% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Santa Lucía (La América) tiene una tasa histórica de accidentabilidad del 57%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Santa Margarita
+ZONA: Medellín
+TASA_HISTORICA: 51% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Santa Margarita (Medellín) tiene una tasa histórica de accidentabilidad del 51%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Santa María de Los Ángeles
+ZONA: Medellín
+TASA_HISTORICA: 21% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Santa María de Los Ángeles (Medellín) tiene una tasa histórica de accidentabilidad del 21%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Santa María de los Ángeles
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Santa María de los Ángeles (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Santa Mónica
+ZONA: Medellín
+TASA_HISTORICA: 56% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Santa Mónica (Medellín) tiene una tasa histórica de accidentabilidad del 56%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Santa Rosa de Lima
+ZONA: Medellín
+TASA_HISTORICA: 20% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Santa Rosa de Lima (Medellín) tiene una tasa histórica de accidentabilidad del 20%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Santa Teresita
+ZONA: Medellín
+TASA_HISTORICA: 51% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Santa Teresita (Medellín) tiene una tasa histórica de accidentabilidad del 51%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Santander
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Santander (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Santo Domingo Savio No. 1
+ZONA: Medellín
+TASA_HISTORICA: 72% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Santo Domingo Savio No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 72%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Santo Domingo Savio No. 2
+ZONA: Medellín
+TASA_HISTORICA: 26% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Santo Domingo Savio No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 26%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Sevilla
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Sevilla (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Simón Bolívar
+ZONA: Medellín
+TASA_HISTORICA: 66% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Simón Bolívar (Medellín) tiene una tasa histórica de accidentabilidad del 66%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Sin Nombre
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Sin Nombre (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Altavista
+ZONA: Medellín
+TASA_HISTORICA: 22% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Altavista (Medellín) tiene una tasa histórica de accidentabilidad del 22%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Chacaltaya
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Chacaltaya (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano El Llano
+ZONA: Medellín
+TASA_HISTORICA: 8% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano El Llano (Medellín) tiene una tasa histórica de accidentabilidad del 8%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano El Placer
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano El Placer (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano La Aldea
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano La Aldea (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano La Cuchilla
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano La Cuchilla (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano La Loma
+ZONA: Medellín
+TASA_HISTORICA: 62% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Suburbano La Loma (Medellín) tiene una tasa histórica de accidentabilidad del 62%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Suburbano La Palma-El Patio
+ZONA: Medellín
+TASA_HISTORICA: 16% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano La Palma-El Patio (Medellín) tiene una tasa histórica de accidentabilidad del 16%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Mirador del Poblado
+ZONA: Medellín
+TASA_HISTORICA: 27% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Suburbano Mirador del Poblado (Medellín) tiene una tasa histórica de accidentabilidad del 27%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Suburbano Palmitas
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Palmitas (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Pedregal alto
+ZONA: Medellín
+TASA_HISTORICA: 5% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Pedregal alto (Medellín) tiene una tasa histórica de accidentabilidad del 5%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Piedra Gorda
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Piedra Gorda (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Potrera Miserenga
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Potrera Miserenga (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Potrerito
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Potrerito (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano Travesias
+ZONA: Medellín
+TASA_HISTORICA: 29% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Suburbano Travesias (Medellín) tiene una tasa histórica de accidentabilidad del 29%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Suburbano Urquita
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano Urquita (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Suburbano el Tesoro
+ZONA: Medellín
+TASA_HISTORICA: 12% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Suburbano el Tesoro (Medellín) tiene una tasa histórica de accidentabilidad del 12%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Sucre
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Sucre (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Suramericana
+ZONA: Medellín
+TASA_HISTORICA: 87% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Suramericana (Medellín) tiene una tasa histórica de accidentabilidad del 87%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Tejelo
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Tejelo (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Tenche
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Tenche (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Terminal de Transporte
+ZONA: Medellín
+TASA_HISTORICA: 92% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Terminal de Transporte (Medellín) tiene una tasa histórica de accidentabilidad del 92%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Toscana
+ZONA: Medellín
+TASA_HISTORICA: 86% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Toscana (Medellín) tiene una tasa histórica de accidentabilidad del 86%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Travesías
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Travesías (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Trece de Noviembre
+ZONA: Medellín
+TASA_HISTORICA: 21% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Trece de Noviembre (Medellín) tiene una tasa histórica de accidentabilidad del 21%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Tricentenario
+ZONA: Medellín
+TASA_HISTORICA: 83% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Tricentenario (Medellín) tiene una tasa histórica de accidentabilidad del 83%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Trinidad
+ZONA: Medellín
+TASA_HISTORICA: 87% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Trinidad (Medellín) tiene una tasa histórica de accidentabilidad del 87%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: U.D. Atanasio Girardot
+ZONA: Medellín
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: U.D. Atanasio Girardot (Medellín) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: U.P.B.
+ZONA: Medellín
+TASA_HISTORICA: 3% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: U.P.B. (Medellín) tiene una tasa histórica de accidentabilidad del 3%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: U.P.B..
+ZONA: Medellín
+TASA_HISTORICA: 28% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: U.P.B.. (Medellín) tiene una tasa histórica de accidentabilidad del 28%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Universidad Nacional
+ZONA: Medellín
+TASA_HISTORICA: 85% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Universidad Nacional (Medellín) tiene una tasa histórica de accidentabilidad del 85%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Universidad de Antioquia
+ZONA: Medellín
+TASA_HISTORICA: 81% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Universidad de Antioquia (Medellín) tiene una tasa histórica de accidentabilidad del 81%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Urquitá
+ZONA: Medellín
+TASA_HISTORICA: 2% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Urquitá (Medellín) tiene una tasa histórica de accidentabilidad del 2%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Veinte de Julio
+ZONA: Medellín
+TASA_HISTORICA: 64% (promedio ciudad: 51%)
+NIVEL_RIESGO: moderado
+DESCRIPCIÓN: Veinte de Julio (Medellín) tiene una tasa histórica de accidentabilidad del 64%. Accidentabilidad cercana al promedio de la ciudad (51%). Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. Flujo vehicular mixto con presencia de motocicletas.
+
+BARRIO: Versalles No. 1
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Versalles No. 1 (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Versalles No. 2
+ZONA: Medellín
+TASA_HISTORICA: 17% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Versalles No. 2 (Medellín) tiene una tasa histórica de accidentabilidad del 17%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Villa Carlota
+ZONA: Medellín
+TASA_HISTORICA: 87% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Villa Carlota (Medellín) tiene una tasa histórica de accidentabilidad del 87%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Villa Flora
+ZONA: Medellín
+TASA_HISTORICA: 68% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Villa Flora (Medellín) tiene una tasa histórica de accidentabilidad del 68%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Villa Guadalupe
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Villa Guadalupe (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Villa Hermosa
+ZONA: Villa Hermosa
+TASA_HISTORICA: 74% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Villa Hermosa (Villa Hermosa) tiene una tasa histórica de accidentabilidad del 74%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Villa Liliam
+ZONA: Medellín
+TASA_HISTORICA: 31% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Villa Liliam (Medellín) tiene una tasa histórica de accidentabilidad del 31%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Villa Niza
+ZONA: Medellín
+TASA_HISTORICA: 39% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Villa Niza (Medellín) tiene una tasa histórica de accidentabilidad del 39%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Villa Nueva
+ZONA: Centro
+TASA_HISTORICA: 95% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Villa Nueva (Centro) tiene una tasa histórica de accidentabilidad del 95%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Villa Turbay
+ZONA: Medellín
+TASA_HISTORICA: 18% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Villa Turbay (Medellín) tiene una tasa histórica de accidentabilidad del 18%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Villa del Socorro
+ZONA: Medellín
+TASA_HISTORICA: 70% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Villa del Socorro (Medellín) tiene una tasa histórica de accidentabilidad del 70%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Villatina
+ZONA: Medellín
+TASA_HISTORICA: 73% (promedio ciudad: 51%)
+NIVEL_RIESGO: alto
+DESCRIPCIÓN: Villatina (Medellín) tiene una tasa histórica de accidentabilidad del 73%. Presenta accidentabilidad superior al promedio de la ciudad. Los incidentes se concentran en horas pico y fines de semana nocturnos. Alta presencia de motos y vehículos de plataforma.
+
+BARRIO: Volcana Guayabal
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Volcana Guayabal (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Yarumalito
+ZONA: Medellín
+TASA_HISTORICA: 5% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Yarumalito (Medellín) tiene una tasa histórica de accidentabilidad del 5%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Yolombo
+ZONA: Medellín
+TASA_HISTORICA: 10% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Yolombo (Medellín) tiene una tasa histórica de accidentabilidad del 10%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área De Expansion Altavista
+ZONA: Medellín
+TASA_HISTORICA: 14% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área De Expansion Altavista (Medellín) tiene una tasa histórica de accidentabilidad del 14%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área De Expansion Belen Rincon
+ZONA: Medellín
+TASA_HISTORICA: 43% (promedio ciudad: 51%)
+NIVEL_RIESGO: bajo
+DESCRIPCIÓN: Área De Expansion Belen Rincon (Medellín) tiene una tasa histórica de accidentabilidad del 43%. Zona con accidentabilidad por debajo del promedio de Medellín. Menor densidad vehicular. Los pocos incidentes ocurren principalmente en horas pico en vías principales de acceso.
+
+BARRIO: Área De Expansion El Noral
+ZONA: Medellín
+TASA_HISTORICA: 6% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área De Expansion El Noral (Medellín) tiene una tasa histórica de accidentabilidad del 6%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área de Expansion Altos de Calasanz
+ZONA: Medellín
+TASA_HISTORICA: 18% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área de Expansion Altos de Calasanz (Medellín) tiene una tasa histórica de accidentabilidad del 18%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área de Expansión Altavista
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área de Expansión Altavista (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área de Expansión Belén Rincón
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área de Expansión Belén Rincón (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área de Expansión Pajarito
+ZONA: Medellín
+TASA_HISTORICA: 80% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy alto
+DESCRIPCIÓN: Área de Expansión Pajarito (Medellín) tiene una tasa histórica de accidentabilidad del 80%. Es una de las zonas con mayor densidad de incidentes viales de Medellín. Concentra alto flujo vehicular, peatonal y comercial. Los horarios nocturnos de fin de semana presentan el mayor riesgo.
+
+BARRIO: Área de Expansión San Antonio de Prado
+ZONA: Medellín
+TASA_HISTORICA: 21% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área de Expansión San Antonio de Prado (Medellín) tiene una tasa histórica de accidentabilidad del 21%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.
+
+BARRIO: Área de Expansión San Cristóbal
+ZONA: Medellín
+TASA_HISTORICA: 4% (promedio ciudad: 51%)
+NIVEL_RIESGO: muy bajo
+DESCRIPCIÓN: Área de Expansión San Cristóbal (Medellín) tiene una tasa histórica de accidentabilidad del 4%. Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. Principalmente vías rurales o corredores de baja circulación.

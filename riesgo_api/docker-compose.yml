@@ -1,0 +1,57 @@
+services:
+
+  # ── API principal ──────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: riesgovial-api:latest
+    container_name: riesgovial_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Modelos serializados — persisten fuera del contenedor
+      - ./models:/app/models:ro
+      - ./logs:/app/logs
+    environment:
+      - MODELS_DIR=/app/models
+      - PORT=8000
+      - WORKERS=2
+      - LOG_LEVEL=info
+      # Descomenta y agrega tu key para activar RAG con LLM real:
+      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - riesgovial_net
+
+  # ── Nginx reverse proxy ────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: riesgovial_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # El HTML del frontend va aquí:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - riesgovial_net
+
+networks:
+  riesgovial_net:
+    driver: bridge
+
+volumes:
+  models:
+  logs:

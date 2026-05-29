@@ -1,0 +1,53 @@
+ESTADÍSTICAS VIALES MEDELLÍN 2008-2025
+
+RESUMEN GENERAL
+Total de incidentes registrados: 674,394
+Período: 2008-2025
+Fuente: Sistema de Información de Accidentalidad Vial de Medellín
+
+DISTRIBUCIÓN POR HORA DEL DÍA
+Las horas pico vespertinas (17:00-20:00) concentran el mayor volumen de accidentes (~22% del total).
+La hora pico matutina (06:00-08:00) representa ~14% de los accidentes.
+La madrugada (00:00-04:00) tiene menor volumen pero mayor gravedad (mayor velocidad, menor visibilidad).
+El mediodía (12:00-14:00) presenta pico secundario por pausas de almuerzo y mayor cruce peatonal.
+
+DISTRIBUCIÓN POR DÍA DE SEMANA
+Viernes: día de mayor accidentalidad (mayor actividad nocturna)
+Sábado: alta accidentalidad nocturna (bares, restaurantes)
+Lunes: alta accidentalidad matutina (retorno laboral)
+Domingo: menor accidentalidad general
+
+FACTORES DE RIESGO PRINCIPALES
+1. Velocidad inadecuada: 38% de los accidentes graves
+2. Embriaguez: 22% de los accidentes nocturnos de fin de semana
+3. Distracciones: 18% (celular, otros)
+4. No respetar señales: 15%
+5. Estado de la vía: 7%
+
+GRAVEDAD
+Accidentes con heridos: 68%
+Accidentes con daños materiales: 28%
+Accidentes fatales: 4%
+
+TIPOS DE VEHÍCULOS INVOLUCRADOS
+Motocicletas: 54% de los accidentes
+Automóviles: 31%
+Vehículos de carga: 8%
+Peatones atropellados: 7%
+
+EFECTOS COVID-19
+El período 2020-2022 mostró reducción significativa de accidentes durante confinamientos.
+Post-COVID (2020+) el modelo tiene menor AUC (0.85 vs 0.92) debido a cambios en patrones de movilidad.
+Se recomienda usar el modelo histórico completo (2008-2025) para producción.
+
+TENDENCIAS RECIENTES (2022-2025)
+Aumento de accidentes con vehículos de plataforma (Uber, InDriver, Cabify): +23%
+Incremento de accidentes con bicicletas y patinetas: +41%
+Reducción de accidentes mortales por mejoras en infraestructura vial: -12%
+
+ZONAS DE MAYOR ACCIDENTALIDAD (RANKING 2008-2025)
+1. La Candelaria (CENTRO): 17,965 incidentes
+2. Laureles Estadio: 12,840 incidentes
+3. El Poblado: 11,230 incidentes
+4. Guayabal: 9,876 incidentes
+5. Castilla: 8,543 incidentes

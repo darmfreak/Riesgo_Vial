@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RiesgoVial — Plataforma de Predicción Urbana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --surface: #1e1e2a;
+  --surface2: #252535;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0eff5;
+  --text2: #9896a8;
+  --text3: #5a5870;
+  --accent: #7c6dfa;
+  --accent2: #a594fb;
+  --accent-dim: rgba(124,109,250,0.15);
+  --red: #ff4d6d;
+  --amber: #ffa940;
+  --green: #52c41a;
+  --teal: #36cfc9;
+  --mono: 'JetBrains Mono', monospace;
+  --display: 'Plus Jakarta Sans', sans-serif;
+  --body: 'Inter', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14.5px;line-height:1.65;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ---- NAV ---- */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.85);backdrop-filter:blur(16px);border-bottom:0.5px solid var(--border);display:flex;align-items:center;padding:0 2rem;height:56px;gap:0}
+.nav-brand{font-family:var(--display);font-weight:800;font-size:17px;color:var(--text);letter-spacing:-0.5px;margin-right:2.5rem;display:flex;align-items:center;gap:8px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1}
+.nav-link{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:400;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;border:none;background:none;font-family:var(--body)}
+.nav-link:hover{color:var(--text);background:var(--surface)}
+.nav-link.active{color:var(--text);background:var(--surface);font-weight:500}
+.nav-city{margin-left:auto;display:flex;align-items:center;gap:8px}
+.city-selector{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;outline:none}
+.city-selector:focus{border-color:var(--accent)}
+.model-badge{font-family:var(--mono);font-size:11px;color:var(--accent2);background:var(--accent-dim);padding:3px 8px;border-radius:4px;border:0.5px solid rgba(124,109,250,0.25)}
+
+/* ---- PAGES ---- */
+.page{display:none;min-height:calc(100vh - 56px)}
+.page.active{display:block}
+
+/* ============================================================
+   PAGE 1 — CONSULTA
+   ============================================================ */
+.consult-layout{display:grid;grid-template-columns:380px 1fr;min-height:calc(100vh - 56px)}
+.consult-panel{background:var(--bg2);border-right:0.5px solid var(--border);padding:2rem}
+.panel-title{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
+.panel-sub{font-size:13px;color:var(--text2);margin-bottom:2rem;line-height:1.5}
+.field-group{margin-bottom:1.25rem}
+.field-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:block}
+.field-select,.field-input{width:100%;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:var(--body);font-size:14px;padding:10px 12px;border-radius:8px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field-select:focus,.field-input:focus{border-color:var(--accent)}
+.field-input[type=range]{padding:6px 0;border:none;background:transparent;cursor:pointer;accent-color:var(--accent)}
+.time-display{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--accent2);margin-bottom:6px;letter-spacing:-1px}
+.time-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-family:var(--mono)}
+.predict-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:var(--display);font-size:15px;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;margin-top:1rem;letter-spacing:0.2px}
+.predict-btn:hover:not(.loading){background:var(--accent2);transform:translateY(-1px)}
+.predict-btn:active:not(.loading){transform:translateY(0)}
+.predict-btn.loading{cursor:not-allowed;opacity:.75}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+#loadingBarFill{height:100%;width:25%;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);border-radius:2px;animation:shimmer 1s ease-in-out infinite}
+.divider{border:none;border-top:0.5px solid var(--border);margin:1.5rem 0}
+
+/* Result panel */
+.result-area{padding:2.5rem;display:flex;flex-direction:column;gap:2rem;align-items:flex-start}
+.result-hero{width:100%}
+.result-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:12px}
+.risk-gauge-wrap{display:flex;align-items:center;gap:2.5rem}
+.gauge-canvas{width:180px;height:180px;flex-shrink:0}
+.risk-number-big{font-family:var(--display);font-size:72px;font-weight:800;letter-spacing:-3px;line-height:1}
+.risk-level-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;margin-top:8px}
+.risk-level-pill.alto{background:rgba(255,77,109,0.15);color:#ff4d6d;border:0.5px solid rgba(255,77,109,0.3)}
+.risk-level-pill.medio{background:rgba(255,169,64,0.15);color:#ffa940;border:0.5px solid rgba(255,169,64,0.3)}
+.risk-level-pill.bajo{background:rgba(82,196,26,0.15);color:#52c41a;border:0.5px solid rgba(82,196,26,0.3)}
+.risk-level-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.risk-meta{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6}
+
+/* Feature bars */
+.feature-section{width:100%}
+.feature-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:1rem}
+.feature-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.feature-name{font-size:12px;color:var(--text2);width:160px;flex-shrink:0;font-family:var(--mono)}
+.feature-bar-bg{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.feature-bar-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.feature-val{font-family:var(--mono);font-size:11px;color:var(--text3);width:36px;text-align:right}
+
+/* Explanation card */
+.explain-card{background:var(--surface);border:0.5px solid var(--border2);border-radius:12px;padding:1.25rem;width:100%}
+.explain-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.explain-icon{width:28px;height:28px;border-radius:6px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:14px}
+.explain-title{font-size:13px;font-weight:500}
+.explain-badge{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent2);background:var(--accent-dim);padding:2px 6px;border-radius:3px}
+.explain-text{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* ============================================================
+   PAGE 2 — DASHBOARD
+   ============================================================ */
+.dashboard{padding:1.75rem 2rem}
+.dash-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem}
+.dash-title{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-0.5px;flex:1}
+.dash-controls{display:flex;gap:8px;align-items:center}
+.ctrl-btn{background:var(--surface);border:0.5px solid var(--border2);color:var(--text2);font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .15s}
+.ctrl-btn:hover,.ctrl-btn.active{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.kpi-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:1rem 1.25rem}
+.kpi-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
+.kpi-val{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1.1}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.kpi-delta{font-size:11px;margin-top:4px;display:inline-flex;align-items:center;gap:3px}
+.kpi-delta.up{color:var(--red)}
+.kpi-delta.down{color:var(--green)}
+
+/* Chart areas */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.dash-grid-3{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.chart-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:1.25rem}
+.chart-card-title{font-size:13px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.chart-card-title .ct-sub{font-size:11px;color:var(--text3);font-weight:400;font-family:var(--mono)}
+canvas{border-radius:4px}
+
+/* Heatmap */
+.heatmap-grid{display:grid;gap:2px}
+.hm-cell{height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;cursor:pointer;transition:transform .1s}
+.hm-cell:hover{transform:scale(1.05);z-index:1}
+.hm-row-label{font-family:var(--mono);font-size:10px;color:var(--text3);display:flex;align-items:center;width:28px;flex-shrink:0}
+.hm-row{display:flex;align-items:center;gap:2px}
+.hm-col-labels{display:flex;gap:2px;padding-left:30px;margin-bottom:4px}
+.hm-col-label{flex:1;font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center}
+
+/* Top zones table */
+.zones-table{width:100%;border-collapse:collapse;font-size:13px}
+.zones-table th{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:500;padding:6px 8px;border-bottom:0.5px solid var(--border);text-align:left}
+.zones-table td{padding:8px 8px;border-bottom:0.5px solid var(--border);color:var(--text2)}
+.zones-table tr:hover td{background:var(--surface)}
+.zones-table td:first-child{color:var(--text);font-weight:500}
+.risk-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-family:var(--mono)}
+.rp-alto{background:rgba(255,77,109,0.12);color:#ff4d6d}
+.rp-medio{background:rgba(255,169,64,0.12);color:#ffa940}
+.rp-bajo{background:rgba(82,196,26,0.12);color:#52c41a}
+
+/* ============================================================
+   PAGE 3 — MODELOS
+   ============================================================ */
+.models-page{padding:2rem}
+.models-header{margin-bottom:2.5rem}
+.models-title{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.models-sub{font-size:14px;color:var(--text2);max-width:500px;line-height:1.6}
+.models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
+.model-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.model-card::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,var(--accent-dim),transparent);opacity:0;transition:opacity .2s}
+.model-card:hover::before{opacity:1}
+.model-card.active-model{border-color:var(--accent);background:var(--bg3)}
+.model-card.active-model::before{opacity:1}
+.mc-city{font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mc-city::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.mc-name{font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px}
+.mc-period{font-size:12px;color:var(--text2)}
+.mc-stats{display:flex;gap:1rem;margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border)}
+.mc-stat{flex:1}
+.mc-stat-val{font-family:var(--mono);font-size:16px;font-weight:500}
+.mc-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+.add-city-card{background:transparent;border:0.5px dashed var(--border2);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px;gap:8px}
+.add-city-card:hover{border-color:var(--accent);background:var(--accent-dim)}
+.add-icon{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3)}
+.add-label{font-size:13px;color:var(--text3)}
+
+/* Model detail */
+.model-detail{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem}
+.md-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px}
+.metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:2rem}
+.metric-box{background:var(--surface);border-radius:8px;padding:12px 10px;text-align:center}
+.metric-val{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--accent2)}
+.metric-name{font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Pipeline stepper */
+.pipeline{display:flex;align-items:flex-start;gap:0;position:relative}
+.pipeline::before{content:'';position:absolute;top:20px;left:20px;right:20px;height:0.5px;background:var(--border2)}
+.pipe-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;cursor:pointer}
+.pipe-dot{width:40px;height:40px;border-radius:50%;background:var(--surface2);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--text2);z-index:1;transition:all .2s}
+.pipe-step.done .pipe-dot{background:var(--accent-dim);border-color:var(--accent);color:var(--accent2)}
+.pipe-step.active .pipe-dot{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.1)}
+.pipe-label{font-size:11px;color:var(--text3);text-align:center;max-width:80px;line-height:1.3}
+.pipe-step.active .pipe-label{color:var(--text2)}
+
+/* ============================================================
+   PAGE 4 — DOCUMENTACIÓN TÉCNICA
+   ============================================================ */
+.docs-page{padding:2rem}
+.docs-hero{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.docs-hero::after{content:'ROC AUC 0.9182';position:absolute;right:2.5rem;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:64px;font-weight:500;color:rgba(124,109,250,0.08);letter-spacing:-3px;pointer-events:none}
+.docs-hero-title{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-1.5px;margin-bottom:8px}
+.docs-hero-sub{font-size:15px;color:var(--text2);max-width:520px;line-height:1.6}
+.docs-hero-tags{display:flex;gap:8px;margin-top:1.5rem;flex-wrap:wrap}
+.tech-tag{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;border:0.5px solid var(--border2);color:var(--text2)}
+
+.docs-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.docs-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem}
+.docs-card-title{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:1rem;font-weight:500}
+.feature-chip-grid{display:flex;flex-wrap:wrap;gap:6px}
+.fchip{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:4px;background:var(--surface);border:0.5px solid var(--border2);color:var(--text2)}
+.fchip.highlight{background:var(--accent-dim);border-color:rgba(124,109,250,0.3);color:var(--accent2)}
+
+/* Architecture viz */
+.arch-layer{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;background:var(--surface);border:0.5px solid var(--border2);margin-bottom:6px;transition:all .15s;cursor:pointer}
+.arch-layer:hover{border-color:var(--accent);background:var(--accent-dim)}
+.arch-layer-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.arch-layer-name{font-size:13px;font-weight:500;flex:1}
+.arch-layer-tech{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.arch-arrow{text-align:center;color:var(--text3);font-size:16px;line-height:1;margin:1px 0 1px 16px}
+
+/* Chart placeholder */
+.chart-placeholder{width:100%;border-radius:8px;overflow:hidden}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;font-size:13px}
+.comp-table th{padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);border-bottom:0.5px solid var(--border);font-weight:500}
+.comp-table td{padding:9px 12px;border-bottom:0.5px solid var(--border);color:var(--text2);font-family:var(--mono);font-size:12px}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table td:first-child{color:var(--text);font-family:var(--body);font-size:13px}
+.winner{color:var(--accent2) !important}
+
+/* Heatmap selected row */
+.hm-row.selected-nb .hm-row-label { color: var(--accent2) !important; font-weight: 600; }
+.hm-row.selected-nb .hm-cell.active-cell {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+  transform: scale(1.12);
+  z-index: 2;
+}
+.hm-cell { cursor: pointer; transition: transform .1s, filter .1s; }
+.hm-cell:hover { filter: brightness(1.35); transform: scale(1.08); z-index: 2; }
+.selected-pin { color: var(--accent2); margin-right: 2px; }
+
+/* Ver en mapa btn */
+.map-btn { margin-top: .75rem; padding: 7px 14px; background: var(--surface2);
+  border: 0.5px solid var(--border2); color: var(--text2); font-size: 12px;
+  border-radius: 6px; cursor: pointer; transition: all .15s; font-family: var(--body); }
+.map-btn:hover { border-color: var(--accent); color: var(--accent2); }
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.page.active .panel-title,.page.active .dash-title,.page.active .models-title,.page.active .docs-hero-title{animation:fadeUp .35s ease both}
+.spinning{animation:pulse 1.5s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><span class="brand-dot"></span>RiesgoVial</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('consult',this)">Consulta</button>
+    <button class="nav-link" onclick="showPage('dashboard',this)">Dashboard</button>
+    <button class="nav-link" onclick="showPage('models',this)">Modelos</button>
+    <button class="nav-link" onclick="showPage('docs',this)">Documentación</button>
+  </div>
+  <div class="nav-city">
+    <select class="city-selector" id="cityGlobal" onchange="switchCity(this.value)">
+      <option value="medellin">Medellín</option>
+      <option value="bogota">Bogotá (demo)</option>
+      <option value="cali">Cali (demo)</option>
+    </select>
+    <span class="model-badge" id="modelBadge">XGBoost v2.1</span>
+  </div>
+</nav>
+
+<!-- ===================== PAGE 1: CONSULTA ===================== -->
+<div id="page-consult" class="page active">
+  <div class="consult-layout">
+    <div class="consult-panel">
+      <div class="panel-title">Consulta de riesgo</div>
+      <div class="panel-sub">Selecciona ubicación, día y hora para obtener la probabilidad de accidente vial.</div>
+
+      <div class="field-group">
+        <label class="field-label">Barrio / Zona</label>
+        <select class="field-select" id="barrio">
+          <option value="">Cargando barrios…</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Día de la semana</label>
+        <select class="field-select" id="diaSemana">
+          <option>Lunes</option>
+          <option>Martes</option>
+          <option>Miércoles</option>
+          <option>Jueves</option>
+          <option selected>Viernes</option>
+          <option>Sábado</option>
+          <option>Domingo</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Hora del día</label>
+        <div class="time-display" id="timeDisplay">23:00</div>
+        <input type="range" class="field-input" id="horaSlider" min="0" max="23" value="23" step="1"
+          oninput="updateHour(this.value)">
+        <div class="time-labels">
+          <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Fecha (opcional — mejora estacionalidad)</label>
+        <input type="date" class="field-input" id="fecha">
+      </div>
+
+      <button class="predict-btn" id="predictBtn" onclick="runPrediction()">Calcular probabilidad</button>
+      <div id="loadingBar" style="display:none;margin-top:6px;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden">
+        <div id="loadingBarFill"></div>
+      </div>
+      <div id="loadingStatus" style="display:none;font-size:11px;color:var(--accent2);font-family:var(--mono);margin-top:6px;text-align:center"></div>
+
+      <hr class="divider">
+      <div style="font-size:11px;color:var(--text3);line-height:1.7">
+        Modelo activo: <span style="color:var(--accent2);font-family:var(--mono)">XGBoost v2.1</span><br>
+        Datos: <span style="color:var(--text2)">Medellín 2008–2025</span><br>
+        ROC AUC: <span style="color:var(--accent2);font-family:var(--mono)">0.9182</span>
+      </div>
+    </div>
+
+    <div class="result-area" id="resultArea">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;width:100%;min-height:400px;gap:1rem;opacity:.4" id="emptyState">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity:.5">
+          <circle cx="24" cy="24" r="20" stroke="#7c6dfa" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="24" cy="24" r="6" fill="#7c6dfa" opacity=".4"/>
+        </svg>
+        <div style="font-size:13px;color:var(--text3);text-align:center">Configura los parámetros<br>y presiona calcular</div>
+      </div>
+
+      <div id="resultContent" style="display:none;width:100%">
+        <div class="result-hero">
+          <div class="result-label">Probabilidad de accidente</div>
+          <div class="risk-gauge-wrap">
+            <canvas class="gauge-canvas" id="gaugeCanvas" width="180" height="180"></canvas>
+            <div>
+              <div class="risk-number-big" id="riskNumber">—</div>
+              <div id="riskPill"></div>
+              <div class="risk-meta" id="riskMeta"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-title">Contribución de variables (SHAP simulado)</div>
+          <div id="featureBars"></div>
+        </div>
+
+        <div class="explain-card">
+          <div class="explain-header">
+            <div class="explain-icon">✦</div>
+            <span class="explain-title">Explicación RAG</span>
+            <span class="explain-badge">IA generativa</span>
+          </div>
+          <div class="explain-text" id="ragExplain"></div>
+        </div>
+
+        <button class="map-btn" onclick="goToDashboard()">Ver barrio en mapa de riesgo →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 2: DASHBOARD ===================== -->
+<div id="page-dashboard" class="page">
+  <div class="dashboard">
+    <div class="dash-header">
+      <div class="dash-title">Dashboard de riesgo — <span style="color:var(--accent2);font-family:var(--mono);font-size:18px" id="dashCity">Medellín</span></div>
+      <div id="dashSelectedNb" style="display:none;align-items:center;gap:6px;font-size:12px;
+        color:var(--accent2);background:var(--accent-dim);border:0.5px solid rgba(124,109,250,.3);
+        padding:4px 10px;border-radius:6px;font-family:var(--mono)"></div>
+      <div class="dash-controls">
+        <button class="ctrl-btn active" onclick="setRange(this,'7d')">7 días</button>
+        <button class="ctrl-btn" onclick="setRange(this,'30d')">30 días</button>
+        <button class="ctrl-btn" onclick="setRange(this,'90d')">90 días</button>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Zonas activas</div>
+        <div class="kpi-val" style="color:var(--accent2)">370</div>
+        <div class="kpi-sub">barrios monitoreados</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Slots de alto riesgo hoy</div>
+        <div class="kpi-val" style="color:var(--red)">48</div>
+        <div class="kpi-delta up">▲ 12% vs ayer</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Predicciones realizadas</div>
+        <div class="kpi-val">1,240</div>
+        <div class="kpi-sub">última semana</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Precisión modelo</div>
+        <div class="kpi-val" style="color:var(--teal)">84.0%</div>
+        <div class="kpi-delta down">▼ estable</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="chart-card">
+        <div class="chart-card-title">Incidentes por hora <span class="ct-sub">promedio semanal</span></div>
+        <canvas id="hourChart" height="90"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Tendencia diaria <span class="ct-sub">últimos 14 días</span></div>
+        <canvas id="trendChart" height="90"></canvas>
+      </div>
+    </div>
+
+    <div class="dash-grid-3">
+      <div class="chart-card">
+        <div class="chart-card-title">Mapa de riesgo — día × franja horaria</div>
+        <div id="heatmapWrap">
+          <div id="heatmapLoading" style="padding:2rem;text-align:center;color:var(--text3);font-size:13px;font-family:var(--mono)">
+            <div style="width:100%;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:12px">
+              <div id="heatmapLoadBar" style="height:100%;width:30%;background:var(--accent);border-radius:2px;animation:shimmer 1.2s ease-in-out infinite"></div>
+            </div>
+            Cargando mapa de riesgo…
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Zonas de mayor riesgo</div>
+        <table class="zones-table">
+          <thead><tr><th>Barrio</th><th>Score</th><th>Nivel</th></tr></thead>
+          <tbody id="zonesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 3: MODELOS ===================== -->
+<div id="page-models" class="page">
+  <div class="models-page">
+    <div class="models-header">
+      <div class="models-title">Gestión de modelos</div>
+      <div class="models-sub">Cada ciudad tiene su propio modelo entrenado de forma independiente. Selecciona uno para ver sus métricas y detalles.</div>
+    </div>
+
+    <div class="models-grid">
+      <div class="model-card active-model" onclick="selectModel(this,'medellin')">
+        <div class="mc-city">Medellín, Colombia</div>
+        <div class="mc-name">Modelo base</div>
+        <div class="mc-period">2008 – 2025 · 674,394 registros</div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">0.9182</div><div class="mc-stat-lbl">ROC AUC</div></div>
+          <div class="mc-stat"><div class="mc-stat-val">0.84</div><div class="mc-stat-lbl">F1</div></div>
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--green)">activo</div><div class="mc-stat-lbl">estado</div></div>
+        </div>
+      </div>
+      <div class="model-card" onclick="selectModel(this,'bogota')">
+        <div class="mc-city">Bogotá, Colombia</div>
+        <div class="mc-name">Modelo demo</div>
+        <div class="mc-period">2015 – 2024 · ~1.2M registros</div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">0.8871</div><div class="mc-stat-lbl">ROC AUC</div></div>
+          <div class="mc-stat"><div class="mc-stat-val">0.81</div><div class="mc-stat-lbl">F1</div></div>
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--amber)">demo</div><div class="mc-stat-lbl">estado</div></div>
+        </div>
+      </div>
+      <div class="add-city-card" onclick="addCity()">
+        <div class="add-icon">+</div>
+        <div class="add-label">Agregar ciudad</div>
+        <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:2px">Sube datos CSV y entrena<br>un modelo nuevo</div>
+      </div>
+    </div>
+
+    <!-- Model detail -->
+    <div class="model-detail">
+      <div class="md-title">Métricas del modelo seleccionado — <span id="selectedModelName" style="color:var(--accent2);font-family:var(--mono)">Medellín XGBoost v2.1</span></div>
+      <div class="metrics-grid">
+        <div class="metric-box"><div class="metric-val" id="mAUC">0.9182</div><div class="metric-name">ROC AUC</div></div>
+        <div class="metric-box"><div class="metric-val" id="mF1">0.8384</div><div class="metric-name">F1-Score</div></div>
+        <div class="metric-box"><div class="metric-val" id="mPrec">0.8401</div><div class="metric-name">Precisión</div></div>
+        <div class="metric-box"><div class="metric-val" id="mRec">0.8367</div><div class="metric-name">Recall</div></div>
+        <div class="metric-box"><div class="metric-val" id="mSlots">373K</div><div class="metric-name">Slots</div></div>
+      </div>
+
+      <div class="md-title" style="margin-bottom:1rem">Pipeline de entrenamiento</div>
+      <div class="pipeline" id="pipeline">
+        <div class="pipe-step done" onclick="pipeDetail('carga')"><div class="pipe-dot">01</div><div class="pipe-label">Carga y validación</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('limpieza')"><div class="pipe-dot">02</div><div class="pipe-label">Limpieza</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('features')"><div class="pipe-dot">03</div><div class="pipe-label">Feature eng.</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('grilla')"><div class="pipe-dot">04</div><div class="pipe-label">Grilla espacio-temporal</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('target')"><div class="pipe-dot">05</div><div class="pipe-label">Target encoding</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('train')"><div class="pipe-dot">06</div><div class="pipe-label">Entrenamiento</div></div>
+        <div class="pipe-step active" onclick="pipeDetail('eval')"><div class="pipe-dot">07</div><div class="pipe-label">Evaluación</div></div>
+        <div class="pipe-step" onclick="pipeDetail('deploy')"><div class="pipe-dot">08</div><div class="pipe-label">API deploy</div></div>
+      </div>
+
+      <div id="pipeDetailBox" style="background:var(--surface);border-radius:8px;padding:1rem;margin-top:1.25rem;font-size:13px;color:var(--text2);display:none;line-height:1.7;font-family:var(--mono)"></div>
+    </div>
+
+    <!-- Model comparison -->
+    <div class="model-detail">
+      <div class="md-title">Comparativa histórico completo vs post-COVID (2020+)</div>
+      <table class="comp-table">
+        <thead><tr><th>Modelo</th><th>Escenario</th><th>ROC AUC</th><th>F1</th><th>Precisión</th><th>Recall</th></tr></thead>
+        <tbody>
+          <tr><td>Logistic Regression</td><td>Histórico</td><td>0.9129</td><td>0.8362</td><td>0.8201</td><td>0.8483</td></tr>
+          <tr><td>Logistic Regression</td><td>Post-COVID</td><td>0.8215</td><td>0.6143</td><td>0.5128</td><td>0.7397</td></tr>
+          <tr><td>Random Forest</td><td>Histórico</td><td>0.9177</td><td>0.8386</td><td>0.8401</td><td>0.8375</td></tr>
+          <tr><td>Random Forest</td><td>Post-COVID</td><td>0.8485</td><td>0.6389</td><td>0.5001</td><td>0.8111</td></tr>
+          <tr style="background:rgba(124,109,250,0.04)"><td class="winner">XGBoost</td><td>Histórico</td><td class="winner">0.9182</td><td class="winner">0.8384</td><td class="winner">0.8401</td><td class="winner">0.8367</td></tr>
+          <tr><td>XGBoost</td><td>Post-COVID</td><td>0.8502</td><td>0.6417</td><td>0.5023</td><td>0.8059</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 4: DOCS ===================== -->
+<div id="page-docs" class="page">
+  <div class="docs-page">
+
+    <!-- HERO -->
+    <div class="docs-hero">
+      <div class="docs-hero-title">Documentación del sistema</div>
+      <div class="docs-hero-sub">Guía completa de RiesgoVial — desde cómo usarlo como ciudadano hasta cómo fluye, almacena y procesa cada dato de forma técnica.</div>
+      <div class="docs-hero-tags">
+        <span class="tech-tag">Python 3.11</span><span class="tech-tag">XGBoost</span>
+        <span class="tech-tag">FastAPI</span><span class="tech-tag">FAISS</span>
+        <span class="tech-tag">sentence-transformers</span><span class="tech-tag">Docker</span>
+        <span class="tech-tag">pandas</span><span class="tech-tag">SHAP</span>
+      </div>
+    </div>
+
+    <!-- GUIA DE USUARIO -->
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Guía de usuario</div>
+    <div class="docs-cols" style="margin-bottom:12px">
+      <div class="docs-card">
+        <div class="docs-card-title">¿Qué hace este sistema?</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          RiesgoVial predice la <strong style="color:var(--text)">probabilidad de que ocurra un accidente vial</strong> en un barrio específico de Medellín en función del día y la hora. El sistema fue entrenado con <strong style="color:var(--text)">674,394 registros reales</strong> de incidentes viales ocurridos entre 2008 y 2025.<br><br>
+          El resultado es un número entre 0% y 100% que representa el riesgo relativo de ese barrio en ese momento del día: <span style="color:var(--red)">alto (≥70%)</span>, <span style="color:var(--amber)">medio (40–69%)</span> o <span style="color:var(--green)">bajo (&lt;40%)</span>.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Cómo interpretar los resultados</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          <strong style="color:var(--red)">Alto riesgo (≥70%):</strong> el barrio concentra históricamente muchos accidentes en ese horario. Se recomienda mayor precaución, preferir rutas alternas o ajustar el horario de desplazamiento.<br><br>
+          <strong style="color:var(--amber)">Riesgo medio (40–69%):</strong> accidentabilidad cercana al promedio de la ciudad. Conducir con precaución normal.<br><br>
+          <strong style="color:var(--green)">Riesgo bajo (&lt;40%):</strong> el barrio tiene baja densidad histórica de incidentes para ese horario.
+        </div>
+      </div>
+    </div>
+    <div class="docs-cols" style="margin-bottom:24px">
+      <div class="docs-card">
+        <div class="docs-card-title">Cómo usar la Consulta</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          1. <strong style="color:var(--text)">Selecciona el barrio</strong> desde el desplegable (369 barrios reales del modelo).<br>
+          2. <strong style="color:var(--text)">Elige el día de la semana</strong> — los fines de semana nocturnos tienen patrones distintos a los días laborales.<br>
+          3. <strong style="color:var(--text)">Ajusta la hora</strong> con el deslizador (0–23h).<br>
+          4. La <strong style="color:var(--text)">fecha</strong> es opcional: permite al modelo considerar el mes del año para estacionalidad.<br>
+          5. Presiona <strong style="color:var(--accent2)">Calcular probabilidad</strong>. En ~2–4 segundos recibirás la predicción, la contribución de cada variable (SHAP) y una explicación en lenguaje natural generada por RAG.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Cómo usar el Dashboard</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          El dashboard muestra el <strong style="color:var(--text)">mapa de riesgo para el día actual</strong>: los 7 barrios de mayor riesgo promedio × las 12 franjas horarias del día.<br><br>
+          Cada celda del mapa es clickeable: al hacer clic en una celda, el sistema navega automáticamente a la Consulta con ese barrio y franja horaria pre-cargados y ejecuta la predicción.<br><br>
+          Si realizaste una consulta previa, el barrio consultado aparece <strong style="color:var(--accent2)">fijado al tope</strong> del mapa con el indicador ◉ y su celda de franja horaria resaltada.
+        </div>
+      </div>
+    </div>
+
+    <!-- DATOS -->
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Datos y almacenamiento</div>
+    <div class="docs-cols" style="margin-bottom:12px">
+      <div class="docs-card">
+        <div class="docs-card-title">Fuente de datos y carga</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          Los datos provienen del <strong style="color:var(--text)">Sistema de Información de Accidentalidad Vial de Medellín</strong> (2008–2025), entregados en formato Excel (<code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">Fatal_Road_Traffic_Normalizado.xlsx</code>).<br><br>
+          <strong style="color:var(--text)">Procesamiento:</strong> <code style="font-family:var(--mono);font-size:11px">pandas.read_excel()</code> con tipos optimizados (<code style="font-family:var(--mono);font-size:11px">int16</code>, <code style="font-family:var(--mono);font-size:11px">category</code>). El archivo ocupa ~156 MB en memoria. Registros válidos tras limpieza: <strong style="color:var(--text)">674,394</strong> de 702,540 originales (4% descartados por barrio o fecha nulos).
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Almacenamiento del modelo</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          El modelo entrenado se serializa como un <strong style="color:var(--text)">bundle .pkl</strong> usando <code style="font-family:var(--mono);font-size:11px">pickle (protocol 5)</code>. El bundle contiene 3 objetos:<br><br>
+          <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">model</code> — objeto XGBoostClassifier serializado (~2.4 MB)<br>
+          <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">encoders</code> — diccionarios <code style="font-family:var(--mono);font-size:11px">target_enc</code>, <code style="font-family:var(--mono);font-size:11px">log_odds</code>, <code style="font-family:var(--mono);font-size:11px">global_rate</code> por barrio<br>
+          <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">metadata</code> — versión, métricas, fecha de entrenamiento<br><br>
+          El archivo se almacena en <code style="font-family:var(--mono);font-size:11px">riesgo_api/models/medellin_xgboost.pkl</code> y se monta como volumen Docker en <code style="font-family:var(--mono);font-size:11px">/app/models/</code>.
+        </div>
+      </div>
+    </div>
+    <div class="docs-cols" style="margin-bottom:24px">
+      <div class="docs-card">
+        <div class="docs-card-title">Grilla espacio-temporal</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          El entrenamiento no usa los registros crudos de accidentes directamente. En cambio se construye una <strong style="color:var(--text)">grilla completa</strong>:<br><br>
+          <code style="font-family:var(--mono);font-size:11px">370 ubicaciones × 7 días × 12 franjas × 12 meses = 372,960 slots</code><br><br>
+          Cada slot es una combinación posible de (barrio, día de semana, franja horaria, mes). El target <code style="font-family:var(--mono);font-size:11px">HUBO_INCIDENTE</code> es 1 si ocurrió al menos un accidente en ese slot histórico, 0 si no. Esto permite al modelo generalizar a combinaciones no vistas.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Índice RAG (FAISS)</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          El sistema RAG almacena conocimiento contextual en un <strong style="color:var(--text)">índice vectorial FAISS</strong> (<code style="font-family:var(--mono);font-size:11px">riesgo_api/rag/index/medellin/</code>).<br><br>
+          <strong style="color:var(--text)">Documentos indexados:</strong> descripción de los 369 barrios con sus tasas históricas, estadísticas viales generales de Medellín, y contexto de movilidad urbana — 434 chunks de ~400 caracteres.<br><br>
+          Los embeddings se generan con <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">paraphrase-multilingual-MiniLM-L12-v2</code> (384 dims, soporte español). El índice persiste en disco y se carga en memoria al arrancar la API.
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE ML -->
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Pipeline de Machine Learning</div>
+    <div class="docs-cols" style="margin-bottom:12px">
+      <div class="docs-card">
+        <div class="docs-card-title">Feature engineering (26 variables)</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9;display:grid;grid-template-columns:1fr 1fr;gap:4px 16px">
+          <div><span style="color:var(--accent2);font-family:var(--mono)">UBICACION_TARGET_ENC</span><br><span style="color:var(--text3)">Tasa histórica de accidentes del barrio suavizada (m=50). Variable más importante del modelo.</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">UBICACION_LOG_ODDS</span><br><span style="color:var(--text3)">Log-odds de la tasa del barrio. Captura efecto no lineal de la ubicación.</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">HORA_PUNTO_MEDIO</span><br><span style="color:var(--text3)">Hora central de la franja (ej. franja 22-24h → 23). Numérica.</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">DIA_SEMANA_SIN/COS</span><br><span style="color:var(--text3)">Codificación cíclica del día para que lunes y domingo sean "cercanos".</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">MES_SIN/COS</span><br><span style="color:var(--text3)">Codificación cíclica del mes para capturar estacionalidad.</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">DIA_ANIO_SIN/COS</span><br><span style="color:var(--text3)">Día representativo del mes en el año (cíclico). Ej: enero=15, febrero=46.</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">ES_FIN_SEMANA</span><br><span style="color:var(--text3)">1 si sábado o domingo, 0 si laboral.</span></div>
+          <div><span style="color:var(--accent2);font-family:var(--mono)">INTERACCION_FINDE_NOCHE</span><br><span style="color:var(--text3)">1 si es fin de semana Y hora ≥ 20:00. Captura el patrón crítico nocturno-festivo.</span></div>
+          <div style="grid-column:1/-1"><span style="color:var(--accent2);font-family:var(--mono)">FRANJA_00-02h … FRANJA_22-24h</span><br><span style="color:var(--text3)">12 variables dummy one-hot: 1 en la franja activa, 0 en el resto.</span></div>
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Entrenamiento del modelo</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          <strong style="color:var(--text)">Algoritmo:</strong> XGBoost Classifier (Gradient Boosted Trees).<br>
+          <strong style="color:var(--text)">Parámetros clave:</strong> 200 estimadores, max_depth=8, learning_rate=0.05, subsample=0.8.<br>
+          <strong style="color:var(--text)">Desbalance de clases:</strong> <code style="font-family:var(--mono);font-size:11px">scale_pos_weight = negativos/positivos ≈ 1.0</code> (la grilla balancea naturalmente).<br>
+          <strong style="color:var(--text)">Split:</strong> 80% entrenamiento / 20% test, estratificado por target.<br><br>
+          <strong style="color:var(--text)">Métricas en test:</strong><br>
+          <code style="font-family:var(--mono);font-size:12px;color:var(--accent2)">ROC AUC = 0.9182</code> &nbsp;|&nbsp; <code style="font-family:var(--mono);font-size:12px">F1 = 0.8384</code><br>
+          <code style="font-family:var(--mono);font-size:12px">Precisión = 0.8401</code> &nbsp;|&nbsp; <code style="font-family:var(--mono);font-size:12px">Recall = 0.8367</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLUJO DE PREDICCION -->
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Flujo de una predicción</div>
+    <div class="docs-card" style="margin-bottom:12px">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center;font-size:12px">
+        <div style="background:var(--surface);border-radius:8px;padding:12px 8px">
+          <div style="font-size:18px;margin-bottom:6px">①</div>
+          <div style="color:var(--accent2);font-family:var(--mono);font-size:11px;margin-bottom:4px">POST /predict</div>
+          <div style="color:var(--text3)">Frontend envía: city, neighborhood, day_of_week, hour, fecha</div>
+        </div>
+        <div style="background:var(--surface);border-radius:8px;padding:12px 8px">
+          <div style="font-size:18px;margin-bottom:6px">②</div>
+          <div style="color:var(--accent2);font-family:var(--mono);font-size:11px;margin-bottom:4px">Feature Eng.</div>
+          <div style="color:var(--text3)">model_loader.py construye el vector de 26 features. Busca el barrio en target_enc; si no existe, usa global_rate.</div>
+        </div>
+        <div style="background:var(--surface);border-radius:8px;padding:12px 8px">
+          <div style="font-size:18px;margin-bottom:6px">③</div>
+          <div style="color:var(--accent2);font-family:var(--mono);font-size:11px;margin-bottom:4px">XGBoost</div>
+          <div style="color:var(--text3)">predict_proba(X)[0][1] devuelve probabilidad entre 0 y 1. ~12ms en producción.</div>
+        </div>
+        <div style="background:var(--surface);border-radius:8px;padding:12px 8px">
+          <div style="font-size:18px;margin-bottom:6px">④</div>
+          <div style="color:var(--accent2);font-family:var(--mono);font-size:11px;margin-bottom:4px">SHAP</div>
+          <div style="color:var(--text3)">TreeExplainer calcula la contribución de cada feature. Devuelve los top 5 ordenados por |valor|.</div>
+        </div>
+        <div style="background:var(--surface);border-radius:8px;padding:12px 8px">
+          <div style="font-size:18px;margin-bottom:6px">⑤</div>
+          <div style="color:var(--accent2);font-family:var(--mono);font-size:11px;margin-bottom:4px">RAG</div>
+          <div style="color:var(--text3)">FAISS busca los 3 chunks más similares al query. Combina con contexto SHAP para generar explicación.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RAG + ARQUITECTURA -->
+    <div class="docs-cols" style="margin-bottom:12px">
+      <div class="docs-card">
+        <div class="docs-card-title">Sistema RAG — cómo genera las explicaciones</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          <strong style="color:var(--text)">1. Construcción del query:</strong> se forma una consulta de texto con el barrio, hora y día: <code style="font-family:var(--mono);font-size:11px">"riesgo vial accidente La Candelaria hora 23 noche sábado"</code>.<br><br>
+          <strong style="color:var(--text)">2. Búsqueda vectorial:</strong> el query se convierte en un embedding de 384 dimensiones con sentence-transformers. FAISS encuentra los 3 chunks del knowledge base con mayor similitud coseno.<br><br>
+          <strong style="color:var(--text)">3. Síntesis:</strong> los chunks recuperados se combinan con la narrativa SHAP ("el historial del barrio aumenta el riesgo +3.68, la hora reduce...") para formar la explicación final.<br><br>
+          <strong style="color:var(--text)">4. LLM (opcional):</strong> si hay <code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code> configurada, Claude (claude-sonnet-4-6) sintetiza el contexto en 3 oraciones fluidas. Sin API key, se entrega el contexto crudo del RAG.
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Arquitectura de despliegue</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          <strong style="color:var(--text)">Docker Compose</strong> orquesta dos contenedores:<br><br>
+          <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">riesgovial_api</code> — FastAPI + Gunicorn (2 UvicornWorkers). Puerto 8000 interno. Monta <code style="font-family:var(--mono);font-size:11px">./models</code> y <code style="font-family:var(--mono);font-size:11px">./rag</code> como volúmenes. El índice FAISS y el modelo .pkl se cargan en memoria al arrancar.<br><br>
+          <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">riesgovial_nginx</code> — Nginx 1.27. Sirve el HTML estático en puerto 80 y hace proxy reverso de <code style="font-family:var(--mono);font-size:11px">/api/</code> al contenedor API. Headers <code style="font-family:var(--mono);font-size:11px">no-cache</code> en HTML para entregas inmediatas de cambios.<br><br>
+          <strong style="color:var(--text)">Caché de heatmap:</strong> el endpoint <code style="font-family:var(--mono);font-size:11px">/api/v1/heatmap</code> cachea resultados en memoria por <code style="font-family:var(--mono);font-size:11px">(city, fecha)</code>. Primera carga ~4s, subsiguientes ~30ms.
+        </div>
+      </div>
+    </div>
+
+    <!-- API ENDPOINTS -->
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px">Referencia de API</div>
+    <div class="docs-card" style="margin-bottom:24px">
+      <div style="font-family:var(--mono);font-size:12px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;background:var(--surface);border-radius:8px;padding:12px">
+          <div><span style="color:var(--teal)">POST</span> <span style="color:var(--text)">/api/v1/predict</span></div>
+          <div style="color:var(--text3)">Body: <code>{city, neighborhood, day_of_week, hour, fecha?}</code><br>Response: probabilidad, nivel, modelo usado, prediction_id<br>Tiempo: ~12ms (sin SHAP)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;background:var(--surface);border-radius:8px;padding:12px">
+          <div><span style="color:var(--amber)">POST</span> <span style="color:var(--text)">/api/v1/explain</span></div>
+          <div style="color:var(--text3)">Body: <code>{city, neighborhood, day_of_week, hour, fecha?}</code><br>Response: shap_values (26 features), top_features (top 5), rag_explanation<br>Tiempo: ~2–4s (SHAP + FAISS)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;background:var(--surface);border-radius:8px;padding:12px">
+          <div><span style="color:var(--accent2)">GET</span> <span style="color:var(--text)">/api/v1/heatmap/{city}/{date}</span></div>
+          <div style="color:var(--text3)">Genera matrix [{neighborhood, hour_slot, risk_score}] para todos los barrios × 12 franjas<br>Cachea por (city, date). Primera carga ~4s, caché ~30ms</div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;background:var(--surface);border-radius:8px;padding:12px">
+          <div><span style="color:var(--accent2)">GET</span> <span style="color:var(--text)">/api/v1/neighborhoods/{city}</span></div>
+          <div style="color:var(--text3)">Lista los barrios válidos del modelo (sin entradas "0", vacías, sin información)<br>Filtra automáticamente entradas no definidas</div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;background:var(--surface);border-radius:8px;padding:12px">
+          <div><span style="color:var(--accent2)">GET</span> <span style="color:var(--text)">/api/v1/cities</span></div>
+          <div style="color:var(--text3)">Lista los modelos cargados con métricas (AUC, F1, slots, neighborhoods)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;background:var(--surface);border-radius:8px;padding:12px">
+          <div><span style="color:var(--teal)">POST</span> <span style="color:var(--text)">/api/v1/train/{city}</span></div>
+          <div style="color:var(--text3)">Lanza pipeline de entrenamiento asíncrono en background thread<br>Body: {data_path, algo, year_from?}. Consultar estado en /api/v1/jobs/{job_id}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ─── STATE ───────────────────────────────────────────────────────
+let selectedNeighborhood = null;   // barrio activo de la última predicción
+let selectedHour         = null;   // hora de la última predicción
+let selectedCity         = 'medellin';
+
+// ─── CONFIG ──────────────────────────────────────────────────────
+const CITIES = {
+  medellin: { name: 'Medellín', badge: 'XGBoost v1.0' },
+  bogota:   { name: 'Bogotá',   badge: 'XGBoost (demo)' },
+  cali:     { name: 'Cali',     badge: 'RF (demo)' },
+};
+const DAYS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+
+// ─── API HELPER ──────────────────────────────────────────────────
+async function apiCall(url, options = {}) {
+  try {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      showToast(err.detail || `Error ${res.status}`, 'error');
+      return null;
+    }
+    return await res.json();
+  } catch (e) {
+    showToast('No se pudo conectar con la API', 'error');
+    return null;
+  }
+}
+
+function showToast(msg, type = 'info') {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `position:fixed;bottom:20px;right:20px;z-index:9999;
+    background:${type === 'error' ? '#ff4d6d' : '#7c6dfa'};color:#fff;
+    padding:10px 16px;border-radius:8px;font-size:13px;
+    animation:fadeUp .2s ease;pointer-events:none;`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ─── NAV ─────────────────────────────────────────────────────────
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'dashboard') {
+    // Si hay un barrio seleccionado nuevo, forzar refresh del heatmap
+    if (selectedNeighborhood) dashInit = false;
+    initDashboard();
+  }
+}
+
+function goToDashboard() {
+  const btn = document.querySelector('.nav-link:nth-child(2)');
+  showPage('dashboard', btn);
+  btn.classList.add('active');
+}
+
+function switchCity(v) {
+  const c = CITIES[v] || CITIES.medellin;
+  document.getElementById('modelBadge').textContent = c.badge;
+  document.getElementById('dashCity').textContent = c.name;
+  dashInit = false;
+  loadNeighborhoods(v);
+}
+
+function updateHour(v) {
+  document.getElementById('timeDisplay').textContent = String(v).padStart(2,'0') + ':00';
+}
+
+// ─── CONSULTA ────────────────────────────────────────────────────
+async function runPrediction() {
+  const barrio      = document.getElementById('barrio').value;
+  const dia         = document.getElementById('diaSemana').value;
+  const hora        = parseInt(document.getElementById('horaSlider').value);
+  const fecha       = document.getElementById('fecha').value || null;
+  const city        = document.getElementById('cityGlobal').value;
+  const day_of_week = DAYS.indexOf(dia);
+
+  const btn    = document.getElementById('predictBtn');
+  const bar    = document.getElementById('loadingBar');
+  const status = document.getElementById('loadingStatus');
+  let   step   = 0;
+  const steps  = ['Ejecutando modelo…','Calculando SHAP values…','Generando explicación RAG…'];
+  let   stepTimer;
+
+  const setLoading = (on) => {
+    btn.classList.toggle('loading', on);
+    btn.textContent  = on ? 'Calculando…' : 'Calcular probabilidad';
+    bar.style.display    = on ? 'block' : 'none';
+    status.style.display = on ? 'block' : 'none';
+    if (on) {
+      step = 0;
+      status.textContent = steps[0];
+      stepTimer = setInterval(() => {
+        step = Math.min(step + 1, steps.length - 1);
+        status.textContent = steps[step];
+      }, 900);
+    } else {
+      clearInterval(stepTimer);
+    }
+  };
+
+  setLoading(true);
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resultContent').style.display = 'block';
+  document.getElementById('riskNumber').textContent = '···';
+  document.getElementById('riskPill').innerHTML = '';
+  document.getElementById('featureBars').innerHTML = '';
+  document.getElementById('ragExplain').textContent = 'Consultando modelo…';
+
+  const body = { city, neighborhood: barrio, day_of_week, hour: hora };
+  if (fecha) body.fecha = fecha;
+
+  try {
+    const [pred, expl] = await Promise.all([
+      apiCall('/api/v1/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      }),
+      apiCall('/api/v1/explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ city, neighborhood: barrio, day_of_week, hour: hora, fecha }),
+      }),
+    ]);
+
+  setLoading(false);
+  if (!pred) return;
+
+  // Guardar estado para el mapa dinámico
+  selectedNeighborhood = barrio;
+  selectedHour         = hora;
+  selectedCity         = city;
+
+  const pct = Math.round(pred.probability * 100);
+  document.getElementById('riskNumber').textContent = pct + '%';
+
+  const levelLabel = { alto: 'Alto riesgo', medio: 'Riesgo medio', bajo: 'Riesgo bajo' };
+  const pillEl = document.getElementById('riskPill');
+  pillEl.className = `risk-level-pill ${pred.risk_level}`;
+  pillEl.textContent = levelLabel[pred.risk_level] || pred.risk_level;
+
+  document.getElementById('riskMeta').innerHTML =
+    `${barrio} · ${dia} · ${hora}:00h${fecha ? ' · ' + fecha : ''} · ` +
+    `<span style="font-family:var(--mono);color:var(--accent2)">${pred.used_model}</span>`;
+
+  drawGauge(pct);
+
+  if (expl) {
+    document.querySelector('.feature-title').textContent = 'Contribución de variables (SHAP real)';
+    drawFeatureBars(expl.top_features);
+    document.getElementById('ragExplain').textContent = expl.rag_explanation;
+  } else {
+    document.querySelector('.feature-title').textContent = 'Contribución de variables';
+    document.getElementById('ragExplain').textContent = 'Explicación no disponible en este momento.';
+  }
+
+  } catch (e) {
+    setLoading(false);
+    showToast('Error inesperado al consultar el modelo', 'error');
+  }
+}
+
+function drawGauge(pct) {
+  const canvas = document.getElementById('gaugeCanvas');
+  const ctx    = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height, cx = W/2, cy = H/2+10, r = 70;
+  ctx.clearRect(0, 0, W, H);
+  const start = Math.PI * 0.75, end = Math.PI * 2.25, full = end - start;
+  ctx.beginPath(); ctx.arc(cx, cy, r, start, end);
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke();
+  const color = pct >= 70 ? '#ff4d6d' : pct >= 40 ? '#ffa940' : '#52c41a';
+  ctx.beginPath(); ctx.arc(cx, cy, r, start, start + full * (pct / 100));
+  ctx.strokeStyle = color; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.font = '500 13px DM Mono,monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(pct >= 70 ? 'ALTO' : pct >= 40 ? 'MEDIO' : 'BAJO', cx, cy + 26);
+}
+
+function drawFeatureBars(topFeatures) {
+  if (!topFeatures || !topFeatures.length) return;
+  const FCOLORS = {
+    UBICACION_TARGET_ENC: '#7c6dfa', UBICACION_LOG_ODDS: '#7c6dfa',
+    HORA_PUNTO_MEDIO: '#ffa940',     INTERACCION_FINDE_NOCHE: '#ff4d6d',
+    ES_FIN_SEMANA: '#36cfc9',        ES_LABORAL: '#36cfc9',
+  };
+  const maxAbs = Math.max(...topFeatures.map(f => Math.abs(f.shap)), 0.001);
+  document.getElementById('featureBars').innerHTML = topFeatures.map(f => {
+    const color = FCOLORS[f.feature] || '#9896a8';
+    const w     = Math.round(Math.abs(f.shap) / maxAbs * 100);
+    const sign  = f.shap >= 0 ? '+' : '';
+    const name  = f.feature.length > 22 ? f.feature.slice(0, 20) + '…' : f.feature;
+    return `<div class="feature-bar-row">
+      <span class="feature-name">${name}</span>
+      <div class="feature-bar-bg"><div class="feature-bar-fill" style="width:${w}%;background:${color}"></div></div>
+      <span class="feature-val">${sign}${f.shap.toFixed(2)}</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────
+let dashInit = false;
+let _hmCache = null;
+
+function initDashboard() {
+  if (dashInit) return;
+  dashInit = true;
+  _hmCache = null;
+  buildHourChart();
+  buildTrendChart();
+  loadDashboardFromAPI();
+}
+
+let currentRange = '7d';
+let hourChartInst = null;
+let trendChartInst = null;
+
+function setRange(btn, r) {
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentRange = r;
+  rebuildCharts(r);
+  updateKPIs(r);
+}
+
+function rebuildCharts(r) {
+  if (hourChartInst)  { hourChartInst.destroy();  hourChartInst  = null; }
+  if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
+  buildHourChart(r);
+  buildTrendChart(r);
+}
+
+function updateKPIs(r) {
+  const cfg = {
+    '7d':  { pred: '1,240',  sub: 'última semana',      altoSub: '12% vs semana anterior' },
+    '30d': { pred: '5,180',  sub: 'último mes',          altoSub: '8% vs mes anterior'     },
+    '90d': { pred: '15,420', sub: 'últimos 3 meses',     altoSub: '5% vs trimestre anterior'},
+  };
+  const c = cfg[r] || cfg['7d'];
+  const cards = document.querySelectorAll('.kpi-card');
+  if (cards[2]) {
+    cards[2].querySelector('.kpi-val').textContent = c.pred;
+    cards[2].querySelector('.kpi-sub').textContent = c.sub;
+  }
+  if (cards[1]) {
+    const delta = cards[1].querySelector('.kpi-delta');
+    if (delta) delta.textContent = '▲ ' + c.altoSub;
+  }
+}
+
+async function loadDashboardFromAPI() {
+  const city  = document.getElementById('cityGlobal').value;
+  const today = new Date().toISOString().split('T')[0];
+  const data  = await apiCall(`/api/v1/heatmap/${city}/${today}`);
+
+  if (!data) {
+    buildHeatmapStatic();
+    buildZonesTableStatic();
+    return;
+  }
+
+  _hmCache = data;
+  renderHeatmap(data);
+  renderZonesTable(data);
+
+  // Update KPIs from real data
+  const nbSet     = new Set(data.matrix.map(r => r.neighborhood));
+  const altoSlots = data.matrix.filter(r => r.risk_score >= 0.7).length;
+  const kpis      = document.querySelectorAll('.kpi-card');
+  kpis[0].querySelector('.kpi-val').textContent = nbSet.size;
+  kpis[1].querySelector('.kpi-val').textContent = altoSlots;
+}
+
+function hourToFranja(h) {
+  const s = (Math.floor(h / 2) * 2).toString().padStart(2,'0');
+  const e = (Math.floor(h / 2) * 2 + 2).toString().padStart(2,'0');
+  return `${s}-${e}h`;
+}
+
+function renderHeatmap(data) {
+  const FRANJAS = ['00-02h','02-04h','04-06h','06-08h','08-10h','10-12h',
+                   '12-14h','14-16h','16-18h','18-20h','20-22h','22-24h'];
+
+  const nbMap = {};
+  for (const row of data.matrix) {
+    if (!nbMap[row.neighborhood]) nbMap[row.neighborhood] = {};
+    nbMap[row.neighborhood][row.hour_slot] = row.risk_score;
+  }
+
+  // Top 7 por riesgo promedio
+  const ranked = Object.entries(nbMap)
+    .map(([nb, slots]) => {
+      const vals = Object.values(slots);
+      return { nb, slots, avg: vals.reduce((a,b) => a+b, 0) / vals.length };
+    })
+    .sort((a,b) => b.avg - a.avg);
+
+  const top7 = ranked.slice(0, 7);
+
+  // Siempre incluir el barrio seleccionado (aunque no esté en top7)
+  if (selectedNeighborhood && nbMap[selectedNeighborhood]) {
+    const already = top7.find(r => r.nb === selectedNeighborhood);
+    if (!already) {
+      const sel = ranked.find(r => r.nb === selectedNeighborhood);
+      if (sel) top7.unshift(sel);          // pinar al inicio
+      if (top7.length > 8) top7.pop();     // mantener máximo 8 filas
+    } else {
+      // Moverlo al tope
+      const idx = top7.indexOf(already);
+      top7.splice(idx, 1);
+      top7.unshift(already);
+    }
+  }
+
+  // Actualizar badge en header del dashboard
+  const badge = document.getElementById('dashSelectedNb');
+  if (selectedNeighborhood) {
+    badge.style.display = 'flex';
+    badge.textContent   = `◉ ${selectedNeighborhood}`;
+  } else {
+    badge.style.display = 'none';
+  }
+
+  const activeFranja = selectedHour !== null ? hourToFranja(selectedHour) : null;
+
+  const wrap      = document.getElementById('heatmapWrap');
+  const colLabels = `<div class="hm-col-labels" style="padding-left:62px">${FRANJAS.map(f =>
+    `<div class="hm-col-label" style="${activeFranja===f?'color:var(--accent2);font-weight:600':''}">${f.slice(0,5)}</div>`
+  ).join('')}</div>`;
+
+  const rows = top7.map(({ nb, slots }) => {
+    const isSelected = nb === selectedNeighborhood;
+    const label      = nb.length > 13 ? nb.slice(0,11) + '…' : nb;
+    const prefix     = isSelected ? '<span class="selected-pin">◉</span>' : '';
+
+    const cells = FRANJAS.map(franja => {
+      const v          = slots[franja] || 0;
+      const pct        = Math.round(v * 100);
+      const t          = v >= 0.7 ? [255,77,109] : v >= 0.4 ? [255,169,64] : [124,109,250];
+      const a          = Math.min(v + 0.1, 0.9).toFixed(2);
+      const isActive   = isSelected && franja === activeFranja;
+      const activeClass= isActive ? ' active-cell' : '';
+      const nbEsc      = nb.replace(/'/g,"\\'");
+      return `<div class="hm-cell${activeClass}"
+        style="flex:1;background:rgba(${t[0]},${t[1]},${t[2]},${a});color:rgba(255,255,255,${v>0.3?0.9:0.5})"
+        title="${nb} · ${franja} → ${pct}% riesgo — clic para consultar"
+        onclick="selectFromHeatmap('${nbEsc}','${franja}')">${pct}</div>`;
+    }).join('');
+
+    return `<div class="hm-row${isSelected?' selected-nb':''}">
+      <span class="hm-row-label" title="${nb}" style="width:60px;font-size:9px;overflow:hidden">${prefix}${label}</span>
+      ${cells}
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = colLabels + rows;
+}
+
+function selectFromHeatmap(nb, franja) {
+  // Calcular hora desde franja (ej: '22-24h' → 22)
+  const hour = parseInt(franja.split('-')[0]);
+
+  // Ir a Consulta
+  const consultBtn = document.querySelector('.nav-link');
+  showPage('consult', consultBtn);
+
+  // Rellenar formulario
+  const sel = document.getElementById('barrio');
+  for (const opt of sel.options) {
+    if (opt.value === nb) { sel.value = nb; break; }
+  }
+  document.getElementById('horaSlider').value = hour;
+  updateHour(hour);
+
+  // Ejecutar predicción automáticamente
+  runPrediction();
+}
+
+function renderZonesTable(data) {
+  const nbAvg = {}, nbCnt = {};
+  for (const row of data.matrix) {
+    nbAvg[row.neighborhood] = (nbAvg[row.neighborhood] || 0) + row.risk_score;
+    nbCnt[row.neighborhood] = (nbCnt[row.neighborhood] || 0) + 1;
+  }
+  const zones = Object.entries(nbAvg)
+    .map(([nb, tot]) => ({ name: nb, score: tot / nbCnt[nb] }))
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 10)
+    .map(z => ({
+      name: z.name,
+      score: Math.round(z.score * 100) + '%',
+      level: z.score >= 0.7 ? 'alto' : z.score >= 0.4 ? 'medio' : 'bajo',
+    }));
+
+  document.getElementById('zonesTableBody').innerHTML = zones.map(z =>
+    `<tr><td>${z.name}</td><td style="font-family:var(--mono)">${z.score}</td>
+    <td><span class="risk-pill rp-${z.level}">${z.level}</span></td></tr>`
+  ).join('');
+}
+
+function buildHeatmapStatic() {
+  const days=['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+  const franjas=['00-02','02-04','04-06','06-08','08-10','10-12','12-14','14-16','16-18','18-20','20-22','22-24'];
+  const risk=[[5,3,2,28,32,25,18,22,38,42,20,12],[4,2,2,25,30,22,16,20,35,40,18,10],
+    [4,2,2,24,29,21,16,19,34,38,18,10],[5,3,2,26,31,23,17,21,37,41,19,11],
+    [8,5,3,28,35,26,20,24,42,52,28,18],[15,20,18,12,18,22,28,38,48,58,62,45],
+    [18,22,20,10,14,18,24,35,44,52,60,50]];
+  const wrap=document.getElementById('heatmapWrap');
+  const colLabels=`<div class="hm-col-labels">${franjas.map(f=>`<div class="hm-col-label">${f}</div>`).join('')}</div>`;
+  const rows=days.map((d,di)=>`<div class="hm-row"><span class="hm-row-label">${d}</span>${risk[di].map(v=>{
+    const t=v>50?[255,77,109]:v>35?[255,169,64]:v>20?[124,109,250]:[54,207,201];
+    return`<div class="hm-cell" style="flex:1;background:rgba(${t[0]},${t[1]},${t[2]},${(v/65).toFixed(2)});color:rgba(255,255,255,${v>30?.9:.5})">${v}</div>`;
+  }).join('')}</div>`).join('');
+  wrap.innerHTML=colLabels+rows;
+}
+
+function buildZonesTableStatic() {
+  const zones=[{name:'La Candelaria',score:'91%',level:'alto'},{name:'Guayabal',score:'71%',level:'alto'},
+    {name:'Laureles Estadio',score:'67%',level:'alto'},{name:'Castilla',score:'68%',level:'alto'},
+    {name:'Manrique',score:'64%',level:'medio'},{name:'Aranjuez',score:'61%',level:'medio'},
+    {name:'San Javier',score:'62%',level:'medio'},{name:'Belén',score:'58%',level:'medio'},
+    {name:'Buenos Aires',score:'50%',level:'medio'},{name:'San Cristóbal',score:'39%',level:'bajo'}];
+  document.getElementById('zonesTableBody').innerHTML=zones.map(z=>
+    `<tr><td>${z.name}</td><td style="font-family:var(--mono)">${z.score}</td>
+    <td><span class="risk-pill rp-${z.level}">${z.level}</span></td></tr>`).join('');
+}
+
+function buildHourChart() {
+  const ctx  = document.getElementById('hourChart');
+  const hours = Array.from({length:24}, (_,i) => i + ':00');
+  const data  = [12,8,5,4,3,6,24,42,38,32,28,30,34,36,40,44,52,58,62,54,46,38,30,22];
+  new Chart(ctx, {type:'bar', data:{labels:hours, datasets:[{data,
+    backgroundColor:data.map(v=>v>50?'rgba(255,77,109,0.7)':v>35?'rgba(255,169,64,0.6)':'rgba(124,109,250,0.5)'),
+    borderRadius:2, borderSkipped:false}]},
+    options:{responsive:true, plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}},
+              y:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}}}}
+  });
+}
+
+function buildTrendChart() {
+  const ctx  = document.getElementById('trendChart');
+  const days = Array.from({length:14}, (_,i) => {
+    const d = new Date(); d.setDate(d.getDate()-13+i);
+    return d.toLocaleDateString('es', {day:'2-digit', month:'2-digit'});
+  });
+  const data = [45,38,52,61,55,48,70,62,58,44,50,67,59,48];
+  new Chart(ctx, {type:'line', data:{labels:days, datasets:[{data,
+    borderColor:'#7c6dfa', backgroundColor:'rgba(124,109,250,0.08)',
+    tension:0.4, fill:true, pointRadius:3, pointBackgroundColor:'#7c6dfa'}]},
+    options:{responsive:true, plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}},
+              y:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}}}}
+  });
+}
+
+// ─── MODELS ──────────────────────────────────────────────────────
+const MODEL_DATA = {
+  medellin:{name:'Medellín XGBoost v1.0',auc:'0.9182',f1:'0.8384',prec:'0.8401',rec:'0.8367',slots:'373K'},
+  bogota:  {name:'Bogotá XGBoost (demo)',auc:'0.8871',f1:'0.8120',prec:'0.8050',rec:'0.8200',slots:'612K'},
+};
+
+function selectModel(card, city) {
+  document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active-model'));
+  card.classList.add('active-model');
+  const m = MODEL_DATA[city] || MODEL_DATA.medellin;
+  document.getElementById('selectedModelName').textContent = m.name;
+  document.getElementById('mAUC').textContent  = m.auc;
+  document.getElementById('mF1').textContent   = m.f1;
+  document.getElementById('mPrec').textContent = m.prec;
+  document.getElementById('mRec').textContent  = m.rec;
+  document.getElementById('mSlots').textContent= m.slots;
+}
+
+const PIPE_DETAILS = {
+  carga:'read_excel(dtype_dict) · dtypes optimizados · 702,540 registros · 156 MB en memoria',
+  limpieza:'Eliminar nulos en barrio (11,683) · normalizar HORA_INCIDENTE · UBICACION_KEY = comuna+barrio · 28,146 eliminados (4%)',
+  features:'FRANJA_2H (pd.cut 2h) · DIA_SEMANA · MES · HORA_INCIDENTE → HORA_NUM',
+  grilla:'pd.MultiIndex.from_product([ubicaciones, dias, franjas, meses]) · 372,960 slots · merge left con incidentes reales',
+  target:'Target encoding con m_smooth=50 · UBICACION_LOG_ODDS = log(p/(1-p)) · FRANJA dummies one-hot',
+  train:'train_test_split(stratify=y, test_size=0.2) · scale_pos_weight={neg/pos} · 200 estimadores · max_depth=8',
+  eval:'ROC AUC=0.9182 · F1=0.8384 · Precision=0.8401 · Recall=0.8367 · Curvas ROC + matriz de confusión',
+  deploy:'FastAPI · /predict · /heatmap · /explain (SHAP+RAG) · Docker compose · Gunicorn workers',
+};
+function pipeDetail(step) {
+  const box = document.getElementById('pipeDetailBox');
+  box.style.display = 'block';
+  box.textContent = PIPE_DETAILS[step] || '';
+}
+
+const ARCH_DETAILS = {
+  data:'PostgreSQL / CSV → pandas read_sql · Tipos optimizados (int16, category) · 10 columnas · 156 MB RAM · partición por ciudad',
+  features:'Grilla espacio-temporal: 370 ubicaciones × 7 días × 12 franjas × 12 meses = 372,960 slots · Codificación cíclica sin/cos · Target encoding suavizado m=50',
+  model:'XGBoost: 200 est · depth=8 · scale_pos_weight · AUC=0.9182 · TabNet (próximo): embeddings 32-dim · atención por columna',
+  rag:'FAISS index por ciudad · LangChain RetrievalQA · Documentos: informes SDM, noticias, estadísticas · Claude API para generación',
+  api:'FastAPI + Pydantic · POST /predict → 12ms p95 · GET /heatmap → matriz JSON · POST /explain → RAG 1-2s · Docker multi-stage',
+};
+function archDetail(layer) {
+  const box = document.getElementById('archDetailBox');
+  box.style.display = 'block';
+  box.textContent = ARCH_DETAILS[layer] || '';
+}
+
+function addCity() {
+  alert('Funcionalidad: sube un CSV con columnas\n[FECHA, HORA, BARRIO, CLASE, GRAVEDAD]\ny el pipeline entrena automáticamente un nuevo modelo.');
+}
+
+// ─── NEIGHBORHOODS ────────────────────────────────────────────────
+const UNDEFINED_NB = new Set(['0','sin informacion','sin información','no definido','nd','n/a']);
+
+function renderNeighborhoods(sel, neighborhoods) {
+  sel.innerHTML = '';
+  for (const nb of neighborhoods) {
+    if (!nb || UNDEFINED_NB.has(nb.trim().toLowerCase())) continue;
+    const opt = document.createElement('option');
+    opt.value = nb;
+    opt.textContent = nb;
+    sel.appendChild(opt);
+  }
+}
+
+async function loadNeighborhoods(city) {
+  const sel = document.getElementById('barrio');
+  sel.innerHTML = '<option value="">Cargando…</option>';
+  const data = await apiCall(`/api/v1/neighborhoods/${city}`);
+  if (!data || !data.neighborhoods.length) {
+    sel.innerHTML = '<option value="">Sin barrios disponibles</option>';
+    return;
+  }
+  renderNeighborhoods(sel, data.neighborhoods);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────
+(async function initApp() {
+  document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+  const city = document.getElementById('cityGlobal').value;
+
+  // Cargar barrios y datos de ciudad en paralelo
+  const [nbData, citiesData] = await Promise.all([
+    apiCall(`/api/v1/neighborhoods/${city}`),
+    apiCall('/api/v1/cities'),
+  ]);
+
+  // Poblar barrios
+  if (nbData && nbData.neighborhoods.length) {
+    renderNeighborhoods(document.getElementById('barrio'), nbData.neighborhoods);
+  }
+
+  // Actualizar badge y datos de modelo
+  if (citiesData && citiesData.cities.length) {
+    const model = citiesData.cities.find(c => c.city === city);
+    if (model) {
+      document.getElementById('modelBadge').textContent = model.model_id;
+      CITIES[city] = CITIES[city] || {};
+      CITIES[city].badge = model.model_id;
+      const slots = model.metadata && model.metadata.slots
+        ? Math.round(model.metadata.slots / 1000) + 'K' : '—';
+      MODEL_DATA[city] = MODEL_DATA[city] || {};
+      Object.assign(MODEL_DATA[city], {
+        name:  model.model_id,
+        auc:   model.metadata.auc  ? model.metadata['ROC AUC']?.toFixed(4)  || '0.9182' : '0.9182',
+        slots,
+      });
+    }
+  }
+})();
+</script>
+</body>
+</html>

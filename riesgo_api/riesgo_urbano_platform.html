@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RiesgoVial — Plataforma de Predicción Urbana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --surface: #1e1e2a;
+  --surface2: #252535;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0eff5;
+  --text2: #9896a8;
+  --text3: #5a5870;
+  --accent: #7c6dfa;
+  --accent2: #a594fb;
+  --accent-dim: rgba(124,109,250,0.15);
+  --red: #ff4d6d;
+  --amber: #ffa940;
+  --green: #52c41a;
+  --teal: #36cfc9;
+  --mono: 'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body: 'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* ---- NAV ---- */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.85);backdrop-filter:blur(16px);border-bottom:0.5px solid var(--border);display:flex;align-items:center;padding:0 2rem;height:56px;gap:0}
+.nav-brand{font-family:var(--display);font-weight:800;font-size:17px;color:var(--text);letter-spacing:-0.5px;margin-right:2.5rem;display:flex;align-items:center;gap:8px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1}
+.nav-link{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:400;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;border:none;background:none;font-family:var(--body)}
+.nav-link:hover{color:var(--text);background:var(--surface)}
+.nav-link.active{color:var(--text);background:var(--surface);font-weight:500}
+.nav-city{margin-left:auto;display:flex;align-items:center;gap:8px}
+.city-selector{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;outline:none}
+.city-selector:focus{border-color:var(--accent)}
+.model-badge{font-family:var(--mono);font-size:11px;color:var(--accent2);background:var(--accent-dim);padding:3px 8px;border-radius:4px;border:0.5px solid rgba(124,109,250,0.25)}
+
+/* ---- PAGES ---- */
+.page{display:none;min-height:calc(100vh - 56px)}
+.page.active{display:block}
+
+/* ============================================================
+   PAGE 1 — CONSULTA
+   ============================================================ */
+.consult-layout{display:grid;grid-template-columns:380px 1fr;min-height:calc(100vh - 56px)}
+.consult-panel{background:var(--bg2);border-right:0.5px solid var(--border);padding:2rem}
+.panel-title{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
+.panel-sub{font-size:13px;color:var(--text2);margin-bottom:2rem;line-height:1.5}
+.field-group{margin-bottom:1.25rem}
+.field-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:block}
+.field-select,.field-input{width:100%;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:var(--body);font-size:14px;padding:10px 12px;border-radius:8px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field-select:focus,.field-input:focus{border-color:var(--accent)}
+.field-input[type=range]{padding:6px 0;border:none;background:transparent;cursor:pointer;accent-color:var(--accent)}
+.time-display{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--accent2);margin-bottom:6px;letter-spacing:-1px}
+.time-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-family:var(--mono)}
+.predict-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:var(--display);font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:1rem;letter-spacing:0.2px}
+.predict-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.predict-btn:active{transform:translateY(0)}
+.divider{border:none;border-top:0.5px solid var(--border);margin:1.5rem 0}
+
+/* Result panel */
+.result-area{padding:2.5rem;display:flex;flex-direction:column;gap:2rem;align-items:flex-start}
+.result-hero{width:100%}
+.result-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:12px}
+.risk-gauge-wrap{display:flex;align-items:center;gap:2.5rem}
+.gauge-canvas{width:180px;height:180px;flex-shrink:0}
+.risk-number-big{font-family:var(--display);font-size:72px;font-weight:800;letter-spacing:-3px;line-height:1}
+.risk-level-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;margin-top:8px}
+.risk-level-pill.alto{background:rgba(255,77,109,0.15);color:#ff4d6d;border:0.5px solid rgba(255,77,109,0.3)}
+.risk-level-pill.medio{background:rgba(255,169,64,0.15);color:#ffa940;border:0.5px solid rgba(255,169,64,0.3)}
+.risk-level-pill.bajo{background:rgba(82,196,26,0.15);color:#52c41a;border:0.5px solid rgba(82,196,26,0.3)}
+.risk-level-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.risk-meta{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6}
+
+/* Feature bars */
+.feature-section{width:100%}
+.feature-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:1rem}
+.feature-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.feature-name{font-size:12px;color:var(--text2);width:160px;flex-shrink:0;font-family:var(--mono)}
+.feature-bar-bg{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.feature-bar-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.feature-val{font-family:var(--mono);font-size:11px;color:var(--text3);width:36px;text-align:right}
+
+/* Explanation card */
+.explain-card{background:var(--surface);border:0.5px solid var(--border2);border-radius:12px;padding:1.25rem;width:100%}
+.explain-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.explain-icon{width:28px;height:28px;border-radius:6px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:14px}
+.explain-title{font-size:13px;font-weight:500}
+.explain-badge{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent2);background:var(--accent-dim);padding:2px 6px;border-radius:3px}
+.explain-text{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* ============================================================
+   PAGE 2 — DASHBOARD
+   ============================================================ */
+.dashboard{padding:1.75rem 2rem}
+.dash-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem}
+.dash-title{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-0.5px;flex:1}
+.dash-controls{display:flex;gap:8px;align-items:center}
+.ctrl-btn{background:var(--surface);border:0.5px solid var(--border2);color:var(--text2);font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .15s}
+.ctrl-btn:hover,.ctrl-btn.active{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.kpi-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:1rem 1.25rem}
+.kpi-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
+.kpi-val{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1.1}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.kpi-delta{font-size:11px;margin-top:4px;display:inline-flex;align-items:center;gap:3px}
+.kpi-delta.up{color:var(--red)}
+.kpi-delta.down{color:var(--green)}
+
+/* Chart areas */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.dash-grid-3{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.chart-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:1.25rem}
+.chart-card-title{font-size:13px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.chart-card-title .ct-sub{font-size:11px;color:var(--text3);font-weight:400;font-family:var(--mono)}
+canvas{border-radius:4px}
+
+/* Heatmap */
+.heatmap-grid{display:grid;gap:2px}
+.hm-cell{height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;cursor:pointer;transition:transform .1s}
+.hm-cell:hover{transform:scale(1.05);z-index:1}
+.hm-row-label{font-family:var(--mono);font-size:10px;color:var(--text3);display:flex;align-items:center;width:28px;flex-shrink:0}
+.hm-row{display:flex;align-items:center;gap:2px}
+.hm-col-labels{display:flex;gap:2px;padding-left:30px;margin-bottom:4px}
+.hm-col-label{flex:1;font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center}
+
+/* Top zones table */
+.zones-table{width:100%;border-collapse:collapse;font-size:13px}
+.zones-table th{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:500;padding:6px 8px;border-bottom:0.5px solid var(--border);text-align:left}
+.zones-table td{padding:8px 8px;border-bottom:0.5px solid var(--border);color:var(--text2)}
+.zones-table tr:hover td{background:var(--surface)}
+.zones-table td:first-child{color:var(--text);font-weight:500}
+.risk-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-family:var(--mono)}
+.rp-alto{background:rgba(255,77,109,0.12);color:#ff4d6d}
+.rp-medio{background:rgba(255,169,64,0.12);color:#ffa940}
+.rp-bajo{background:rgba(82,196,26,0.12);color:#52c41a}
+
+/* ============================================================
+   PAGE 3 — MODELOS
+   ============================================================ */
+.models-page{padding:2rem}
+.models-header{margin-bottom:2.5rem}
+.models-title{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.models-sub{font-size:14px;color:var(--text2);max-width:500px;line-height:1.6}
+.models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
+.model-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.model-card::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,var(--accent-dim),transparent);opacity:0;transition:opacity .2s}
+.model-card:hover::before{opacity:1}
+.model-card.active-model{border-color:var(--accent);background:var(--bg3)}
+.model-card.active-model::before{opacity:1}
+.mc-city{font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mc-city::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.mc-name{font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px}
+.mc-period{font-size:12px;color:var(--text2)}
+.mc-stats{display:flex;gap:1rem;margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border)}
+.mc-stat{flex:1}
+.mc-stat-val{font-family:var(--mono);font-size:16px;font-weight:500}
+.mc-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+.add-city-card{background:transparent;border:0.5px dashed var(--border2);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px;gap:8px}
+.add-city-card:hover{border-color:var(--accent);background:var(--accent-dim)}
+.add-icon{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3)}
+.add-label{font-size:13px;color:var(--text3)}
+
+/* Model detail */
+.model-detail{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem}
+.md-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px}
+.metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:2rem}
+.metric-box{background:var(--surface);border-radius:8px;padding:12px 10px;text-align:center}
+.metric-val{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--accent2)}
+.metric-name{font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Pipeline stepper */
+.pipeline{display:flex;align-items:flex-start;gap:0;position:relative}
+.pipeline::before{content:'';position:absolute;top:20px;left:20px;right:20px;height:0.5px;background:var(--border2)}
+.pipe-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;cursor:pointer}
+.pipe-dot{width:40px;height:40px;border-radius:50%;background:var(--surface2);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--text2);z-index:1;transition:all .2s}
+.pipe-step.done .pipe-dot{background:var(--accent-dim);border-color:var(--accent);color:var(--accent2)}
+.pipe-step.active .pipe-dot{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.1)}
+.pipe-label{font-size:11px;color:var(--text3);text-align:center;max-width:80px;line-height:1.3}
+.pipe-step.active .pipe-label{color:var(--text2)}
+
+/* ============================================================
+   PAGE 4 — DOCUMENTACIÓN TÉCNICA
+   ============================================================ */
+.docs-page{padding:2rem}
+.docs-hero{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.docs-hero::after{content:'ROC AUC 0.9182';position:absolute;right:2.5rem;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:64px;font-weight:500;color:rgba(124,109,250,0.08);letter-spacing:-3px;pointer-events:none}
+.docs-hero-title{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-1.5px;margin-bottom:8px}
+.docs-hero-sub{font-size:15px;color:var(--text2);max-width:520px;line-height:1.6}
+.docs-hero-tags{display:flex;gap:8px;margin-top:1.5rem;flex-wrap:wrap}
+.tech-tag{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;border:0.5px solid var(--border2);color:var(--text2)}
+
+.docs-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.docs-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem}
+.docs-card-title{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:1rem;font-weight:500}
+.feature-chip-grid{display:flex;flex-wrap:wrap;gap:6px}
+.fchip{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:4px;background:var(--surface);border:0.5px solid var(--border2);color:var(--text2)}
+.fchip.highlight{background:var(--accent-dim);border-color:rgba(124,109,250,0.3);color:var(--accent2)}
+
+/* Architecture viz */
+.arch-layer{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;background:var(--surface);border:0.5px solid var(--border2);margin-bottom:6px;transition:all .15s;cursor:pointer}
+.arch-layer:hover{border-color:var(--accent);background:var(--accent-dim)}
+.arch-layer-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.arch-layer-name{font-size:13px;font-weight:500;flex:1}
+.arch-layer-tech{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.arch-arrow{text-align:center;color:var(--text3);font-size:16px;line-height:1;margin:1px 0 1px 16px}
+
+/* Chart placeholder */
+.chart-placeholder{width:100%;border-radius:8px;overflow:hidden}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;font-size:13px}
+.comp-table th{padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);border-bottom:0.5px solid var(--border);font-weight:500}
+.comp-table td{padding:9px 12px;border-bottom:0.5px solid var(--border);color:var(--text2);font-family:var(--mono);font-size:12px}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table td:first-child{color:var(--text);font-family:var(--body);font-size:13px}
+.winner{color:var(--accent2) !important}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.page.active .panel-title,.page.active .dash-title,.page.active .models-title,.page.active .docs-hero-title{animation:fadeUp .35s ease both}
+.spinning{animation:pulse 1.5s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><span class="brand-dot"></span>RiesgoVial</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('consult',this)">Consulta</button>
+    <button class="nav-link" onclick="showPage('dashboard',this)">Dashboard</button>
+    <button class="nav-link" onclick="showPage('models',this)">Modelos</button>
+    <button class="nav-link" onclick="showPage('docs',this)">Documentación</button>
+  </div>
+  <div class="nav-city">
+    <select class="city-selector" id="cityGlobal" onchange="switchCity(this.value)">
+      <option value="medellin">Medellín</option>
+      <option value="bogota">Bogotá (demo)</option>
+      <option value="cali">Cali (demo)</option>
+    </select>
+    <span class="model-badge" id="modelBadge">XGBoost v2.1</span>
+  </div>
+</nav>
+
+<!-- ===================== PAGE 1: CONSULTA ===================== -->
+<div id="page-consult" class="page active">
+  <div class="consult-layout">
+    <div class="consult-panel">
+      <div class="panel-title">Consulta de riesgo</div>
+      <div class="panel-sub">Selecciona ubicación, día y hora para obtener la probabilidad de accidente vial.</div>
+
+      <div class="field-group">
+        <label class="field-label">Barrio / Zona</label>
+        <select class="field-select" id="barrio">
+          <option>La Candelaria</option>
+          <option>Laureles Estadio</option>
+          <option>El Poblado</option>
+          <option>Belén</option>
+          <option>Robledo</option>
+          <option>Aranjuez</option>
+          <option>Manrique</option>
+          <option>Guayabal</option>
+          <option>Castilla</option>
+          <option>San Javier</option>
+          <option>Doce de Octubre</option>
+          <option>Villa Hermosa</option>
+          <option>Buenos Aires</option>
+          <option>La América</option>
+          <option>Corregimiento de San Cristóbal</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Día de la semana</label>
+        <select class="field-select" id="diaSemana">
+          <option>Lunes</option>
+          <option>Martes</option>
+          <option>Miércoles</option>
+          <option>Jueves</option>
+          <option selected>Viernes</option>
+          <option>Sábado</option>
+          <option>Domingo</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Hora del día</label>
+        <div class="time-display" id="timeDisplay">23:00</div>
+        <input type="range" class="field-input" id="horaSlider" min="0" max="23" value="23" step="1"
+          oninput="updateHour(this.value)">
+        <div class="time-labels">
+          <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Fecha (opcional — mejora estacionalidad)</label>
+        <input type="date" class="field-input" id="fecha" value="2025-12-24">
+      </div>
+
+      <button class="predict-btn" onclick="runPrediction()">Calcular probabilidad</button>
+
+      <hr class="divider">
+      <div style="font-size:11px;color:var(--text3);line-height:1.7">
+        Modelo activo: <span style="color:var(--accent2);font-family:var(--mono)">XGBoost v2.1</span><br>
+        Datos: <span style="color:var(--text2)">Medellín 2008–2025</span><br>
+        ROC AUC: <span style="color:var(--accent2);font-family:var(--mono)">0.9182</span>
+      </div>
+    </div>
+
+    <div class="result-area" id="resultArea">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;width:100%;min-height:400px;gap:1rem;opacity:.4" id="emptyState">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity:.5">
+          <circle cx="24" cy="24" r="20" stroke="#7c6dfa" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="24" cy="24" r="6" fill="#7c6dfa" opacity=".4"/>
+        </svg>
+        <div style="font-size:13px;color:var(--text3);text-align:center">Configura los parámetros<br>y presiona calcular</div>
+      </div>
+
+      <div id="resultContent" style="display:none;width:100%">
+        <div class="result-hero">
+          <div class="result-label">Probabilidad de accidente</div>
+          <div class="risk-gauge-wrap">
+            <canvas class="gauge-canvas" id="gaugeCanvas" width="180" height="180"></canvas>
+            <div>
+              <div class="risk-number-big" id="riskNumber">—</div>
+              <div id="riskPill"></div>
+              <div class="risk-meta" id="riskMeta"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-title">Contribución de variables (SHAP simulado)</div>
+          <div id="featureBars"></div>
+        </div>
+
+        <div class="explain-card">
+          <div class="explain-header">
+            <div class="explain-icon">✦</div>
+            <span class="explain-title">Explicación RAG</span>
+            <span class="explain-badge">IA generativa</span>
+          </div>
+          <div class="explain-text" id="ragExplain"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 2: DASHBOARD ===================== -->
+<div id="page-dashboard" class="page">
+  <div class="dashboard">
+    <div class="dash-header">
+      <div class="dash-title">Dashboard de riesgo — <span style="color:var(--accent2);font-family:var(--mono);font-size:18px" id="dashCity">Medellín</span></div>
+      <div class="dash-controls">
+        <button class="ctrl-btn active" onclick="setRange(this,'7d')">7 días</button>
+        <button class="ctrl-btn" onclick="setRange(this,'30d')">30 días</button>
+        <button class="ctrl-btn" onclick="setRange(this,'90d')">90 días</button>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Zonas activas</div>
+        <div class="kpi-val" style="color:var(--accent2)">370</div>
+        <div class="kpi-sub">barrios monitoreados</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Slots de alto riesgo hoy</div>
+        <div class="kpi-val" style="color:var(--red)">48</div>
+        <div class="kpi-delta up">▲ 12% vs ayer</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Predicciones realizadas</div>
+        <div class="kpi-val">1,240</div>
+        <div class="kpi-sub">última semana</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Precisión modelo</div>
+        <div class="kpi-val" style="color:var(--teal)">84.0%</div>
+        <div class="kpi-delta down">▼ estable</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="chart-card">
+        <div class="chart-card-title">Incidentes por hora <span class="ct-sub">promedio semanal</span></div>
+        <canvas id="hourChart" height="90"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Tendencia diaria <span class="ct-sub">últimos 14 días</span></div>
+        <canvas id="trendChart" height="90"></canvas>
+      </div>
+    </div>
+
+    <div class="dash-grid-3">
+      <div class="chart-card">
+        <div class="chart-card-title">Mapa de riesgo — día × franja horaria</div>
+        <div id="heatmapWrap"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Zonas de mayor riesgo</div>
+        <table class="zones-table">
+          <thead><tr><th>Barrio</th><th>Score</th><th>Nivel</th></tr></thead>
+          <tbody id="zonesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 3: MODELOS ===================== -->
+<div id="page-models" class="page">
+  <div class="models-page">
+    <div class="models-header">
+      <div class="models-title">Gestión de modelos</div>
+      <div class="models-sub">Cada ciudad tiene su propio modelo entrenado de forma independiente. Selecciona uno para ver sus métricas y detalles.</div>
+    </div>
+
+    <div class="models-grid">
+      <div class="model-card active-model" onclick="selectModel(this,'medellin')">
+        <div class="mc-city">Medellín, Colombia</div>
+        <div class="mc-name">Modelo base</div>
+        <div class="mc-period">2008 – 2025 · 674,394 registros</div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">0.9182</div><div class="mc-stat-lbl">ROC AUC</div></div>
+          <div class="mc-stat"><div class="mc-stat-val">0.84</div><div class="mc-stat-lbl">F1</div></div>
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--green)">activo</div><div class="mc-stat-lbl">estado</div></div>
+        </div>
+      </div>
+      <div class="model-card" onclick="selectModel(this,'bogota')">
+        <div class="mc-city">Bogotá, Colombia</div>
+        <div class="mc-name">Modelo demo</div>
+        <div class="mc-period">2015 – 2024 · ~1.2M registros</div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">0.8871</div><div class="mc-stat-lbl">ROC AUC</div></div>
+          <div class="mc-stat"><div class="mc-stat-val">0.81</div><div class="mc-stat-lbl">F1</div></div>
+          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--amber)">demo</div><div class="mc-stat-lbl">estado</div></div>
+        </div>
+      </div>
+      <div class="add-city-card" onclick="addCity()">
+        <div class="add-icon">+</div>
+        <div class="add-label">Agregar ciudad</div>
+        <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:2px">Sube datos CSV y entrena<br>un modelo nuevo</div>
+      </div>
+    </div>
+
+    <!-- Model detail -->
+    <div class="model-detail">
+      <div class="md-title">Métricas del modelo seleccionado — <span id="selectedModelName" style="color:var(--accent2);font-family:var(--mono)">Medellín XGBoost v2.1</span></div>
+      <div class="metrics-grid">
+        <div class="metric-box"><div class="metric-val" id="mAUC">0.9182</div><div class="metric-name">ROC AUC</div></div>
+        <div class="metric-box"><div class="metric-val" id="mF1">0.8384</div><div class="metric-name">F1-Score</div></div>
+        <div class="metric-box"><div class="metric-val" id="mPrec">0.8401</div><div class="metric-name">Precisión</div></div>
+        <div class="metric-box"><div class="metric-val" id="mRec">0.8367</div><div class="metric-name">Recall</div></div>
+        <div class="metric-box"><div class="metric-val" id="mSlots">373K</div><div class="metric-name">Slots</div></div>
+      </div>
+
+      <div class="md-title" style="margin-bottom:1rem">Pipeline de entrenamiento</div>
+      <div class="pipeline" id="pipeline">
+        <div class="pipe-step done" onclick="pipeDetail('carga')"><div class="pipe-dot">01</div><div class="pipe-label">Carga y validación</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('limpieza')"><div class="pipe-dot">02</div><div class="pipe-label">Limpieza</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('features')"><div class="pipe-dot">03</div><div class="pipe-label">Feature eng.</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('grilla')"><div class="pipe-dot">04</div><div class="pipe-label">Grilla espacio-temporal</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('target')"><div class="pipe-dot">05</div><div class="pipe-label">Target encoding</div></div>
+        <div class="pipe-step done" onclick="pipeDetail('train')"><div class="pipe-dot">06</div><div class="pipe-label">Entrenamiento</div></div>
+        <div class="pipe-step active" onclick="pipeDetail('eval')"><div class="pipe-dot">07</div><div class="pipe-label">Evaluación</div></div>
+        <div class="pipe-step" onclick="pipeDetail('deploy')"><div class="pipe-dot">08</div><div class="pipe-label">API deploy</div></div>
+      </div>
+
+      <div id="pipeDetailBox" style="background:var(--surface);border-radius:8px;padding:1rem;margin-top:1.25rem;font-size:13px;color:var(--text2);display:none;line-height:1.7;font-family:var(--mono)"></div>
+    </div>
+
+    <!-- Model comparison -->
+    <div class="model-detail">
+      <div class="md-title">Comparativa histórico completo vs post-COVID (2020+)</div>
+      <table class="comp-table">
+        <thead><tr><th>Modelo</th><th>Escenario</th><th>ROC AUC</th><th>F1</th><th>Precisión</th><th>Recall</th></tr></thead>
+        <tbody>
+          <tr><td>Logistic Regression</td><td>Histórico</td><td>0.9129</td><td>0.8362</td><td>0.8201</td><td>0.8483</td></tr>
+          <tr><td>Logistic Regression</td><td>Post-COVID</td><td>0.8215</td><td>0.6143</td><td>0.5128</td><td>0.7397</td></tr>
+          <tr><td>Random Forest</td><td>Histórico</td><td>0.9177</td><td>0.8386</td><td>0.8401</td><td>0.8375</td></tr>
+          <tr><td>Random Forest</td><td>Post-COVID</td><td>0.8485</td><td>0.6389</td><td>0.5001</td><td>0.8111</td></tr>
+          <tr style="background:rgba(124,109,250,0.04)"><td class="winner">XGBoost</td><td>Histórico</td><td class="winner">0.9182</td><td class="winner">0.8384</td><td class="winner">0.8401</td><td class="winner">0.8367</td></tr>
+          <tr><td>XGBoost</td><td>Post-COVID</td><td>0.8502</td><td>0.6417</td><td>0.5023</td><td>0.8059</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 4: DOCS ===================== -->
+<div id="page-docs" class="page">
+  <div class="docs-page">
+    <div class="docs-hero">
+      <div class="docs-hero-title">Arquitectura técnica</div>
+      <div class="docs-hero-sub">Sistema de predicción de riesgo vial urbano. Datos tabulares históricos + modelos de ML + RAG para explicabilidad natural.</div>
+      <div class="docs-hero-tags">
+        <span class="tech-tag">Python 3.11</span>
+        <span class="tech-tag">XGBoost 3.2</span>
+        <span class="tech-tag">scikit-learn</span>
+        <span class="tech-tag">FastAPI</span>
+        <span class="tech-tag">LangChain</span>
+        <span class="tech-tag">FAISS</span>
+        <span class="tech-tag">PyTorch (TabNet)</span>
+        <span class="tech-tag">Docker</span>
+        <span class="tech-tag">pandas 3.0</span>
+      </div>
+    </div>
+
+    <div class="docs-cols">
+      <div class="docs-card">
+        <div class="docs-card-title">Features del modelo (26 variables)</div>
+        <div class="feature-chip-grid">
+          <span class="fchip highlight">UBICACION_TARGET_ENC</span>
+          <span class="fchip highlight">UBICACION_LOG_ODDS</span>
+          <span class="fchip highlight">HORA_PUNTO_MEDIO</span>
+          <span class="fchip">DIA_SEMANA</span>
+          <span class="fchip">MES</span>
+          <span class="fchip">ES_FIN_SEMANA</span>
+          <span class="fchip">ES_LABORAL</span>
+          <span class="fchip">DIA_SEMANA_SIN</span>
+          <span class="fchip">DIA_SEMANA_COS</span>
+          <span class="fchip">MES_SIN</span>
+          <span class="fchip">MES_COS</span>
+          <span class="fchip">DIA_ANIO_SIN</span>
+          <span class="fchip">DIA_ANIO_COS</span>
+          <span class="fchip">INTERACCION_FINDE_NOCHE</span>
+          <span class="fchip">FRANJA_00-02h</span>
+          <span class="fchip">FRANJA_02-04h</span>
+          <span class="fchip">FRANJA_04-06h</span>
+          <span class="fchip">FRANJA_06-08h</span>
+          <span class="fchip">FRANJA_08-10h</span>
+          <span class="fchip">FRANJA_10-12h</span>
+          <span class="fchip">FRANJA_12-14h</span>
+          <span class="fchip">FRANJA_14-16h</span>
+          <span class="fchip">FRANJA_16-18h</span>
+          <span class="fchip">FRANJA_18-20h</span>
+          <span class="fchip">FRANJA_20-22h</span>
+          <span class="fchip">FRANJA_22-24h</span>
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Arquitectura de capas</div>
+        <div>
+          <div class="arch-layer" onclick="archDetail('data')">
+            <div class="arch-layer-icon" style="background:rgba(54,207,201,0.15)">⬡</div>
+            <div class="arch-layer-name">Datos históricos</div>
+            <div class="arch-layer-tech">CSV / PostgreSQL → pandas</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" onclick="archDetail('features')">
+            <div class="arch-layer-icon" style="background:rgba(124,109,250,0.15)">⚙</div>
+            <div class="arch-layer-name">Feature engineering</div>
+            <div class="arch-layer-tech">Grilla · Cíclicas · Target enc.</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" onclick="archDetail('model')">
+            <div class="arch-layer-icon" style="background:rgba(255,169,64,0.15)">◈</div>
+            <div class="arch-layer-name">Modelos ML / DL</div>
+            <div class="arch-layer-tech">XGBoost · TabNet · Ensemble</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" onclick="archDetail('rag')">
+            <div class="arch-layer-icon" style="background:rgba(82,196,26,0.15)">✦</div>
+            <div class="arch-layer-name">RAG explicabilidad</div>
+            <div class="arch-layer-tech">FAISS · LangChain · Claude</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" onclick="archDetail('api')">
+            <div class="arch-layer-icon" style="background:rgba(255,77,109,0.15)">⊕</div>
+            <div class="arch-layer-name">API + Web</div>
+            <div class="arch-layer-tech">FastAPI · Docker · React</div>
+          </div>
+        </div>
+        <div id="archDetailBox" style="background:var(--surface);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--text2);display:none;line-height:1.7;font-family:var(--mono)"></div>
+      </div>
+    </div>
+
+    <div class="docs-cols">
+      <div class="docs-card">
+        <div class="docs-card-title">Endpoints de la API</div>
+        <div style="font-family:var(--mono);font-size:12px;display:flex;flex-direction:column;gap:8px">
+          <div style="background:var(--surface);border-radius:6px;padding:10px 12px;border-left:2px solid var(--teal)">
+            <span style="color:var(--teal)">POST</span> <span style="color:var(--text)">/api/v1/predict</span><br>
+            <span style="color:var(--text3)">barrio, dia, hora, fecha → P(accidente)</span>
+          </div>
+          <div style="background:var(--surface);border-radius:6px;padding:10px 12px;border-left:2px solid var(--accent2)">
+            <span style="color:var(--accent2)">GET</span> <span style="color:var(--text)">/api/v1/heatmap/{city}/{date}</span><br>
+            <span style="color:var(--text3)">matriz día × franja para visualización</span>
+          </div>
+          <div style="background:var(--surface);border-radius:6px;padding:10px 12px;border-left:2px solid var(--amber)">
+            <span style="color:var(--amber)">POST</span> <span style="color:var(--text)">/api/v1/explain</span><br>
+            <span style="color:var(--text3)">SHAP values + RAG → texto natural</span>
+          </div>
+          <div style="background:var(--surface);border-radius:6px;padding:10px 12px;border-left:2px solid var(--accent2)">
+            <span style="color:var(--accent2)">GET</span> <span style="color:var(--text)">/api/v1/cities</span><br>
+            <span style="color:var(--text3)">lista de modelos disponibles por ciudad</span>
+          </div>
+          <div style="background:var(--surface);border-radius:6px;padding:10px 12px;border-left:2px solid var(--teal)">
+            <span style="color:var(--teal)">POST</span> <span style="color:var(--text)">/api/v1/train/{city}</span><br>
+            <span style="color:var(--text3)">dispara pipeline de entrenamiento async</span>
+          </div>
+        </div>
+      </div>
+      <div class="docs-card">
+        <div class="docs-card-title">Roadmap Deep Learning</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(124,109,250,0.2);border:0.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--accent2);flex-shrink:0;margin-top:1px">1</div>
+            <div><div style="font-size:13px;font-weight:500">Embedding de ubicación</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Reemplazar target encoding por un vector denso de 32 dims aprendido end-to-end. Captura similitudes geográficas implícitas.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(124,109,250,0.2);border:0.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--accent2);flex-shrink:0;margin-top:1px">2</div>
+            <div><div style="font-size:13px;font-weight:500">TabNet tabular</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Red neuronal diseñada para datos tabulares con atención por columna. Interpretable y competitivo con XGBoost.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(124,109,250,0.1);border:0.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0;margin-top:1px">3</div>
+            <div><div style="font-size:13px;font-weight:500;color:var(--text2)">Ensemble DL + XGB</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Stacking de predicciones: TabNet + XGBoost + meta-learner logístico. Objetivo: AUC > 0.93.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(124,109,250,0.1);border:0.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0;margin-top:1px">4</div>
+            <div><div style="font-size:13px;font-weight:500;color:var(--text2)">RAG multi-ciudad</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Vector store por ciudad con informes de movilidad, noticias y estadísticas históricas para explicaciones contextualizadas.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const CITIES = {
+  medellin:{name:'Medellín',model:'XGBoost v2.1',badge:'XGBoost v2.1'},
+  bogota:{name:'Bogotá',model:'XGBoost v1.8',badge:'XGBoost v1.8 (demo)'},
+  cali:{name:'Cali',model:'RF v1.0',badge:'RF v1.0 (demo)'}
+};
+
+const RISK_BASE = {
+  'La Candelaria':0.92,'Laureles Estadio':0.67,'El Poblado':0.45,'Belén':0.58,
+  'Robledo':0.53,'Aranjuez':0.61,'Manrique':0.64,'Guayabal':0.71,
+  'Castilla':0.68,'San Javier':0.62,'Doce de Octubre':0.59,'Villa Hermosa':0.55,
+  'Buenos Aires':0.50,'La América':0.56,'Corregimiento de San Cristóbal':0.39
+};
+
+const HOUR_FACTOR = h=>{
+  if(h>=6&&h<=8)return 1.2;
+  if(h>=17&&h<=20)return 1.35;
+  if(h>=22||h<=4)return 1.4;
+  if(h>=10&&h<=15)return 0.75;
+  return 1.0;
+};
+const WEEKEND_FACTOR = d=>['Sábado','Domingo'].includes(d)?1.25:1.0;
+const DATE_FACTOR = d=>{
+  if(!d)return 1.0;
+  const m=new Date(d).getMonth()+1,day=new Date(d).getDate();
+  if((m===12&&day>=20)||(m===1&&day<=5))return 1.15;
+  return 1.0;
+};
+
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='dashboard')initDashboard();
+}
+
+function switchCity(v){
+  const c=CITIES[v];
+  document.getElementById('modelBadge').textContent=c.badge;
+  document.getElementById('dashCity').textContent=c.name;
+}
+
+function updateHour(v){
+  document.getElementById('timeDisplay').textContent=String(v).padStart(2,'0')+':00';
+}
+
+function runPrediction(){
+  const barrio=document.getElementById('barrio').value;
+  const dia=document.getElementById('diaSemana').value;
+  const hora=parseInt(document.getElementById('horaSlider').value);
+  const fecha=document.getElementById('fecha').value;
+
+  const base=RISK_BASE[barrio]||0.5;
+  const raw=base*HOUR_FACTOR(hora)*WEEKEND_FACTOR(dia)*DATE_FACTOR(fecha);
+  const pct=Math.round(clamp(raw,0.02,0.999)*100);
+
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('resultContent').style.display='block';
+  document.getElementById('riskNumber').textContent=pct+'%';
+
+  const pillEl=document.getElementById('riskPill');
+  if(pct>=70){
+    pillEl.className='risk-level-pill alto';
+    pillEl.textContent='Alto riesgo';
+  }else if(pct>=40){
+    pillEl.className='risk-level-pill medio';
+    pillEl.textContent='Riesgo medio';
+  }else{
+    pillEl.className='risk-level-pill bajo';
+    pillEl.textContent='Riesgo bajo';
+  }
+
+  document.getElementById('riskMeta').innerHTML=
+    `${barrio} · ${dia} · ${hora}:00h${fecha?' · '+fecha:''}`;
+
+  drawGauge(pct);
+  drawFeatureBars(barrio,hora,dia);
+  generateRAG(barrio,hora,dia,pct);
+}
+
+function drawGauge(pct){
+  const canvas=document.getElementById('gaugeCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2+10,r=70;
+  ctx.clearRect(0,0,W,H);
+  const start=Math.PI*0.75,end=Math.PI*2.25,full=end-start;
+  ctx.beginPath();ctx.arc(cx,cy,r,start,end);
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=14;ctx.lineCap='round';ctx.stroke();
+  const color=pct>=70?'#ff4d6d':pct>=40?'#ffa940':'#52c41a';
+  ctx.beginPath();ctx.arc(cx,cy,r,start,start+full*(pct/100));
+  ctx.strokeStyle=color;ctx.lineWidth=14;ctx.lineCap='round';ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='500 13px DM Mono,monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(pct>=70?'ALTO':pct>=40?'MEDIO':'BAJO',cx,cy+26);
+}
+
+function drawFeatureBars(barrio,hora,dia){
+  const features=[
+    {name:'UBICACION_TARGET_ENC',val:Math.round((RISK_BASE[barrio]||0.5)*100)/100,color:'#7c6dfa'},
+    {name:'HORA_PUNTO_MEDIO',val:+(HOUR_FACTOR(hora)-0.7).toFixed(2),color:'#ffa940'},
+    {name:'FRANJA_'+String(hora).padStart(2,'0')+'-'+String(hora+2).padStart(2,'0')+'h',val:0.13,color:'#7c6dfa'},
+    {name:'ES_FIN_SEMANA',val:WEEKEND_FACTOR(dia)>1?0.28:0.04,color:'#36cfc9'},
+    {name:'DIA_ANIO_SIN/COS',val:0.06,color:'#9896a8'},
+    {name:'INTERACCION_FINDE_NOCHE',val:(hora>=20&&WEEKEND_FACTOR(dia)>1)?0.18:0.02,color:'#ff4d6d'},
+  ];
+  const maxVal=Math.max(...features.map(f=>f.val));
+  document.getElementById('featureBars').innerHTML=features.map(f=>`
+    <div class="feature-bar-row">
+      <span class="feature-name">${f.name}</span>
+      <div class="feature-bar-bg">
+        <div class="feature-bar-fill" style="width:${Math.round(f.val/maxVal*100)}%;background:${f.color}"></div>
+      </div>
+      <span class="feature-val">${f.val.toFixed(2)}</span>
+    </div>`).join('');
+}
+
+const RAG_TEXTS={
+  'La Candelaria':`La Candelaria es históricamente la zona con mayor densidad de incidentes en Medellín (17,965 registros). La concentración de comercio informal, alta densidad peatonal y convergencia de múltiples rutas de transporte público elevan estructuralmente el riesgo base.`,
+  'Laureles Estadio':`Laureles Estadio presenta riesgo elevado en horario nocturno de viernes, asociado a la alta actividad de bares y restaurantes. Los viernes después de las 21:00h concentran el 34% de los incidentes del barrio según el histórico 2008–2025.`,
+};
+function generateRAG(barrio,hora,dia,pct){
+  const base=RAG_TEXTS[barrio]||
+    `${barrio} presenta una tasa histórica de accidentabilidad del ${pct}% en la franja de las ${hora}:00h los días ${dia}. `;
+  const horaCtx=hora>=22||hora<=4?'La madrugada amplifica el riesgo por menor visibilidad y mayor velocidad vehicular. ':
+    hora>=6&&hora<=8?'El horario de inicio de jornada concentra mayor flujo vehicular y peatonal. ':
+    hora>=17&&hora<=20?'La hora pico vespertina acumula el mayor volumen de tráfico del día. ':'';
+  const findeSuf=['Sábado','Domingo'].includes(dia)?'Los fines de semana aumentan el riesgo nocturno en un 25% respecto a días laborales. ':'';
+  document.getElementById('ragExplain').textContent=base+horaCtx+findeSuf;
+}
+
+/* ---- DASHBOARD ---- */
+let dashInit=false;
+function initDashboard(){
+  if(dashInit)return;dashInit=true;
+  buildHourChart();buildTrendChart();buildHeatmap();buildZonesTable();
+}
+function setRange(btn,r){
+  document.querySelectorAll('.ctrl-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  dashInit=false;initDashboard();
+}
+
+function buildHourChart(){
+  const ctx=document.getElementById('hourChart');
+  const hours=Array.from({length:24},(_,i)=>i+':00');
+  const data=[12,8,5,4,3,6,24,42,38,32,28,30,34,36,40,44,52,58,62,54,46,38,30,22];
+  new Chart(ctx,{type:'bar',data:{labels:hours,datasets:[{data,backgroundColor:data.map(v=>v>50?'rgba(255,77,109,0.7)':v>35?'rgba(255,169,64,0.6)':'rgba(124,109,250,0.5)'),borderRadius:2,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+}
+function buildTrendChart(){
+  const ctx=document.getElementById('trendChart');
+  const days=Array.from({length:14},(_,i)=>{const d=new Date();d.setDate(d.getDate()-13+i);return d.toLocaleDateString('es',{day:'2-digit',month:'2-digit'});});
+  const data=[45,38,52,61,55,48,70,62,58,44,50,67,59,48];
+  new Chart(ctx,{type:'line',data:{labels:days,datasets:[{data,borderColor:'#7c6dfa',backgroundColor:'rgba(124,109,250,0.08)',tension:0.4,fill:true,pointRadius:3,pointBackgroundColor:'#7c6dfa'}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{font:{size:9},color:'#5a5870'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+}
+function buildHeatmap(){
+  const days=['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+  const franjas=['00-02','02-04','04-06','06-08','08-10','10-12','12-14','14-16','16-18','18-20','20-22','22-24'];
+  const risk=[
+    [5,3,2,28,32,25,18,22,38,42,20,12],
+    [4,2,2,25,30,22,16,20,35,40,18,10],
+    [4,2,2,24,29,21,16,19,34,38,18,10],
+    [5,3,2,26,31,23,17,21,37,41,19,11],
+    [8,5,3,28,35,26,20,24,42,52,28,18],
+    [15,20,18,12,18,22,28,38,48,58,62,45],
+    [18,22,20,10,14,18,24,35,44,52,60,50]
+  ];
+  const wrap=document.getElementById('heatmapWrap');
+  const colLabels=`<div class="hm-col-labels">${franjas.map(f=>`<div class="hm-col-label">${f}</div>`).join('')}</div>`;
+  const rows=days.map((d,di)=>`<div class="hm-row"><span class="hm-row-label">${d}</span>${risk[di].map((v,fi)=>{
+    const t=v>50?[255,77,109]:v>35?[255,169,64]:v>20?[124,109,250]:[54,207,201];
+    const a=(v/65).toFixed(2);
+    return`<div class="hm-cell" style="flex:1;background:rgba(${t[0]},${t[1]},${t[2]},${a});color:rgba(255,255,255,${v>30?.9:.5})">${v}</div>`;
+  }).join('')}</div>`).join('');
+  wrap.innerHTML=colLabels+rows;
+}
+function buildZonesTable(){
+  const zones=[
+    {name:'La Candelaria',score:'91%',level:'alto'},
+    {name:'Guayabal',score:'71%',level:'alto'},
+    {name:'Laureles Estadio',score:'67%',level:'alto'},
+    {name:'Castilla',score:'68%',level:'alto'},
+    {name:'Manrique',score:'64%',level:'medio'},
+    {name:'Aranjuez',score:'61%',level:'medio'},
+    {name:'San Javier',score:'62%',level:'medio'},
+    {name:'Belén',score:'58%',level:'medio'},
+    {name:'Buenos Aires',score:'50%',level:'medio'},
+    {name:'San Cristóbal',score:'39%',level:'bajo'},
+  ];
+  document.getElementById('zonesTableBody').innerHTML=zones.map(z=>`
+    <tr><td>${z.name}</td><td style="font-family:var(--mono)">${z.score}</td>
+    <td><span class="risk-pill rp-${z.level}">${z.level}</span></td></tr>`).join('');
+}
+
+/* ---- MODELS ---- */
+const MODEL_DATA={
+  medellin:{name:'Medellín XGBoost v2.1',auc:'0.9182',f1:'0.8384',prec:'0.8401',rec:'0.8367',slots:'373K'},
+  bogota:{name:'Bogotá XGBoost v1.8',auc:'0.8871',f1:'0.8120',prec:'0.8050',rec:'0.8200',slots:'612K'}
+};
+function selectModel(card,city){
+  document.querySelectorAll('.model-card').forEach(c=>c.classList.remove('active-model'));
+  card.classList.add('active-model');
+  const m=MODEL_DATA[city]||MODEL_DATA.medellin;
+  document.getElementById('selectedModelName').textContent=m.name;
+  document.getElementById('mAUC').textContent=m.auc;
+  document.getElementById('mF1').textContent=m.f1;
+  document.getElementById('mPrec').textContent=m.prec;
+  document.getElementById('mRec').textContent=m.rec;
+  document.getElementById('mSlots').textContent=m.slots;
+}
+
+const PIPE_DETAILS={
+  carga:'read_excel(dtype_dict) · dtypes optimizados · 702,540 registros · 156 MB en memoria',
+  limpieza:'Eliminar nulos en barrio (11,683) · normalizar HORA_INCIDENTE · UBICACION_KEY = comuna+barrio · 28,146 eliminados (4%)',
+  features:'FRANJA_2H (pd.cut 2h) · DIA_SEMANA · MES · HORA_INCIDENTE → HORA_NUM',
+  grilla:'pd.MultiIndex.from_product([ubicaciones, dias, franjas, meses]) · 372,960 slots · merge left con incidentes reales',
+  target:'Target encoding con m_smooth=50 · UBICACION_LOG_ODDS = log(p/(1-p)) · FRANJA dummies one-hot',
+  train:'train_test_split(stratify=y, test_size=0.2) · scale_pos_weight={neg/pos} · 200 estimadores · max_depth=8',
+  eval:'ROC AUC=0.9182 · F1=0.8384 · Precision=0.8401 · Recall=0.8367 · Curvas ROC + matriz de confusión',
+  deploy:'FastAPI · /predict · /heatmap · /explain (SHAP+RAG) · Docker compose · Gunicorn workers'
+};
+function pipeDetail(step){
+  const box=document.getElementById('pipeDetailBox');
+  box.style.display='block';
+  box.textContent=PIPE_DETAILS[step]||'';
+}
+
+const ARCH_DETAILS={
+  data:'PostgreSQL / CSV → pandas read_sql · Tipos optimizados (int16, category) · 10 columnas · 156 MB RAM · partición por ciudad',
+  features:'Grilla espacio-temporal: 370 ubicaciones × 7 días × 12 franjas × 12 meses = 372,960 slots · Codificación cíclica sin/cos · Target encoding suavizado m=50',
+  model:'XGBoost: 200 est · depth=8 · scale_pos_weight · AUC=0.9182 · TabNet (próximo): embeddings 32-dim · atención por columna',
+  rag:'FAISS index por ciudad · LangChain RetrievalQA · Documentos: informes SDM, noticias, estadísticas · Claude API para generación',
+  api:'FastAPI + Pydantic · POST /predict → 12ms p95 · GET /heatmap → matriz JSON · POST /explain → RAG 1-2s · Docker multi-stage'
+};
+function archDetail(layer){
+  const box=document.getElementById('archDetailBox');
+  box.style.display='block';
+  box.textContent=ARCH_DETAILS[layer]||'';
+}
+
+function addCity(){
+  alert('Funcionalidad: sube un CSV con columnas\n[FECHA, HORA, BARRIO, CLASE, GRAVEDAD]\ny el pipeline entrena automáticamente un nuevo modelo.');
+}
+</script>
+</body>
+</html>

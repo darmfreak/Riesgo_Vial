@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose *)",
+      "Bash(sudo docker compose up --build)",
+      "Bash(sg docker *)",
+      "Bash(jupyter --version)",
+      "Bash(python3 -c \"import papermill\")",
+      "Bash(jupyter nbconvert *)",
+      "Bash(python3 -m nbconvert --version)",
+      "Bash(pip show *)",
+      "Bash(pip install *)",
+      "Bash(python rag/build_index.py)",
+      "Bash(python3)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
