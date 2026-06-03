@@ -1,7 +1,7 @@
 """
 explainer.py
 Sistema RAG para generar explicaciones en lenguaje natural.
-Usa FAISS + sentence-transformers + (opcional) LLM Claude.
+Usa diccionario directo de barrios + LLM (Groq / Anthropic).
 """
 
 import logging
@@ -22,7 +22,8 @@ HOUR_CONTEXT = {
     (21,23): "noche (menor visibilidad, mayor presencia de alcohol en vía)",
 }
 
-RAG_DIR = Path(os.getenv("RAG_DIR", Path(__file__).parent / "rag"))
+RAG_DIR    = Path(os.getenv("RAG_DIR", Path(__file__).parent / "rag"))
+GROQ_MODEL = "openai/gpt-oss-120b"
 
 
 def hour_label(h: int) -> str:
@@ -34,115 +35,56 @@ def hour_label(h: int) -> str:
 
 class RiskExplainer:
     def __init__(self):
-        self._indexes: dict = {}
-        self._embeddings = None
-        self._llm_available = self._check_llm()
-        self._load_embeddings()
+        self._llm_provider = self._detect_llm()
+        self._barrio_cache: dict = {}
 
-    def _check_llm(self) -> bool:
-        key = os.getenv("ANTHROPIC_API_KEY") or os.getenv("OPENAI_API_KEY")
-        if key:
-            logger.info("LLM disponible para explicaciones enriquecidas")
-            return True
+    def _detect_llm(self) -> Optional[str]:
+        if os.getenv("GROQ_API_KEY"):
+            logger.info("LLM: Groq activo")
+            return "groq"
+        if os.getenv("ANTHROPIC_API_KEY"):
+            logger.info("LLM: Anthropic activo")
+            return "anthropic"
         logger.info("Sin API key LLM — usando RAG local")
-        return False
-
-    def _load_embeddings(self):
-        try:
-            from langchain_community.embeddings import HuggingFaceEmbeddings
-            self._embeddings = HuggingFaceEmbeddings(
-                model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-                model_kwargs={"device": "cpu"},
-            )
-            logger.info("Embeddings sentence-transformers cargados")
-        except Exception as e:
-            logger.warning(f"No se pudo cargar embeddings: {e}. Usando fallback basado en reglas.")
+        return None
 
     def _load_barrio_docs(self, city: str) -> dict:
-        """Carga lookup directo barrio→texto desde los documentos fuente."""
-        cache_key = f"_barrios_{city}"
-        if hasattr(self, cache_key):
-            return getattr(self, cache_key)
+        if city in self._barrio_cache:
+            return self._barrio_cache[city]
 
         lookup = {}
         docs_path = RAG_DIR / "documents" / city / "todos_los_barrios.txt"
         if not docs_path.exists():
-            setattr(self, cache_key, lookup)
+            self._barrio_cache[city] = lookup
             return lookup
 
         try:
             text = docs_path.read_text(encoding="utf-8")
-            blocks = text.strip().split("\n\n")
-            for block in blocks:
+            for block in text.strip().split("\n\n"):
                 lines = block.strip().split("\n")
-                name = None
-                desc = []
+                name, desc = None, []
                 for line in lines:
                     if line.startswith("BARRIO:"):
                         name = line[len("BARRIO:"):].strip()
                     elif line.startswith("DESCRIPCIÓN:"):
                         desc.append(line[len("DESCRIPCIÓN:"):].strip())
-                    elif line.startswith(("TASA_HISTORICA:", "NIVEL_RIESGO:")):
-                        desc.append(line.strip())
                 if name and desc:
-                    # Solo guardar líneas que no sean claves técnicas
-                    clean = []
-                    for d in desc:
-                        if d.startswith(('TASA_HISTORICA:', 'NIVEL_RIESGO:', 'ZONA:', 'FACTORES:')):
-                            continue
-                        clean.append(d)
-                    lookup[name] = " ".join(clean) if clean else " ".join(desc)
+                    lookup[name] = " ".join(desc)
         except Exception as e:
             logger.warning(f"Error cargando lookup de barrios: {e}")
 
-        setattr(self, cache_key, lookup)
+        self._barrio_cache[city] = lookup
         return lookup
 
-    def _get_index(self, city: str):
-        if city in self._indexes:
-            return self._indexes[city]
-        if self._embeddings is None:
-            return None
-        idx_path = RAG_DIR / "index" / city
-        if not idx_path.exists():
-            logger.warning(f"Índice FAISS no encontrado: {idx_path}")
-            return None
-        try:
-            from langchain_community.vectorstores import FAISS
-            db = FAISS.load_local(str(idx_path), self._embeddings,
-                                  allow_dangerous_deserialization=True)
-            self._indexes[city] = db
-            logger.info(f"Índice FAISS cargado: {city}")
-            return db
-        except Exception as e:
-            logger.warning(f"Error cargando índice FAISS {city}: {e}")
-            return None
-
-    def _rag_context(self, city: str, neighborhood: str, day_of_week: int, hour: int) -> str:
-        # 1. Búsqueda directa exacta por nombre de barrio (siempre primero)
+    def _rag_context(self, city: str, neighborhood: str) -> str:
         lookup = self._load_barrio_docs(city)
         if neighborhood in lookup:
             return lookup[neighborhood]
-
-        # 2. Búsqueda case-insensitive como fallback
         nb_lower = neighborhood.lower()
         for name, text in lookup.items():
             if name.lower() == nb_lower:
                 return text
-
-        # 3. FAISS semántico solo si no hay coincidencia directa
-        db = self._get_index(city)
-        if db is None:
-            return ""
-        query = (f"{neighborhood} riesgo vial accidente "
-                 f"hora {hour} {hour_label(hour)} "
-                 f"día {DAYS_ES[day_of_week] if 0 <= day_of_week <= 6 else ''}")
-        try:
-            docs = db.similarity_search(query, k=3)
-            return "\n".join(d.page_content for d in docs)
-        except Exception as e:
-            logger.warning(f"FAISS similarity_search falló: {e}")
-            return ""
+        return ""
 
     def _shap_narrative(self, shap_values: dict) -> str:
         if not shap_values:
@@ -161,67 +103,63 @@ class RiskExplainer:
                 parts.append(f"la combinación noche+fin de semana {direction} el riesgo ({val:+.3f})")
         return ("Según el modelo, " + ", ".join(parts) + ".") if parts else ""
 
+    def _build_prompt(self, context: str, neighborhood: str, day: str, hour: int) -> str:
+        return (
+            f"Eres un analista de seguridad vial urbana de Medellín, Colombia. "
+            f"Basándote en el siguiente contexto, escribe UNA explicación clara y útil "
+            f"(máximo 3 oraciones, en español) para un ciudadano sobre el riesgo vial "
+            f"en {neighborhood} un {day} a las {hour}:00h:\n\n{context}"
+        )
+
     def explain(self, city: str, neighborhood: str, day_of_week: int, hour: int,
                 shap_values: Optional[dict] = None) -> str:
-        day_label = DAYS_ES[day_of_week] if 0 <= day_of_week <= 6 else "día"
-        h_label   = hour_label(hour)
-        rag_ctx   = self._rag_context(city, neighborhood, day_of_week, hour)
-        shap_txt  = self._shap_narrative(shap_values or {})
+        day_label  = DAYS_ES[day_of_week] if 0 <= day_of_week <= 6 else "día"
+        h_label    = hour_label(hour)
+        rag_ctx    = self._rag_context(city, neighborhood)
+        shap_txt   = self._shap_narrative(shap_values or {})
         finde_note = (
             " Los fines de semana amplían el riesgo nocturno hasta un 25% respecto a días laborales."
             if day_of_week >= 5 else ""
         )
 
-        if rag_ctx:
-            base = (
-                f"Contexto de {neighborhood} ({city.capitalize()}):\n{rag_ctx[:600]}\n\n"
-                f"Consulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}"
-            ).strip()
-        else:
-            base = (
-                f"La consulta corresponde a {neighborhood} un {day_label} "
-                f"a las {hour}:00h ({h_label}).{finde_note} {shap_txt}"
-            ).strip()
+        context = (
+            f"{rag_ctx}\n\nConsulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}"
+            if rag_ctx else
+            f"Barrio: {neighborhood}. Consulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}"
+        ).strip()
 
-        if self._llm_available:
-            return self._llm_enrich(base, neighborhood, day_label, hour)
+        if self._llm_provider == "groq":
+            return self._llm_enrich_groq(context, neighborhood, day_label, hour)
+        if self._llm_provider == "anthropic":
+            return self._llm_enrich_anthropic(context, neighborhood, day_label, hour)
 
-        # Fallback: construir texto legible filtrando claves técnicas del RAG
-        if rag_ctx:
-            SKIP_PREFIXES = ('BARRIO:', 'ZONA:', 'TASA_HISTORICA:', 'NIVEL_RIESGO:', 'COMUNA:', 'FACTORES:')
-            lines = []
-            for l in rag_ctx.split('\n'):
-                l = l.strip()
-                if not l:
-                    continue
-                if any(l.startswith(p) for p in SKIP_PREFIXES):
-                    continue
-                # Limpiar prefijo DESCRIPCIÓN: si aparece
-                if l.startswith('DESCRIPCIÓN:'):
-                    l = l[len('DESCRIPCIÓN:'):].strip()
-                lines.append(l)
-            summary = ' '.join(lines)[:450].strip()
-            if summary:
-                return (f"{summary} "
-                        f"Consulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}").strip()
-        return base
+        return f"{rag_ctx or f'Barrio {neighborhood}'}. Consulta: {day_label} a las {hour}:00h ({h_label}).{finde_note} {shap_txt}".strip()
 
-    def _llm_enrich(self, context: str, neighborhood: str, day: str, hour: int) -> str:
+    def _llm_enrich_groq(self, context: str, neighborhood: str, day: str, hour: int) -> str:
+        try:
+            from groq import Groq
+            client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+            completion = client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=[{"role": "user", "content": self._build_prompt(context, neighborhood, day, hour)}],
+                max_tokens=400,
+                temperature=0.4,
+            )
+            return completion.choices[0].message.content.strip()
+        except Exception as e:
+            logger.warning(f"Groq LLM falló: {e}. Usando fallback Anthropic.")
+            return self._llm_enrich_anthropic(context, neighborhood, day, hour)
+
+    def _llm_enrich_anthropic(self, context: str, neighborhood: str, day: str, hour: int) -> str:
         try:
             import anthropic
             client = anthropic.Anthropic()
-            prompt = (
-                f"Eres un analista de seguridad vial urbana. "
-                f"Basándote en este contexto, escribe UNA explicación clara y útil "
-                f"(máximo 3 oraciones, en español) para un ciudadano sobre el riesgo vial "
-                f"en {neighborhood} un {day} a las {hour}:00h:\n\n{context}"
-            )
             msg = client.messages.create(
                 model="claude-sonnet-4-6",
-                max_tokens=220,
-                messages=[{"role": "user", "content": prompt}],
+                max_tokens=400,
+                messages=[{"role": "user", "content": self._build_prompt(context, neighborhood, day, hour)}],
             )
             return msg.content[0].text
         except Exception as e:
-            logger.warning(f"LLM enrich falló: {e}")
+            logger.warning(f"Anthropic LLM falló: {e}")
             return context

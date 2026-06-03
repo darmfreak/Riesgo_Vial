@@ -238,6 +238,7 @@ canvas{border-radius:4px}
 .leaflet-container{background:#0a0a0f!important;font-family:var(--body)}
 .leaflet-tile-pane{filter:brightness(.55) saturate(.4) hue-rotate(200deg)}
 .leaflet-popup-content-wrapper{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.map-tooltip{background:var(--bg3)!important;border:0.5px solid var(--border2)!important;color:var(--text)!important;font-family:var(--body);font-size:12px;padding:6px 10px;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
 .leaflet-popup-tip{background:var(--surface)}
 .leaflet-popup-content{margin:10px 14px;font-family:var(--body);font-size:13px}
 .map-popup-title{font-weight:600;margin-bottom:4px}
@@ -368,10 +369,18 @@ canvas{border-radius:4px}
         <div class="explain-card">
           <div class="explain-header">
             <div class="explain-icon">✦</div>
-            <span class="explain-title">Explicación RAG</span>
-            <span class="explain-badge">IA generativa</span>
+            <span class="explain-title">Explicación IA</span>
+            <span class="explain-badge">Groq · enriquecida</span>
           </div>
           <div class="explain-text" id="ragExplain"></div>
+          <div id="rawContextWrap" style="display:none;margin-top:12px">
+            <div style="height:1px;background:var(--border2);margin-bottom:10px"></div>
+            <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;letter-spacing:.04em">CONTEXTO RAG ORIGINAL</div>
+            <div class="explain-text" id="rawContext" style="color:var(--text3);font-size:12px;font-family:var(--mono);white-space:pre-wrap"></div>
+          </div>
+          <button id="toggleRawBtn" onclick="toggleRawContext()" style="display:none;margin-top:10px;background:none;border:0.5px solid var(--border2);color:var(--text3);font-size:11px;padding:4px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono)">
+            ver contexto original ↓
+          </button>
         </div>
 
         <button class="map-btn" onclick="goToDashboard()">Ver barrio en mapa de riesgo →</button>
@@ -431,8 +440,23 @@ canvas{border-radius:4px}
 
     <!-- Mapa de Medellín -->
     <div class="chart-card" style="margin-bottom:12px">
-      <div class="chart-card-title">Mapa de riesgo — Medellín <span class="ct-sub">clic en barrio para consultar</span></div>
-      <div id="mapContainer"></div>
+      <div class="chart-card-title" style="display:flex;align-items:center;cursor:pointer;user-select:none" onclick="toggleMap()">
+        <span>Mapa de riesgo — Medellín</span>
+        <span class="ct-sub" id="mapDateLabel"></span>
+        <span id="mapToggleIcon" style="margin-left:auto;font-size:11px;color:var(--text3);font-family:var(--mono)">mostrar ↓</span>
+      </div>
+      <div id="mapCollapsible" style="display:none">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <span>Riesgo promedio del día · <strong id="mapBarrioCount" style="color:var(--text2)">—</strong> barrios</span>
+          <span style="display:flex;align-items:center;gap:6px">
+            <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:#ff4d6d;display:inline-block"></span> Alto ≥ 70%</span>
+            <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:#ffa940;display:inline-block"></span> Medio 40–70%</span>
+            <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:#52c41a;display:inline-block"></span> Bajo &lt; 40%</span>
+          </span>
+          <span style="color:var(--text3)">● Tamaño proporcional al riesgo · clic para consultar</span>
+        </div>
+        <div id="mapContainer"></div>
+      </div>
     </div>
 
     <div class="dash-grid-3">
@@ -466,27 +490,8 @@ canvas{border-radius:4px}
       <div class="models-sub">Cada ciudad tiene su propio modelo entrenado de forma independiente. Selecciona uno para ver sus métricas y detalles.</div>
     </div>
 
-    <div class="models-grid">
-      <div class="model-card active-model" onclick="selectModel(this,'medellin')">
-        <div class="mc-city">Medellín, Colombia</div>
-        <div class="mc-name">Modelo base</div>
-        <div class="mc-period">2008 – 2025 · 674,394 registros</div>
-        <div class="mc-stats">
-          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">0.9182</div><div class="mc-stat-lbl">ROC AUC</div></div>
-          <div class="mc-stat"><div class="mc-stat-val">0.84</div><div class="mc-stat-lbl">F1</div></div>
-          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--green)">activo</div><div class="mc-stat-lbl">estado</div></div>
-        </div>
-      </div>
-      <div class="model-card" onclick="selectModel(this,'bogota')">
-        <div class="mc-city">Bogotá, Colombia</div>
-        <div class="mc-name">Modelo demo</div>
-        <div class="mc-period">2015 – 2024 · ~1.2M registros</div>
-        <div class="mc-stats">
-          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">0.8871</div><div class="mc-stat-lbl">ROC AUC</div></div>
-          <div class="mc-stat"><div class="mc-stat-val">0.81</div><div class="mc-stat-lbl">F1</div></div>
-          <div class="mc-stat"><div class="mc-stat-val" style="color:var(--amber)">demo</div><div class="mc-stat-lbl">estado</div></div>
-        </div>
-      </div>
+    <div class="models-grid" id="modelsGrid">
+      <!-- cargado dinámicamente -->
       <div class="add-city-card" onclick="addCity()">
         <div class="add-icon">+</div>
         <div class="add-label">Agregar ciudad</div>
@@ -496,16 +501,34 @@ canvas{border-radius:4px}
 
     <!-- Model detail -->
     <div class="model-detail">
-      <div class="md-title">Métricas del modelo seleccionado — <span id="selectedModelName" style="color:var(--accent2);font-family:var(--mono)">Medellín XGBoost v2.1</span></div>
+      <div class="md-title">Métricas del modelo seleccionado — <span id="selectedModelName" style="color:var(--accent2);font-family:var(--mono)">—</span></div>
       <div class="metrics-grid">
-        <div class="metric-box"><div class="metric-val" id="mAUC">0.9182</div><div class="metric-name">ROC AUC</div></div>
-        <div class="metric-box"><div class="metric-val" id="mF1">0.8384</div><div class="metric-name">F1-Score</div></div>
-        <div class="metric-box"><div class="metric-val" id="mPrec">0.8401</div><div class="metric-name">Precisión</div></div>
-        <div class="metric-box"><div class="metric-val" id="mRec">0.8367</div><div class="metric-name">Recall</div></div>
-        <div class="metric-box"><div class="metric-val" id="mSlots">373K</div><div class="metric-name">Slots</div></div>
+        <div class="metric-box"><div class="metric-val" id="mAUC">—</div><div class="metric-name">ROC AUC</div></div>
+        <div class="metric-box"><div class="metric-val" id="mF1">—</div><div class="metric-name">F1-Score</div></div>
+        <div class="metric-box"><div class="metric-val" id="mPrec">—</div><div class="metric-name">Precisión</div></div>
+        <div class="metric-box"><div class="metric-val" id="mRec">—</div><div class="metric-name">Recall</div></div>
+        <div class="metric-box"><div class="metric-val" id="mSlots">—</div><div class="metric-name">Slots</div></div>
+        <div class="metric-box"><div class="metric-val" id="mNB">—</div><div class="metric-name">Barrios</div></div>
       </div>
 
-      <div class="md-title" style="margin-bottom:1rem">Pipeline de entrenamiento</div>
+      <!-- Distribución de riesgo -->
+      <div class="md-title" style="margin-bottom:.75rem;margin-top:1.5rem">Distribución de riesgo por barrios</div>
+      <div id="riskDistBar" style="display:flex;gap:4px;height:28px;border-radius:6px;overflow:hidden;margin-bottom:8px"></div>
+      <div id="riskDistLegend" style="display:flex;gap:12px;font-size:11px;color:var(--text3);font-family:var(--mono);flex-wrap:wrap"></div>
+
+      <!-- Top riesgosos / seguros -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem">
+        <div>
+          <div class="md-title" style="margin-bottom:.5rem">Top 10 mayor riesgo</div>
+          <div id="topRiskList" style="font-size:12px;font-family:var(--mono);line-height:1.9;color:var(--text2)"></div>
+        </div>
+        <div>
+          <div class="md-title" style="margin-bottom:.5rem">Top 10 menor riesgo</div>
+          <div id="topSafeList" style="font-size:12px;font-family:var(--mono);line-height:1.9;color:var(--text2)"></div>
+        </div>
+      </div>
+
+      <div class="md-title" style="margin-bottom:1rem;margin-top:1.5rem">Pipeline de entrenamiento</div>
       <div class="pipeline" id="pipeline">
         <div class="pipe-step done" onclick="pipeDetail('carga')"><div class="pipe-dot">01</div><div class="pipe-label">Carga y validación</div></div>
         <div class="pipe-step done" onclick="pipeDetail('limpieza')"><div class="pipe-dot">02</div><div class="pipe-label">Limpieza</div></div>
@@ -516,7 +539,6 @@ canvas{border-radius:4px}
         <div class="pipe-step active" onclick="pipeDetail('eval')"><div class="pipe-dot">07</div><div class="pipe-label">Evaluación</div></div>
         <div class="pipe-step" onclick="pipeDetail('deploy')"><div class="pipe-dot">08</div><div class="pipe-label">API deploy</div></div>
       </div>
-
       <div id="pipeDetailBox" style="background:var(--surface);border-radius:8px;padding:1rem;margin-top:1.25rem;font-size:13px;color:var(--text2);display:none;line-height:1.7;font-family:var(--mono)"></div>
     </div>
 
@@ -525,14 +547,7 @@ canvas{border-radius:4px}
       <div class="md-title">Comparativa histórico completo vs post-COVID (2020+)</div>
       <table class="comp-table">
         <thead><tr><th>Modelo</th><th>Escenario</th><th>ROC AUC</th><th>F1</th><th>Precisión</th><th>Recall</th></tr></thead>
-        <tbody>
-          <tr><td>Logistic Regression</td><td>Histórico</td><td>0.9129</td><td>0.8362</td><td>0.8201</td><td>0.8483</td></tr>
-          <tr><td>Logistic Regression</td><td>Post-COVID</td><td>0.8215</td><td>0.6143</td><td>0.5128</td><td>0.7397</td></tr>
-          <tr><td>Random Forest</td><td>Histórico</td><td>0.9177</td><td>0.8386</td><td>0.8401</td><td>0.8375</td></tr>
-          <tr><td>Random Forest</td><td>Post-COVID</td><td>0.8485</td><td>0.6389</td><td>0.5001</td><td>0.8111</td></tr>
-          <tr style="background:rgba(124,109,250,0.04)"><td class="winner">XGBoost</td><td>Histórico</td><td class="winner">0.9182</td><td class="winner">0.8384</td><td class="winner">0.8401</td><td class="winner">0.8367</td></tr>
-          <tr><td>XGBoost</td><td>Post-COVID</td><td>0.8502</td><td>0.6417</td><td>0.5023</td><td>0.8059</td></tr>
-        </tbody>
+        <tbody id="compTableBody"><!-- cargado dinámicamente --></tbody>
       </table>
     </div>
   </div>
@@ -546,11 +561,11 @@ canvas{border-radius:4px}
     <div class="docs-hero">
       <div class="docs-hero-title">Documentación del sistema</div>
       <div class="docs-hero-sub">Guía completa de RiesgoVial — desde cómo usarlo como ciudadano hasta cómo fluye, almacena y procesa cada dato de forma técnica.</div>
-      <div class="docs-hero-tags">
+      <div class="docs-hero-tags" id="techTags">
         <span class="tech-tag">Python 3.11</span><span class="tech-tag">XGBoost</span>
-        <span class="tech-tag">FastAPI</span><span class="tech-tag">FAISS</span>
-        <span class="tech-tag">sentence-transformers</span><span class="tech-tag">Docker</span>
-        <span class="tech-tag">pandas</span><span class="tech-tag">SHAP</span>
+        <span class="tech-tag">FastAPI</span><span class="tech-tag">Groq</span>
+        <span class="tech-tag">Docker</span><span class="tech-tag">pandas</span>
+        <span class="tech-tag">SHAP</span><span class="tech-tag">nginx</span>
       </div>
     </div>
 
@@ -600,9 +615,12 @@ canvas{border-radius:4px}
       <div class="docs-card">
         <div class="docs-card-title">Mapa de riesgo — Medellín</div>
         <div style="font-size:13px;color:var(--text2);line-height:1.8">
-          Muestra los barrios como <strong style="color:var(--text)">círculos de color</strong> sobre mapa base OpenStreetMap. El color y tamaño del círculo reflejan el riesgo promedio del barrio para el día actual.<br><br>
-          <span style="color:var(--red)">● Rojo (≥70%)</span> alto &nbsp;·&nbsp; <span style="color:var(--amber)">● Naranja (40–69%)</span> medio &nbsp;·&nbsp; <span style="color:var(--green)">● Verde (&lt;40%)</span> bajo<br><br>
-          El riesgo se calcula promediando las 12 franjas horarias del heatmap del día. <strong style="color:var(--text)">Clic en un círculo</strong> muestra nombre, porcentaje y botón para ir directo a Consulta con ese barrio.
+          Muestra <strong style="color:var(--text)">hasta 315 barrios</strong> como círculos sobre mapa base OpenStreetMap (Leaflet). Las coordenadas de cada barrio se obtienen del endpoint <code style="font-family:var(--mono);font-size:11px">/api/v1/coordinates/medellin</code> — geocodificadas automáticamente con Nominatim.<br><br>
+          <strong style="color:var(--text)">Color y tamaño</strong> del círculo reflejan el riesgo promedio del barrio para <em>hoy</em>, calculado como la media de las 12 franjas horarias del heatmap (<code style="font-family:var(--mono);font-size:11px">/api/v1/heatmap/medellin/{fecha}</code>):<br><br>
+          <span style="color:#ff4d6d">● Rojo ≥ 70%</span> — alto &nbsp;·&nbsp;
+          <span style="color:#ffa940">● Naranja 40–70%</span> — medio &nbsp;·&nbsp;
+          <span style="color:#52c41a">● Verde &lt; 40%</span> — bajo<br><br>
+          El <strong style="color:var(--text)">tamaño</strong> es proporcional al score (barrios más peligrosos tienen círculos más grandes). <strong style="color:var(--text)">Hover</strong> muestra nombre y porcentaje. <strong style="color:var(--text)">Clic</strong> abre popup con botón para ir directo a la consulta de ese barrio.
         </div>
       </div>
       <div class="docs-card">
@@ -860,10 +878,33 @@ function showPage(id, btn) {
   document.getElementById('page-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
   if (id === 'dashboard') {
-    // Si hay un barrio seleccionado nuevo, forzar refresh del heatmap
     if (selectedNeighborhood) dashInit = false;
     initDashboard();
   }
+  if (id === 'models') initModelsPage();
+}
+
+function toggleMap() {
+  const wrap = document.getElementById('mapCollapsible');
+  const icon = document.getElementById('mapToggleIcon');
+  const open = wrap.style.display !== 'none';
+  wrap.style.display = open ? 'none' : 'block';
+  icon.textContent = open ? 'mostrar ↓' : 'ocultar ↑';
+  if (!open) {
+    // Inicializar mapa la primera vez que se expande
+    initMap();
+    if (window._lastMapScores) updateMapRisk(window._lastMapScores);
+    else loadDashboardFromAPI();
+    setTimeout(() => mapInst && mapInst.invalidateSize(), 50);
+  }
+}
+
+function toggleRawContext() {
+  const wrap = document.getElementById('rawContextWrap');
+  const btn  = document.getElementById('toggleRawBtn');
+  const visible = wrap.style.display !== 'none';
+  wrap.style.display = visible ? 'none' : 'block';
+  btn.textContent = visible ? 'ver contexto original ↓' : 'ocultar contexto original ↑';
 }
 
 function goToDashboard() {
@@ -980,9 +1021,22 @@ async function runPrediction() {
     document.querySelector('.feature-title').textContent = 'Contribución de variables (SHAP real)';
     drawFeatureBars(expl.top_features);
     document.getElementById('ragExplain').textContent = expl.rag_explanation;
+    const rawCtx = expl.rag_context || '';
+    const rawWrap = document.getElementById('rawContextWrap');
+    const rawEl   = document.getElementById('rawContext');
+    const toggleBtn = document.getElementById('toggleRawBtn');
+    rawEl.textContent = rawCtx;
+    rawWrap.style.display = 'none';
+    if (rawCtx) {
+      toggleBtn.style.display = 'inline-block';
+      toggleBtn.textContent   = 'ver contexto original ↓';
+    } else {
+      toggleBtn.style.display = 'none';
+    }
   } else {
     document.querySelector('.feature-title').textContent = 'Contribución de variables';
     document.getElementById('ragExplain').textContent = 'Explicación no disponible en este momento.';
+    document.getElementById('toggleRawBtn').style.display = 'none';
   }
 
   } catch (e) {
@@ -1032,7 +1086,7 @@ function drawFeatureBars(topFeatures) {
 let dashInit = false;
 let _hmCache = null;
 
-function initDashboard() {
+async function initDashboard() {
   if (dashInit) return;
   dashInit = true;
   _hmCache = null;
@@ -1040,7 +1094,8 @@ function initDashboard() {
   if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
   buildHourChart(currentRange);
   buildTrendChart(currentRange);
-  initMap();
+  await loadCoordinates(selectedCity || 'medellin');
+  // El mapa se inicializa solo cuando el usuario lo expande
   loadDashboardFromAPI();
 }
 
@@ -1319,16 +1374,104 @@ const MODEL_DATA = {
   bogota:  {name:'Bogotá XGBoost (demo)',auc:'0.8871',f1:'0.8120',prec:'0.8050',rec:'0.8200',slots:'612K'},
 };
 
-function selectModel(card, city) {
+// ─── MODEL INFO dinámica ──────────────────────────────────────────
+const _modelInfoCache = {};
+let _modelsPageInit = false;
+
+async function loadModelInfo(city) {
+  if (_modelInfoCache[city]) return _modelInfoCache[city];
+  try {
+    const r = await fetch(`/api/v1/model-info/${city}`);
+    if (!r.ok) return null;
+    const d = await r.json();
+    _modelInfoCache[city] = d;
+    return d;
+  } catch { return null; }
+}
+
+async function initModelsPage() {
+  if (_modelsPageInit) return;
+  _modelsPageInit = true;
+  const data = await loadModelInfo('medellin');
+  if (!data) { _modelsPageInit = false; return; }
+
+  // Tarjeta Medellín dinámica
+  const grid = document.getElementById('modelsGrid');
+  const card = document.createElement('div');
+  card.className = 'model-card active-model';
+  card.onclick = () => selectModel(card, 'medellin');
+  card.innerHTML = `
+    <div class="mc-city">${data.display_name}, Colombia</div>
+    <div class="mc-name">Modelo ${data.model_type.toUpperCase()} v${data.version}</div>
+    <div class="mc-period">${data.period} · ${data.records.toLocaleString()} registros</div>
+    <div class="mc-stats">
+      <div class="mc-stat"><div class="mc-stat-val" style="color:var(--accent2)">${data.metrics.roc_auc}</div><div class="mc-stat-lbl">ROC AUC</div></div>
+      <div class="mc-stat"><div class="mc-stat-val">${data.metrics.f1}</div><div class="mc-stat-lbl">F1</div></div>
+      <div class="mc-stat"><div class="mc-stat-val" style="color:var(--green)">activo</div><div class="mc-stat-lbl">estado</div></div>
+    </div>`;
+  grid.insertBefore(card, grid.firstChild);
+
+  renderModelDetail(data);
+  renderCompTable(data.comparison);
+
+  // Tech tags en docs
+  const tags = document.getElementById('techTags');
+  if (tags) {
+    tags.innerHTML = data.tech_stack.map(t => `<span class="tech-tag">${t}</span>`).join('');
+  }
+}
+
+function renderModelDetail(data) {
+  const fmt = n => n.toFixed(4);
+  document.getElementById('selectedModelName').textContent =
+    `${data.display_name} ${data.model_type.toUpperCase()} v${data.version}`;
+  document.getElementById('mAUC').textContent  = fmt(data.metrics.roc_auc);
+  document.getElementById('mF1').textContent   = fmt(data.metrics.f1);
+  document.getElementById('mPrec').textContent = fmt(data.metrics.precision);
+  document.getElementById('mRec').textContent  = fmt(data.metrics.recall);
+  document.getElementById('mSlots').textContent= (data.slots / 1000).toFixed(0) + 'K';
+  document.getElementById('mNB').textContent   = data.neighborhoods;
+
+  // Barra de distribución de riesgo
+  const dist = data.risk_distribution;
+  const total = Object.values(dist).reduce((a,b)=>a+b,0);
+  const colors = {'muy alto':'#ef4444','alto':'#f97316','moderado':'#eab308','bajo':'#22c55e','muy bajo':'#86efac'};
+  const barEl = document.getElementById('riskDistBar');
+  const legEl = document.getElementById('riskDistLegend');
+  barEl.innerHTML = Object.entries(dist).map(([lvl, cnt]) =>
+    `<div style="flex:${cnt};background:${colors[lvl]};title='${lvl}: ${cnt}'" title="${lvl}: ${cnt} barrios"></div>`
+  ).join('');
+  legEl.innerHTML = Object.entries(dist).map(([lvl, cnt]) =>
+    `<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${colors[lvl]};margin-right:3px"></span>${lvl}: ${cnt}</span>`
+  ).join('');
+
+  // Top 10 riesgo / seguro
+  document.getElementById('topRiskList').innerHTML = data.top_risk.map((nb,i) =>
+    `<div><span style="color:var(--text3)">${String(i+1).padStart(2,'0')}.</span> ${nb.name} <span style="color:#ef4444;margin-left:4px">${(nb.rate*100).toFixed(0)}%</span></div>`
+  ).join('');
+  document.getElementById('topSafeList').innerHTML = data.top_safe.map((nb,i) =>
+    `<div><span style="color:var(--text3)">${String(i+1).padStart(2,'0')}.</span> ${nb.name} <span style="color:#22c55e;margin-left:4px">${(nb.rate*100).toFixed(0)}%</span></div>`
+  ).join('');
+}
+
+function renderCompTable(comparison) {
+  const tbody = document.getElementById('compTableBody');
+  if (!tbody || !comparison) return;
+  tbody.innerHTML = comparison.map(row => {
+    const win = row.winner ? ' style="background:rgba(124,109,250,0.04)"' : '';
+    const cls = row.winner ? ' class="winner"' : '';
+    return `<tr${win}><td${cls}>${row.model}</td><td>${row.scenario}</td><td${cls}>${row.auc}</td><td${cls}>${row.f1}</td><td${cls}>${row.precision}</td><td${cls}>${row.recall}</td></tr>`;
+  }).join('');
+}
+
+async function selectModel(card, city) {
   document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active-model'));
   card.classList.add('active-model');
-  const m = MODEL_DATA[city] || MODEL_DATA.medellin;
-  document.getElementById('selectedModelName').textContent = m.name;
-  document.getElementById('mAUC').textContent  = m.auc;
-  document.getElementById('mF1').textContent   = m.f1;
-  document.getElementById('mPrec').textContent = m.prec;
-  document.getElementById('mRec').textContent  = m.rec;
-  document.getElementById('mSlots').textContent= m.slots;
+  const data = await loadModelInfo(city);
+  if (data) {
+    renderModelDetail(data);
+    renderCompTable(data.comparison);
+  }
 }
 
 const PIPE_DETAILS = {
@@ -1365,54 +1508,18 @@ function addCity() {
 }
 
 // ─── MAPA LEAFLET ─────────────────────────────────────────────────
-const BARRIO_COORDS = {
-  'La Candelaria':         [6.2518, -75.5636],
-  'El Chagualo':           [6.2601, -75.5680],
-  'Perpetuo Socorro':      [6.2478, -75.5604],
-  'Villa Nueva':           [6.2545, -75.5622],
-  'El Centro':             [6.2530, -75.5640],
-  'El Poblado':            [6.2082, -75.5683],
-  'Manila':                [6.2141, -75.5715],
-  'Astorga':               [6.2013, -75.5651],
-  'Altos del Poblado':     [6.1960, -75.5600],
-  'Laureles Estadio':      [6.2569, -75.5898],
-  'Los Conquistadores':    [6.2620, -75.5940],
-  'Florida Nueva':         [6.2540, -75.5860],
-  'El Velodromo':          [6.2480, -75.5870],
-  'Belén':                 [6.2344, -75.6018],
-  'La Mota':               [6.2300, -75.5980],
-  'Los Alpes':             [6.2280, -75.6060],
-  'Rosales':               [6.2400, -75.6040],
-  'Guayabal':              [6.2147, -75.5914],
-  'La Colina':             [6.2100, -75.5880],
-  'Castilla':              [6.3183, -75.5849],
-  'Florencia':             [6.3210, -75.5890],
-  'Manrique':              [6.2699, -75.5415],
-  'Versalles':             [6.2740, -75.5380],
-  'Aranjuez':              [6.2905, -75.5651],
-  'San Isidro':            [6.2880, -75.5610],
-  'Robledo':               [6.2893, -75.5993],
-  'Pajarito':              [6.2850, -75.6050],
-  'San Javier':            [6.2651, -75.6132],
-  'El Salado':             [6.2620, -75.6180],
-  'Doce de Octubre':       [6.3018, -75.5732],
-  'Kennedy':               [6.3040, -75.5770],
-  'Villa Hermosa':         [6.2489, -75.5435],
-  'La Ladera':             [6.2510, -75.5400],
-  'Buenos Aires':          [6.2334, -75.5568],
-  'Los Mangos':            [6.2310, -75.5530],
-  'La América':            [6.2569, -75.5849],
-  'Santa Lucía':           [6.2540, -75.5820],
-  'Corregimiento de San Cristóbal': [6.2800, -75.6400],
-  'Altavista':             [6.2200, -75.6200],
-  'San Antonio de Prado':  [6.1780, -75.6150],
-  'San Sebastián de Palmitas': [6.3500, -75.6800],
-  'Caribe':                [6.2680, -75.5640],
-  'Moravia':               [6.2790, -75.5610],
-  'Campo Valdés':          [6.2610, -75.5540],
-  'Prado':                 [6.2650, -75.5660],
-  'Jesús Nazareno':        [6.2480, -75.5700],
-};
+let BARRIO_COORDS = {};
+
+async function loadCoordinates(city) {
+  try {
+    const r = await fetch(`/api/v1/coordinates/${city}`);
+    if (!r.ok) return;
+    const d = await r.json();
+    BARRIO_COORDS = d.coordinates;
+  } catch(e) {
+    console.warn('No se pudieron cargar coordenadas:', e);
+  }
+}
 
 let mapInst = null;
 let mapMarkers = {};
@@ -1431,36 +1538,52 @@ function initMap() {
 function updateMapRisk(nbAvgScores) {
   if (!mapInst) initMap();
 
-  // Limpiar marcadores anteriores
   Object.values(mapMarkers).forEach(m => m.remove());
   mapMarkers = {};
 
+  window._lastMapScores = nbAvgScores;
+  let visible = 0;
   for (const [nb, score] of Object.entries(nbAvgScores)) {
     const coords = BARRIO_COORDS[nb];
     if (!coords) continue;
+    visible++;
 
     const pct   = Math.round(score * 100);
     const color = score >= 0.7 ? '#ff4d6d' : score >= 0.4 ? '#ffa940' : '#52c41a';
-    const level = score >= 0.7 ? 'alto' : score >= 0.4 ? 'medio' : 'bajo';
-    const r     = Math.max(8, Math.min(22, score * 28));
+    const level = score >= 0.7 ? 'Alto' : score >= 0.4 ? 'Medio' : 'Bajo';
+    const r     = Math.max(7, Math.min(22, score * 28));
 
     const circle = L.circleMarker(coords, {
       radius: r, color, fillColor: color,
-      fillOpacity: 0.75, weight: 1.5, opacity: 0.9,
+      fillOpacity: 0.72, weight: 1.5, opacity: 0.9,
     });
 
+    // Tooltip al pasar el mouse
+    circle.bindTooltip(
+      `<strong>${nb}</strong><br><span style="color:${color}">${pct}% — Riesgo ${level}</span>`,
+      { sticky: true, opacity: 0.95, className: 'map-tooltip' }
+    );
+
+    // Popup al hacer clic
     circle.bindPopup(`
       <div class="map-popup-title">${nb}</div>
       <div class="map-popup-score" style="color:${color}">${pct}%</div>
-      <div style="font-size:11px;color:#9896a8;margin-top:2px">Riesgo ${level} — promedio del día</div>
+      <div style="font-size:11px;color:#9896a8;margin-top:2px">Riesgo ${level} · promedio todas las franjas horarias del día</div>
       <button class="map-popup-btn" onclick="selectFromMap('${nb.replace(/'/g,"\\'")}')">
-        Consultar →
+        Consultar este barrio →
       </button>
-    `, { maxWidth: 180 });
+    `, { maxWidth: 200 });
 
     circle.addTo(mapInst);
     mapMarkers[nb] = circle;
   }
+
+  // Actualizar fecha y contador
+  const today = new Date().toLocaleDateString('es-CO', { weekday:'long', day:'numeric', month:'long' });
+  const dateEl = document.getElementById('mapDateLabel');
+  if (dateEl) dateEl.textContent = '· ' + today;
+  const cntEl = document.getElementById('mapBarrioCount');
+  if (cntEl) cntEl.textContent = visible;
 }
 
 function selectFromMap(nb) {

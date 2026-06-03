@@ -20,8 +20,8 @@ services:
       - PORT=8000
       - WORKERS=2
       - LOG_LEVEL=info
-      # Descomenta y agrega tu key para activar RAG con LLM real:
       # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GROQ_API_KEY=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
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s

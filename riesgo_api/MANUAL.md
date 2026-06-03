@@ -13,6 +13,28 @@
 
 ## Levantar el proyecto
 
+**Paso 1 — Verificar que Docker esté corriendo:**
+
+```bash
+docker info
+```
+
+Si aparece `dial unix /var/run/docker.sock: no such file or directory`, el daemon está apagado. Iniciarlo:
+
+```bash
+sudo systemctl start docker
+# o si lo anterior no funciona:
+sudo service docker start
+```
+
+Verificar que quedó activo:
+
+```bash
+sudo systemctl status docker
+```
+
+**Paso 2 — Levantar los contenedores:**
+
 ```bash
 cd ~/Proyectos/Notebooks/riesgo_api
 docker compose up -d

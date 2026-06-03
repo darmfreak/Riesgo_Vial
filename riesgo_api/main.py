@@ -10,6 +10,9 @@ from datetime import date, datetime
 from enum import Enum
 import logging
 import uuid
+import os
+import json as _json
+from pathlib import Path as _Path
 
 from model_loader import ModelRegistry
 from explainer import RiskExplainer
@@ -78,9 +81,10 @@ class ExplainRequest(BaseModel):
 
 
 class ExplainResponse(BaseModel):
-    shap_values:    dict
+    shap_values:     dict
     rag_explanation: str
-    top_features:   List[dict]
+    rag_context:     str
+    top_features:    List[dict]
 
 
 class HeatmapResponse(BaseModel):
@@ -199,6 +203,7 @@ def explain(req: ExplainRequest):
     shap_vals = model.shap_values(neighborhood=req.neighborhood,
                                    day_of_week=req.day_of_week,
                                    hour=req.hour, date=parse_date(req.fecha))
+    raw_ctx  = explainer._rag_context(city=req.city.value, neighborhood=req.neighborhood)
     rag_text = explainer.explain(city=req.city.value, neighborhood=req.neighborhood,
                                   day_of_week=req.day_of_week, hour=req.hour,
                                   shap_values=shap_vals)
@@ -207,6 +212,7 @@ def explain(req: ExplainRequest):
     return ExplainResponse(
         shap_values=shap_vals,
         rag_explanation=rag_text,
+        rag_context=raw_ctx,
         top_features=[{"feature": k, "shap": round(v, 4)} for k, v in top],
     )
 
@@ -216,6 +222,97 @@ def explain(req: ExplainRequest):
 @app.get("/api/v1/cities", tags=["modelos"])
 def list_cities():
     return {"cities": registry.city_summary()}
+
+
+# ── GET /api/v1/model-info/{city} ────────────────────────────────────
+
+@app.get("/api/v1/model-info/{city}", tags=["modelos"])
+def model_info(city: str):
+    model = registry.get(city)
+    if model is None:
+        raise HTTPException(status_code=404, detail=f"Modelo no disponible: {city}")
+
+    meta = model.metadata
+    enc  = model.encoders
+
+    UNDEFINED = {"0", "sin informacion", "sin información", "no definido", "nd", "n/a", ""}
+
+    def risk_level(rate: float) -> str:
+        if rate >= 0.70: return "muy alto"
+        if rate >= 0.55: return "alto"
+        if rate >= 0.40: return "moderado"
+        if rate >= 0.20: return "bajo"
+        return "muy bajo"
+
+    all_nb = [
+        {"name": nb, "rate": round(rate, 4), "level": risk_level(rate)}
+        for nb, rate in sorted(enc["target_enc"].items(), key=lambda x: x[1], reverse=True)
+        if nb and nb.strip().lower() not in UNDEFINED
+    ]
+
+    top10_risk = all_nb[:10]
+    top10_safe = sorted(all_nb, key=lambda x: x["rate"])[:10]
+
+    dist: dict = {"muy alto": 0, "alto": 0, "moderado": 0, "bajo": 0, "muy bajo": 0}
+    for nb in all_nb:
+        dist[nb["level"]] += 1
+
+    return {
+        "city":          city,
+        "display_name":  {"medellin": "Medellín", "bogota": "Bogotá", "cali": "Cali"}.get(city, city.capitalize()),
+        "model_type":    meta.get("model_type", "xgboost"),
+        "version":       meta.get("version", "1.0"),
+        "period":        "2008 – 2025",
+        "records":       meta.get("records", 0),
+        "slots":         meta.get("slots", 0),
+        "neighborhoods": len(all_nb),
+        "metrics": {
+            "roc_auc":   round(meta.get("ROC AUC",   0), 4),
+            "f1":        round(meta.get("F1",         0), 4),
+            "precision": round(meta.get("Precision",  0), 4),
+            "recall":    round(meta.get("Recall",     0), 4),
+            "accuracy":  round(meta.get("Accuracy",   0), 4),
+        },
+        "global_risk_rate": round(enc["global_rate"], 4),
+        "risk_distribution": dist,
+        "top_risk": top10_risk,
+        "top_safe": top10_safe,
+        "all_neighborhoods": all_nb,
+        "features": {
+            "total": 26,
+            "list": [
+                "DIA_SEMANA", "MES", "DIA_ANIO_SIN", "DIA_ANIO_COS",
+                "ES_FIN_SEMANA", "ES_LABORAL", "HORA_PUNTO_MEDIO",
+                "DIA_SEMANA_SIN", "DIA_SEMANA_COS", "MES_SIN", "MES_COS",
+                "UBICACION_TARGET_ENC", "UBICACION_LOG_ODDS",
+                "FRANJA_00-02h", "FRANJA_02-04h", "FRANJA_04-06h",
+                "FRANJA_06-08h", "FRANJA_08-10h", "FRANJA_10-12h",
+                "FRANJA_12-14h", "FRANJA_14-16h", "FRANJA_16-18h",
+                "FRANJA_18-20h", "FRANJA_20-22h", "FRANJA_22-24h",
+                "INTERACCION_FINDE_NOCHE",
+            ],
+        },
+        "tech_stack": ["Python 3.11", "XGBoost 2.1", "FastAPI", "SHAP", "Groq", "Docker", "pandas", "nginx"],
+        "comparison": [
+            {"model": "Logistic Regression", "scenario": "Histórico",   "auc": 0.9129, "f1": 0.8362, "precision": 0.8201, "recall": 0.8483},
+            {"model": "Logistic Regression", "scenario": "Post-COVID",  "auc": 0.8215, "f1": 0.6143, "precision": 0.5128, "recall": 0.7397},
+            {"model": "Random Forest",        "scenario": "Histórico",   "auc": 0.9177, "f1": 0.8386, "precision": 0.8401, "recall": 0.8375},
+            {"model": "Random Forest",        "scenario": "Post-COVID",  "auc": 0.8485, "f1": 0.6389, "precision": 0.5001, "recall": 0.8111},
+            {"model": "XGBoost",              "scenario": "Histórico",   "auc": round(meta.get("ROC AUC", 0.9182), 4), "f1": round(meta.get("F1", 0.8384), 4), "precision": round(meta.get("Precision", 0.8401), 4), "recall": round(meta.get("Recall", 0.8367), 4), "winner": True},
+            {"model": "XGBoost",              "scenario": "Post-COVID",  "auc": 0.8502, "f1": 0.6417, "precision": 0.5023, "recall": 0.8059},
+        ],
+    }
+
+
+# ── GET /api/v1/coordinates/{city} ───────────────────────────────────
+
+@app.get("/api/v1/coordinates/{city}", tags=["modelos"])
+def get_coordinates(city: str):
+    coords_path = _Path(os.getenv("RAG_DIR", _Path(__file__).parent / "rag")) / "documents" / city / "coordinates.json"
+    if not coords_path.exists():
+        raise HTTPException(status_code=404, detail=f"Coordenadas no disponibles para: {city}")
+    coords = _json.loads(coords_path.read_text(encoding="utf-8"))
+    return {"city": city, "count": len(coords), "coordinates": coords}
 
 
 # ── GET /api/v1/neighborhoods/{city} ─────────────────────────────────

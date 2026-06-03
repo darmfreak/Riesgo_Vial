@@ -65,6 +65,7 @@ class CityModel:
         self._model = model_obj
         # encoders contiene: {"target_enc": dict, "log_odds": dict, "global_rate": float}
         self._encoders = encoders
+        self.encoders = encoders
         self.metadata = metadata
         self.neighborhoods = list(encoders.get("target_enc", {}).keys())
 
