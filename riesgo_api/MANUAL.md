@@ -16,6 +16,40 @@
 
 ---
 
+## Orden de preparación de artefactos
+
+El sistema depende de **4 artefactos** que deben generarse en este orden antes de levantar Docker. Si alguno falta o está desactualizado, la funcionalidad afectada falla **silenciosamente** (sin error visible en el frontend).
+
+```
+Paso 0 ── run_tabnet.py / notebook
+              │  genera
+              ▼
+Paso 1 ── models/medellin_xgboost.pkl        ← predicciones + SHAP
+              │  requiere (mismo bundle)
+              ▼
+Paso 2 ── python3 export_model_knowledge.py
+              │  genera
+              ├──▶ rag/documents/medellin/model_knowledge.json  ← Chat IA
+              └──▶ rag/documents/medellin/todos_los_barrios.txt ← endpoint /explain
+
+Paso 3 ── python3 riesgo_api/rag/geocode_barrios.py
+              │  genera
+              └──▶ rag/documents/medellin/coordinates.json      ← mapa Leaflet
+
+Paso 4 ── docker compose up --build -d
+```
+
+| Si omites | Se rompe |
+|---|---|
+| Paso 1 — `.pkl` | La API no arranca (`ModelRegistry` lanza error al inicio) |
+| Paso 2 — `model_knowledge.json` | Chat responde "base de conocimiento no disponible" (Error 404) |
+| Paso 2 — `todos_los_barrios.txt` | `/explain` devuelve explicación sin contexto del barrio (degradada, sin error visible) |
+| Paso 3 — `coordinates.json` | Mapa Leaflet aparece vacío sin círculos (sin error visible) |
+
+> **Después de reentrenar el modelo** siempre ejecuta los pasos 2 y 3 antes de `docker compose up --build`.
+
+---
+
 ## Levantar el proyecto
 
 **Paso 1 — Verificar que Docker esté corriendo:**
@@ -120,25 +154,25 @@ Guía completa de uso, arquitectura, visualizaciones y referencia técnica.
 
 Ubicados en `rag/documents/medellin/`:
 
-| Archivo | Descripción |
-|---|---|
-| `todos_los_barrios.txt` | 369 barrios con tasa histórica y descripción (generado del modelo) |
-| `coordinates.json` | Coordenadas geográficas de 315 barrios (geocodificadas con Nominatim) |
-| `model_knowledge.json` | Knowledge base completo del modelo para el chatbot (96 KB) |
+| Archivo | Usado por | Generado por |
+|---|---|---|
+| `todos_los_barrios.txt` | `explainer.py` — endpoint `/explain` | `export_model_knowledge.py` |
+| `model_knowledge.json` | `main.py` — Chat IA (TF-IDF) | `export_model_knowledge.py` |
+| `coordinates.json` | `main.py` — mapa Leaflet | `rag/geocode_barrios.py` |
 
-Para regenerar `model_knowledge.json` después de reentrenar:
+Para regenerar después de reentrenar el modelo (genera los tres artefactos en orden):
 
 ```bash
 cd ~/Proyectos/Notebooks
+
+# 1. Regenera model_knowledge.json Y todos_los_barrios.txt
 python3 export_model_knowledge.py
-docker compose up --build -d
-```
 
-Para agregar coordenadas faltantes:
+# 2. Regenera coordinates.json (solo si cambian los barrios; tarda ~8 min)
+python3 riesgo_api/rag/geocode_barrios.py
 
-```bash
-cd ~/Proyectos/Notebooks/riesgo_api
-python3 rag/geocode_barrios.py
+# 3. Reconstruir y levantar
+cd riesgo_api
 docker compose up --build -d
 ```
 
@@ -226,11 +260,13 @@ python3 modelo_riesgo_enriquecido_covid.py
 # 4. Copiar el modelo generado
 cp models/medellin_xgboost.pkl riesgo_api/models/
 
-# 5. Generar knowledge base del chatbot
+# 5. Generar knowledge base del chat Y descripciones de barrios para /explain
 python3 export_model_knowledge.py
+# → genera model_knowledge.json y todos_los_barrios.txt
 
-# 6. Geocodificar barrios (opcional, tarda ~8 min)
+# 6. Geocodificar barrios para el mapa (tarda ~8 min)
 python3 riesgo_api/rag/geocode_barrios.py
+# → genera coordinates.json
 
 # 7. Levantar Docker
 cd riesgo_api
@@ -252,6 +288,9 @@ docker compose up --build -d
 | Chat responde "Error 500" | Verificar `GROQ_API_KEY` en `docker-compose.yml` |
 | Chat sin respuesta de IA | Sin `GROQ_API_KEY` usa RAG local sin LLM |
 | Mapa sin barrios | Verificar que `coordinates.json` esté en `rag/documents/medellin/` |
+| `/explain` sin contexto del barrio | Ejecutar `python3 export_model_knowledge.py` para regenerar `todos_los_barrios.txt` |
+| Chat responde "base de conocimiento no disponible" | Ejecutar `python3 export_model_knowledge.py` para regenerar `model_knowledge.json` |
+| Explicaciones hablan de features que ya no existen | El modelo fue reentrenado pero no se corrió `export_model_knowledge.py` después |
 | Contenedor no inicia | `docker compose logs api` para ver el error |
 
 ---

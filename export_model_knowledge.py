@@ -268,5 +268,47 @@ def main():
     print(f"  Decisiones de diseño: {len(design_decisions)}")
     print(f"  Preguntas frecuentes: {len(knowledge['preguntas_frecuentes'])}")
 
+    # ── todos_los_barrios.txt  (RAG de /explain — leído por explainer.py) ──
+    BARRIOS_PATH = Path(__file__).parent / "riesgo_api/rag/documents/medellin/todos_los_barrios.txt"
+
+    avg = enc["global_rate"]
+
+    def _desc(nombre, tasa, nivel):
+        t, a = f"{tasa*100:.0f}%", f"{avg*100:.0f}%"
+        if nivel == "muy alto":
+            return (f"{nombre} (Medellín) tiene una tasa histórica de accidentabilidad del {t}. "
+                    f"Zona de alta concentración de incidentes viales, muy por encima del promedio "
+                    f"de la ciudad ({a}). Especialmente crítica en horas pico y fines de semana nocturnos.")
+        if nivel == "alto":
+            return (f"{nombre} (Medellín) tiene una tasa histórica de accidentabilidad del {t}. "
+                    f"Accidentabilidad elevada respecto al promedio de la ciudad ({a}). "
+                    f"Se recomiendan medidas de precaución adicionales en horas de alta circulación.")
+        if nivel == "moderado":
+            return (f"{nombre} (Medellín) tiene una tasa histórica de accidentabilidad del {t}. "
+                    f"Accidentabilidad cercana al promedio de la ciudad ({a}). "
+                    f"Los incidentes se distribuyen principalmente en hora pico matutina y vespertina. "
+                    f"Flujo vehicular mixto con presencia de motocicletas.")
+        if nivel == "bajo":
+            return (f"{nombre} (Medellín) tiene una tasa histórica de accidentabilidad del {t}. "
+                    f"Accidentabilidad por debajo del promedio de la ciudad ({a}). "
+                    f"Flujo vehicular moderado con incidentes concentrados en puntos específicos.")
+        return (f"{nombre} (Medellín) tiene una tasa histórica de accidentabilidad del {t}. "
+                f"Zona periurbana o de baja densidad vehicular con muy pocos incidentes registrados. "
+                f"Principalmente vías rurales o corredores de baja circulación.")
+
+    blocks = []
+    for b in sorted(all_nb, key=lambda x: x["nombre"]):
+        blocks.append(
+            f"BARRIO: {b['nombre']}\n"
+            f"ZONA: Medellín\n"
+            f"TASA_HISTORICA: {b['tasa']*100:.0f}% (promedio ciudad: {avg*100:.0f}%)\n"
+            f"NIVEL_RIESGO: {b['nivel']}\n"
+            f"DESCRIPCIÓN: {_desc(b['nombre'], b['tasa'], b['nivel'])}"
+        )
+
+    BARRIOS_PATH.write_text("\n\n".join(blocks), encoding="utf-8")
+    print(f"✓ Exportado: {BARRIOS_PATH}")
+    print(f"  Barrios: {len(blocks)}  |  Tamaño: {BARRIOS_PATH.stat().st_size // 1024} KB")
+
 if __name__ == "__main__":
     main()

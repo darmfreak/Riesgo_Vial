@@ -1,0 +1,1 @@
+{"nodes": [{"id": "medellin_model_knowledge", "label": "model_knowledge.json \u2014 RAG Knowledge Base", "file_type": "document", "source_file": "riesgo_api/rag/documents/medellin/model_knowledge.json", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [], "hyperedges": []}

@@ -5,19 +5,29 @@ Plataforma de predicción de riesgo vial urbano. Multi-ciudad, multi-modelo.
 ## Arquitectura
 
 ```
-notebook (.ipynb)
-    ↓ export_models.py
-models/*.pkl  ←──────────────────────────────────┐
-    ↓                                             │
-FastAPI (main.py)                                 │
-  ├── model_loader.py  ← carga y cachea pkl       │
-  ├── explainer.py     ← RAG + SHAP              │
-  └── /api/v1/*                                  │
-         ↓                                        │
-     Nginx                                        │
-         ↓                                        │
-  Frontend HTML ──── llama a la API ─────────────┘
+notebook / run_tabnet.py
+    │  export_models.py
+    ▼
+models/medellin_xgboost.pkl ◄─────────────────────────────┐
+    │                                                       │
+    │  export_model_knowledge.py                            │
+    ├──▶ rag/documents/medellin/model_knowledge.json        │  (Chat IA)
+    └──▶ rag/documents/medellin/todos_los_barrios.txt       │  (/explain)
+
+    rag/geocode_barrios.py                                  │
+    └──▶ rag/documents/medellin/coordinates.json            │  (mapa Leaflet)
+
+FastAPI (main.py)  ◄────────────────────────────────────────┘
+  ├── model_loader.py   ← carga pkl → predicciones + SHAP
+  ├── explainer.py      ← lookup barrios.txt + Groq/Claude
+  └── /api/v1/chat      ← TF-IDF sobre model_knowledge.json
+         ↓
+     Nginx (puerto 80)
+         ↓
+  Frontend HTML  ──── llama a la API (/api/*)
 ```
+
+> Los artefactos deben generarse **antes** de `docker compose up`. Ver `MANUAL.md → Orden de preparación de artefactos`.
 
 ## Estructura de archivos
 
@@ -39,15 +49,26 @@ riesgo_api/
     └── index.html      ← riesgo_urbano_platform.html renombrado
 ```
 
-## Paso 1 — Exportar modelos desde el notebook
-
-Abre `export_models.py`, descomenta los `export_model(...)` que correspondan
-y ejecútalo en el mismo kernel del notebook donde están entrenados los modelos:
+## Paso 1 — Preparar artefactos (antes del primer deploy)
 
 ```bash
+cd ~/Proyectos/Notebooks
+
+# 1a. Exportar modelo desde el notebook
 python export_models.py
-# Crea: models/medellin_xgboost.pkl
+# → Crea: riesgo_api/models/medellin_xgboost.pkl
+
+# 1b. Exportar knowledge base del chat y descripciones de barrios
+python export_model_knowledge.py
+# → Crea: rag/documents/medellin/model_knowledge.json
+# → Crea: rag/documents/medellin/todos_los_barrios.txt
+
+# 1c. Geocodificar barrios para el mapa (tarda ~8 min, solo una vez por ciudad)
+python riesgo_api/rag/geocode_barrios.py
+# → Crea: rag/documents/medellin/coordinates.json
 ```
+
+> Después de reentrenar el modelo, repetir **1a** y **1b** (1c solo si cambian los barrios).
 
 ## Paso 2 — Levantar con Docker
 

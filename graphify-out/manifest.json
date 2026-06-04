@@ -1,0 +1,127 @@
+{
+  "/home/darm/Proyectos/Notebooks/.claude/settings.local.json": {
+    "mtime": 1780038238.1058521,
+    "ast_hash": "b2e8f519d8c3f59b99a191d96aa48af2",
+    "semantic_hash": "b2e8f519d8c3f59b99a191d96aa48af2"
+  },
+  "/home/darm/Proyectos/Notebooks/export_model_knowledge.py": {
+    "mtime": 1780456315.4259589,
+    "ast_hash": "10560fbd65cd963386fce70f00d30d1e",
+    "semantic_hash": "10560fbd65cd963386fce70f00d30d1e"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/explainer.py": {
+    "mtime": 1780458473.8094609,
+    "ast_hash": "32f75556eb3687944c08594f4317b91e",
+    "semantic_hash": "32f75556eb3687944c08594f4317b91e"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/export_models.py": {
+    "mtime": 1780016844.410977,
+    "ast_hash": "9b69288744aeed88b0e8f619ab846866",
+    "semantic_hash": "9b69288744aeed88b0e8f619ab846866"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/main.py": {
+    "mtime": 1780537701.0443919,
+    "ast_hash": "6010cc400ea7b1e8884f12aad59aa432",
+    "semantic_hash": "6010cc400ea7b1e8884f12aad59aa432"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/model_loader.py": {
+    "mtime": 1780453109.0761147,
+    "ast_hash": "6bf5cd80189d2a66430c289749e4d6b8",
+    "semantic_hash": "6bf5cd80189d2a66430c289749e4d6b8"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/build_index.py": {
+    "mtime": 1780031832.5808318,
+    "ast_hash": "19af7d787a44b724ec705fbace38cb03",
+    "semantic_hash": "19af7d787a44b724ec705fbace38cb03"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/documents/medellin/coordinates.json": {
+    "mtime": 1780455376.469913,
+    "ast_hash": "5da144c6e59ef4ce1d64bda4b5e81493",
+    "semantic_hash": "5da144c6e59ef4ce1d64bda4b5e81493"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/documents/medellin/model_knowledge.json": {
+    "mtime": 1780456325.016845,
+    "ast_hash": "336d665abbf10710c96923543250a9ed",
+    "semantic_hash": "336d665abbf10710c96923543250a9ed"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/geocode_barrios.py": {
+    "mtime": 1780454224.4210572,
+    "ast_hash": "74dda3007010c9b567f61bd841b7816f",
+    "semantic_hash": "74dda3007010c9b567f61bd841b7816f"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/tests/__init__.py": {
+    "mtime": 1780032514.49503,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/tests/test_api.py": {
+    "mtime": 1780032536.4065351,
+    "ast_hash": "a0c458013d6c7b8000084d97de5b9928",
+    "semantic_hash": "a0c458013d6c7b8000084d97de5b9928"
+  },
+  "/home/darm/Proyectos/Notebooks/run_notebook.py": {
+    "mtime": 1780029772.116861,
+    "ast_hash": "2a6bbc8524f9146f638e66b42c2708ab",
+    "semantic_hash": "2a6bbc8524f9146f638e66b42c2708ab"
+  },
+  "/home/darm/Proyectos/Notebooks/run_tabnet.py": {
+    "mtime": 1780033303.0744224,
+    "ast_hash": "094465c2b64cea383e856a4adcff8a37",
+    "semantic_hash": "094465c2b64cea383e856a4adcff8a37"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/MANUAL.md": {
+    "mtime": 1780459911.447529,
+    "ast_hash": "84acd0807747fa2ad4c768859fde96e3",
+    "semantic_hash": "84acd0807747fa2ad4c768859fde96e3"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/PLAN_CLAUDE_CODE.md": {
+    "mtime": 1780029458.7706208,
+    "ast_hash": "cbb9ab722b2d10929a86f39400b3da0d",
+    "semantic_hash": "cbb9ab722b2d10929a86f39400b3da0d"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/README.md": {
+    "mtime": 1780016844.398296,
+    "ast_hash": "5ee39e162daf00265b858d0c14499ecc",
+    "semantic_hash": "5ee39e162daf00265b858d0c14499ecc"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/docker-compose.yml": {
+    "mtime": 1780535788.853307,
+    "ast_hash": "cc3d0eab4a2c66f168d3bcd6aba0e49b",
+    "semantic_hash": "cc3d0eab4a2c66f168d3bcd6aba0e49b"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/frontend/index.html": {
+    "mtime": 1780546339.1677215,
+    "ast_hash": "f56a56f37bc58cbe24fc52ebe55b8b53",
+    "semantic_hash": "f56a56f37bc58cbe24fc52ebe55b8b53"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/documents/medellin/barrios.txt": {
+    "mtime": 1780031556.2430832,
+    "ast_hash": "06abafa520b3ac23414e8e97031ddd6a",
+    "semantic_hash": "06abafa520b3ac23414e8e97031ddd6a"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/documents/medellin/estadisticas_viales.txt": {
+    "mtime": 1780031573.22822,
+    "ast_hash": "6be2a80aa7ad19f5eccc79178a50f37b",
+    "semantic_hash": "6be2a80aa7ad19f5eccc79178a50f37b"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/documents/medellin/movilidad_medellin.txt": {
+    "mtime": 1780031592.7623775,
+    "ast_hash": "25127918ac72669350eb0fc0d4fab8ce",
+    "semantic_hash": "25127918ac72669350eb0fc0d4fab8ce"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/rag/documents/medellin/todos_los_barrios.txt": {
+    "mtime": 1780034279.8579533,
+    "ast_hash": "7d6d4f0eb80a664105f8d5dc92f39506",
+    "semantic_hash": "7d6d4f0eb80a664105f8d5dc92f39506"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/requirements.txt": {
+    "mtime": 1780451571.5852978,
+    "ast_hash": "aefc9d87215283d747b994556d265105",
+    "semantic_hash": "aefc9d87215283d747b994556d265105"
+  },
+  "/home/darm/Proyectos/Notebooks/riesgo_api/riesgo_urbano_platform.html": {
+    "mtime": 1780017012.2633133,
+    "ast_hash": "c126b8e6d77de5cfdba3b5923141befb",
+    "semantic_hash": "c126b8e6d77de5cfdba3b5923141befb"
+  }
+}
