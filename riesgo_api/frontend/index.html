@@ -136,7 +136,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.85);backdrop-fi
 /* ============================================================
    PAGE 2 — DASHBOARD
    ============================================================ */
-.dashboard{padding:1.75rem 2rem}
+.dashboard{padding:1.75rem 2rem;max-width:1100px;margin:0 auto}
 .dash-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem}
 .dash-title{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-0.5px;flex:1}
 .dash-controls{display:flex;gap:8px;align-items:center}
@@ -163,7 +163,7 @@ canvas{border-radius:4px}
 
 /* Heatmap */
 .heatmap-grid{display:grid;gap:2px}
-.hm-cell{height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;cursor:pointer;transition:transform .1s}
+.hm-cell{height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;cursor:pointer;transition:transform .1s;flex:1;min-width:0}
 .hm-cell:hover{transform:scale(1.05);z-index:1}
 .hm-row-label{font-family:var(--mono);font-size:10px;color:var(--text3);display:flex;align-items:center;width:28px;flex-shrink:0}
 .hm-row{display:flex;align-items:center;gap:2px}
@@ -184,7 +184,7 @@ canvas{border-radius:4px}
 /* ============================================================
    PAGE 3 — MODELOS
    ============================================================ */
-.models-page{padding:2rem}
+.models-page{padding:2rem;max-width:1100px;margin:0 auto}
 .models-header{margin-bottom:2.5rem}
 .models-title{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
 .models-sub{font-size:14px;color:var(--text2);max-width:500px;line-height:1.6}
@@ -228,7 +228,7 @@ canvas{border-radius:4px}
 /* ============================================================
    PAGE 4 — DOCUMENTACIÓN TÉCNICA
    ============================================================ */
-.docs-page{padding:2rem}
+.docs-page{padding:2rem;max-width:1100px;margin:0 auto}
 .docs-hero{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
 .docs-hero::after{content:'ROC AUC 0.9182';position:absolute;right:2.5rem;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:64px;font-weight:500;color:rgba(124,109,250,0.08);letter-spacing:-3px;pointer-events:none}
 .docs-hero-title{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-1.5px;margin-bottom:8px}
@@ -276,7 +276,21 @@ canvas{border-radius:4px}
 .leaflet-control-zoom a:hover{background:var(--surface2)!important;color:var(--text)!important}
 .leaflet-control-attribution{background:rgba(10,10,15,.7)!important;color:var(--text3)!important;font-size:9px!important}
 .leaflet-control-attribution a{color:var(--text3)!important}
-#mapContainer{height:400px;border-radius:8px;overflow:hidden}
+#mapContainer{height:400px;border-radius:8px;overflow:hidden;flex:1}
+.map-with-ranks{display:flex;gap:14px;align-items:flex-start;overflow-x:auto}
+.map-ranks{display:flex;flex-direction:column;gap:12px;min-width:160px;max-width:180px;flex-shrink:0}
+.map-rank-group{}
+.map-rank-title{font-size:10px;text-transform:uppercase;letter-spacing:.7px;font-weight:600;margin-bottom:5px;font-family:var(--mono)}
+.map-rank-list{display:flex;flex-direction:column;gap:3px}
+.map-rank-item{font-size:12px;color:var(--text2);display:flex;justify-content:space-between;align-items:center;padding:3px 6px;border-radius:4px;cursor:pointer;transition:background .15s}
+.map-rank-item:hover{background:var(--surface2)}
+.map-rank-item .rank-pct{font-family:var(--mono);font-size:11px;color:var(--text3)}
+@media(max-width:768px){
+  .map-with-ranks{flex-direction:column}
+  .map-ranks{flex-direction:row;max-width:100%;overflow-x:auto;gap:8px;padding-bottom:4px}
+  .map-rank-group{min-width:140px;flex-shrink:0}
+  #mapContainer{height:300px;width:100%}
+}
 
 /* Heatmap selected row */
 .hm-row.selected-nb .hm-row-label { color: var(--accent2) !important; font-weight: 600; }
@@ -296,11 +310,120 @@ canvas{border-radius:4px}
   border-radius: 6px; cursor: pointer; transition: all .15s; font-family: var(--body); }
 .map-btn:hover { border-color: var(--accent); color: var(--accent2); }
 
+/* ============================================================
+   PAGE 6 — ARQUITECTURA
+   ============================================================ */
+.arch-page{padding:2rem;max-width:1100px;margin:0 auto}
+.arch-page-title{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.arch-page-sub{font-size:14px;color:var(--text2);max-width:580px;line-height:1.6;margin-bottom:2rem}
+.arch-section-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:10px}
+.arch-stack{display:flex;flex-direction:column;gap:6px;margin-bottom:2rem}
+.arch-block{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:10px;background:var(--bg2);border:0.5px solid var(--border);transition:all .2s;cursor:default}
+.arch-block:hover{border-color:var(--accent);background:var(--bg3)}
+.arch-block-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.arch-block-body{flex:1}
+.arch-block-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.arch-block-desc{font-size:12px;color:var(--text2)}
+.arch-block-tags{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.arch-block-tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:var(--surface);border:0.5px solid var(--border2);color:var(--text3)}
+.arch-connector{text-align:center;color:var(--text3);font-size:12px;line-height:1;margin:0 0 0 18px;height:14px;display:flex;align-items:center;gap:6px}
+.arch-connector::before,.arch-connector::after{content:'';flex:1;height:0.5px;background:var(--border2)}
+.arch-flow-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
+.arch-flow-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;flex-direction:column;gap:6px}
+.arch-flow-num{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.arch-flow-title{font-size:13px;font-weight:600;color:var(--text)}
+.arch-flow-body{font-size:12px;color:var(--text2);line-height:1.65}
+@media(max-width:768px){.arch-flow-grid{grid-template-columns:1fr}.arch-page{padding:1rem}}
+
+/* ============================================================
+   PAGE 7 — ACERCA DE
+   ============================================================ */
+.about-page{padding:2rem;max-width:900px;margin:0 auto}
+.about-hero{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.about-hero-title{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.about-hero-sub{font-size:14px;color:var(--text2);max-width:520px;line-height:1.7}
+.about-section-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);font-weight:500;margin-bottom:12px}
+.about-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:2rem}
+.about-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;gap:10px}
+.about-card-role{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.7px;color:var(--accent2);margin-bottom:2px}
+.about-card-name{font-size:16px;font-weight:700;color:var(--text);font-family:var(--display)}
+.about-card-detail{font-size:12px;color:var(--text2);line-height:1.65}
+.about-card-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.about-link{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:4px;border:0.5px solid var(--border2);color:var(--text3);text-decoration:none;transition:border-color .15s,color .15s;cursor:pointer}
+.about-link:hover{border-color:var(--accent);color:var(--accent2)}
+.about-placeholder{color:var(--text3);font-style:italic}
+.about-dataset-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:2rem}
+.about-dataset-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.about-dataset-body{font-size:13px;color:var(--text2);line-height:1.7}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr}.about-page{padding:1rem}.about-hero{padding:1.5rem 1rem}}
+
 /* Animations */
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .page.active .panel-title,.page.active .dash-title,.page.active .models-title,.page.active .docs-hero-title{animation:fadeUp .35s ease both}
 .spinning{animation:pulse 1.5s ease-in-out infinite}
+
+/* ── RESPONSIVE MÓVIL ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav{padding:0 12px;gap:8px}
+  .nav-links{gap:0;overflow-x:auto;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-link{font-size:12px;padding:6px 8px;white-space:nowrap}
+  .nav-brand{font-size:14px}
+  .nav-city{display:none}
+
+  /* Consulta */
+  .consult-layout{grid-template-columns:1fr;min-height:auto}
+  .consult-form{border-right:none;border-bottom:0.5px solid var(--border);max-height:none}
+  .result-panel{padding:1.5rem 1rem}
+
+  /* Dashboard */
+  .dashboard{padding:1rem}
+  .dash-header{flex-direction:column;align-items:flex-start;gap:8px}
+  .dash-controls{width:100%;justify-content:flex-start}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .dash-grid{grid-template-columns:1fr}
+  .dash-grid-3{grid-template-columns:1fr}
+  .zones-table{font-size:12px}
+  .zones-table th,.zones-table td{padding:6px 8px;white-space:nowrap}
+  .hm-cell{flex:0 0 34px !important;min-width:34px}
+  .hm-col-label{flex:0 0 34px !important}
+
+  /* Modelos */
+  .models-page{padding:1rem}
+  .models-grid{grid-template-columns:1fr}
+  .metrics-grid{grid-template-columns:repeat(3,1fr)}
+  .pipeline{flex-wrap:wrap;gap:8px}
+  .pipeline::before{display:none}
+  .pipe-step{flex:0 0 calc(50% - 4px)}
+  .comp-table{font-size:11px}
+  .comp-table th,.comp-table td{padding:6px 8px}
+
+  /* Docs */
+  .docs-page{padding:1rem}
+  .docs-cols{grid-template-columns:1fr}
+  .docs-hero{padding:1.5rem 1rem}
+
+  /* Chat */
+  #page-chat>div{padding:0 4px}
+
+  /* Heatmap */
+  #heatmapWrap{overflow-x:auto}
+
+  /* General */
+  .page{padding:12px 8px}
+  .model-detail{padding:1rem}
+  .chart-card{padding:1rem}
+}
+
+@media (max-width: 480px) {
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-link{font-size:11px;padding:5px 6px}
+  .result-panel{padding:1rem}
+  .risk-number{font-size:52px}
+}
 </style>
 </head>
 <body>
@@ -313,6 +436,8 @@ canvas{border-radius:4px}
     <button class="nav-link" onclick="showPage('models',this)">Modelos</button>
     <button class="nav-link" onclick="showPage('chat',this)">Chat IA</button>
     <button class="nav-link" onclick="showPage('docs',this)">Documentación</button>
+    <button class="nav-link" onclick="showPage('arch',this)">Arquitectura</button>
+    <button class="nav-link" onclick="showPage('about',this)">Acerca de</button>
   </div>
   <div class="nav-city">
     <select class="city-selector" id="cityGlobal" onchange="switchCity(this.value)">
@@ -475,23 +600,34 @@ canvas{border-radius:4px}
         <span id="mapToggleIcon" style="margin-left:auto;font-size:11px;color:var(--text3);font-family:var(--mono)">mostrar ↓</span>
       </div>
       <div id="mapCollapsible" style="display:none">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-          <span>Riesgo promedio del día · <strong id="mapBarrioCount" style="color:var(--text2)">—</strong> barrios</span>
-          <span style="display:flex;align-items:center;gap:6px">
-            <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:#ff4d6d;display:inline-block"></span> Alto ≥ 70%</span>
-            <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:#ffa940;display:inline-block"></span> Medio 40–70%</span>
-            <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:50%;background:#52c41a;display:inline-block"></span> Bajo &lt; 40%</span>
-          </span>
-          <span style="color:var(--text3)">● Tamaño proporcional al riesgo · clic para consultar</span>
+        <!-- Layout: mapa + rankings -->
+        <div class="map-with-ranks">
+          <div id="mapContainer" style="min-width:280px"></div>
+
+          <!-- Rankings top 5 -->
+          <div class="map-ranks">
+            <div class="map-rank-group">
+              <div class="map-rank-title" style="color:#ff4d6d">Alto riesgo</div>
+              <div id="rankHigh" class="map-rank-list"></div>
+            </div>
+            <div class="map-rank-group">
+              <div class="map-rank-title" style="color:#ffa940">Moderado</div>
+              <div id="rankMed" class="map-rank-list"></div>
+            </div>
+            <div class="map-rank-group">
+              <div class="map-rank-title" style="color:#52c41a">Tranquilo</div>
+              <div id="rankLow" class="map-rank-list"></div>
+            </div>
+          </div>
         </div>
-        <div id="mapContainer"></div>
       </div>
     </div>
 
     <div class="dash-grid-3">
       <div class="chart-card">
         <div class="chart-card-title">Mapa de riesgo — día × franja horaria</div>
-        <div id="heatmapWrap">
+        <div style="overflow:hidden">
+        <div id="heatmapWrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch">
           <div id="heatmapLoading" style="padding:2rem;text-align:center;color:var(--text3);font-size:13px;font-family:var(--mono)">
             <div style="width:100%;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:12px">
               <div id="heatmapLoadBar" style="height:100%;width:30%;background:var(--accent);border-radius:2px;animation:shimmer 1.2s ease-in-out infinite"></div>
@@ -499,13 +635,16 @@ canvas{border-radius:4px}
             Cargando mapa de riesgo…
           </div>
         </div>
+        </div><!-- /overflow:hidden -->
       </div>
       <div class="chart-card">
         <div class="chart-card-title">Zonas de mayor riesgo</div>
-        <table class="zones-table">
-          <thead><tr><th>Barrio</th><th>Score</th><th>Nivel</th></tr></thead>
-          <tbody id="zonesTableBody"></tbody>
-        </table>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+          <table class="zones-table" style="min-width:240px">
+            <thead><tr><th>Barrio</th><th>Score</th><th>Nivel</th></tr></thead>
+            <tbody id="zonesTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -574,10 +713,12 @@ canvas{border-radius:4px}
     <!-- Model comparison -->
     <div class="model-detail">
       <div class="md-title">Comparativa histórico completo vs post-COVID (2020+)</div>
-      <table class="comp-table">
-        <thead><tr><th>Modelo</th><th>Escenario</th><th>ROC AUC</th><th>F1</th><th>Precisión</th><th>Recall</th></tr></thead>
-        <tbody id="compTableBody"><!-- cargado dinámicamente --></tbody>
-      </table>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table class="comp-table" style="min-width:520px">
+          <thead><tr><th>Modelo</th><th>Escenario</th><th>ROC AUC</th><th>F1</th><th>Precisión</th><th>Recall</th></tr></thead>
+          <tbody id="compTableBody"><!-- cargado dinámicamente --></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -893,6 +1034,330 @@ canvas{border-radius:4px}
           <div style="color:var(--text3)">Lanza pipeline de entrenamiento asíncrono en background thread<br>Body: {data_path, algo, year_from?}. Consultar estado en /api/v1/jobs/{job_id}</div>
         </div>
       </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== PAGE 6: ARQUITECTURA ===================== -->
+<div id="page-arch" class="page">
+  <div class="arch-page">
+
+    <div class="arch-page-title">Arquitectura del sistema</div>
+    <div class="arch-page-sub">Visión completa de las capas técnicas que componen RiesgoVial, desde los datos de entrenamiento hasta el cliente web.</div>
+
+    <!-- Stack de capas -->
+    <div class="arch-section-label">Stack de capas</div>
+    <div class="arch-stack">
+
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(54,207,201,0.12);color:#36cfc9">🌐</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">Cliente Web (Frontend)</div>
+          <div class="arch-block-desc">SPA en HTML/CSS/JS puro. Cinco módulos: Consulta (formulario + gauge), Dashboard (heatmap + mapa Leaflet + KPIs), Modelos (métricas + comparativa), Chat IA (conversación con historial) y Documentación. Sin frameworks — sin dependencias de build.</div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">HTML5</span>
+          <span class="arch-block-tag">Leaflet 1.9</span>
+          <span class="arch-block-tag">Chart.js 4</span>
+          <span class="arch-block-tag">marked.js</span>
+        </div>
+      </div>
+
+      <div class="arch-connector">HTTP / JSON — puerto 80</div>
+
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(124,109,250,0.12);color:#7c6dfa">⚙️</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">Servidor Proxy (Nginx)</div>
+          <div class="arch-block-desc">Sirve el HTML estático desde <code style="font-family:var(--mono);font-size:11px">./frontend</code> en el puerto 80 y redirige todas las peticiones <code style="font-family:var(--mono);font-size:11px">/api/*</code> al contenedor FastAPI por proxy reverso. Headers <code style="font-family:var(--mono);font-size:11px">no-cache</code> sobre el HTML para entregas inmediatas de cambios.</div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">nginx 1.27-alpine</span>
+          <span class="arch-block-tag">Docker</span>
+        </div>
+      </div>
+
+      <div class="arch-connector">Proxy reverso → puerto 8000 interno</div>
+
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(255,169,64,0.12);color:#ffa940">🚀</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">API REST (FastAPI + Gunicorn)</div>
+          <div class="arch-block-desc">Expone 9 endpoints REST: <code style="font-family:var(--mono);font-size:11px">predict</code>, <code style="font-family:var(--mono);font-size:11px">explain</code>, <code style="font-family:var(--mono);font-size:11px">chat</code>, <code style="font-family:var(--mono);font-size:11px">heatmap</code>, <code style="font-family:var(--mono);font-size:11px">neighborhoods</code>, <code style="font-family:var(--mono);font-size:11px">coordinates</code>, <code style="font-family:var(--mono);font-size:11px">cities</code>, <code style="font-family:var(--mono);font-size:11px">model-info</code> y <code style="font-family:var(--mono);font-size:11px">train</code>. Servida con Gunicorn + 2 UvicornWorkers asíncronos. Valida con Pydantic v2.</div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">FastAPI 0.115</span>
+          <span class="arch-block-tag">Gunicorn 22</span>
+          <span class="arch-block-tag">Pydantic v2</span>
+          <span class="arch-block-tag">Python 3.11</span>
+        </div>
+      </div>
+
+      <div class="arch-connector">Se bifurca según endpoint</div>
+
+      <!-- Rama 1: Predicción -->
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(82,196,26,0.12);color:#52c41a">🤖</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">Motor de predicción — XGBoost + SHAP</div>
+          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">model_loader.py</code> construye un vector de 26 features (target encoding del barrio, codificaciones cíclicas, dummies de franja) y llama a <code style="font-family:var(--mono);font-size:11px">predict_proba()</code> en ~12 ms. Para el endpoint <code style="font-family:var(--mono);font-size:11px">/explain</code>, <code style="font-family:var(--mono);font-size:11px">TreeExplainer</code> calcula los valores SHAP y devuelve el top 5 de variables influyentes.</div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">XGBoost 2.1</span>
+          <span class="arch-block-tag">SHAP 0.46</span>
+          <span class="arch-block-tag">scikit-learn 1.5</span>
+        </div>
+      </div>
+
+      <div class="arch-connector">Busca contexto en texto plano</div>
+
+      <!-- Rama 2: RAG Explain -->
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(255,77,109,0.12);color:#ff4d6d">📝</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">RAG de explicaciones — lookup de barrios + LLM</div>
+          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">explainer.py</code> recupera la descripción del barrio desde <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> (369 entradas) por coincidencia exacta de nombre. Combina el contexto con la narrativa SHAP y envía al LLM. <strong style="color:var(--text)">Proveedor primario: Groq</strong> (<code style="font-family:var(--mono);font-size:11px">gpt-oss-120b</code>, max 400 tokens, temp 0.4). Fallback: <strong style="color:var(--text)">Anthropic Claude</strong> (<code style="font-family:var(--mono);font-size:11px">claude-sonnet-4-6</code>). Sin API key: devuelve el contexto crudo.</div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">Groq</span>
+          <span class="arch-block-tag">Anthropic Claude</span>
+          <span class="arch-block-tag">todos_los_barrios.txt</span>
+        </div>
+      </div>
+
+      <div class="arch-connector">TF-IDF sobre base de conocimiento JSON</div>
+
+      <!-- Rama 3: Chat RAG -->
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(124,109,250,0.12);color:#a594fb">💬</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">RAG de Chat — TF-IDF + Groq + historial</div>
+          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">main.py /chat</code> usa <code style="font-family:var(--mono);font-size:11px">TfidfVectorizer</code> (scikit-learn, bigramas, <code style="font-family:var(--mono);font-size:11px">sublinear_tf</code>) indexado sobre <code style="font-family:var(--mono);font-size:11px">model_knowledge.json</code>. Recupera top-5 chunks por similitud coseno y los inyecta en el system prompt. Groq genera la respuesta manteniendo hasta 10 turnos de historial. El índice se construye en memoria la primera vez que se consulta la ciudad.</div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">TF-IDF (sklearn)</span>
+          <span class="arch-block-tag">Groq gpt-oss-120b</span>
+          <span class="arch-block-tag">model_knowledge.json</span>
+        </div>
+      </div>
+
+      <div class="arch-connector">Lee de disco al arrancar (modelo) / en primera consulta (RAG)</div>
+
+      <div class="arch-block">
+        <div class="arch-block-icon" style="background:rgba(54,207,201,0.12);color:#36cfc9">🗄️</div>
+        <div class="arch-block-body">
+          <div class="arch-block-name">Capa de persistencia</div>
+          <div class="arch-block-desc">
+            <code style="font-family:var(--mono);font-size:11px">models/medellin_xgboost.pkl</code> — modelo + encoders + metadata (~2.4 MB, protocol 5).<br>
+            <code style="font-family:var(--mono);font-size:11px">rag/documents/medellin/todos_los_barrios.txt</code> — descripciones de 369 barrios para explain.<br>
+            <code style="font-family:var(--mono);font-size:11px">rag/documents/medellin/model_knowledge.json</code> — base de conocimiento para chat (métricas, barrios, FAQs, decisiones de diseño).<br>
+            <code style="font-family:var(--mono);font-size:11px">rag/documents/medellin/coordinates.json</code> — coordenadas geocodificadas para el mapa Leaflet.
+          </div>
+        </div>
+        <div class="arch-block-tags">
+          <span class="arch-block-tag">pickle p5</span>
+          <span class="arch-block-tag">JSON</span>
+          <span class="arch-block-tag">Docker volume :ro</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Flujos -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:2rem">
+
+      <!-- Flujo predicción -->
+      <div>
+        <div class="arch-section-label">Flujo — consulta de riesgo</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">01 → POST /predict + /explain</div>
+            <div class="arch-flow-body">Frontend envía <code style="font-family:var(--mono);font-size:11px">{city, neighborhood, day_of_week, hour, fecha?}</code>. Dos llamadas paralelas: una a <code style="font-family:var(--mono);font-size:11px">/predict</code> (~12 ms) y otra a <code style="font-family:var(--mono);font-size:11px">/explain</code> (~2–4 s).</div>
+          </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">02 → Feature engineering</div>
+            <div class="arch-flow-body">26 variables: target enc + log-odds del barrio, hora punto medio, codificaciones cíclicas (día, mes, día-año), flag fin de semana, interacción noche × finde, 12 dummies de franja.</div>
+          </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">03 → XGBoost + SHAP</div>
+            <div class="arch-flow-body"><code style="font-family:var(--mono);font-size:11px">predict_proba()[0][1]</code> devuelve la probabilidad. <code style="font-family:var(--mono);font-size:11px">TreeExplainer</code> calcula contribuciones individuales. Se retorna el top 5 por |valor|.</div>
+          </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">04 → RAG + LLM</div>
+            <div class="arch-flow-body">Lookup en <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> + narrativa SHAP → prompt a Groq → explicación en 3 oraciones. Claude como fallback automático.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flujo chat -->
+      <div>
+        <div class="arch-section-label">Flujo — Chat IA</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">01 → POST /api/v1/chat</div>
+            <div class="arch-flow-body">Frontend envía <code style="font-family:var(--mono);font-size:11px">{message, city, history[]}</code>. El historial incluye los últimos 10 turnos (usuario + asistente) para dar contexto de conversación al LLM.</div>
+          </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">02 → Recuperación TF-IDF</div>
+            <div class="arch-flow-body"><code style="font-family:var(--mono);font-size:11px">_retrieve_context()</code> vectoriza el mensaje con TF-IDF (bigramas), calcula similitud coseno contra el índice en memoria y recupera los 5 chunks más relevantes de <code style="font-family:var(--mono);font-size:11px">model_knowledge.json</code>.</div>
+          </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">03 → Construcción de prompt</div>
+            <div class="arch-flow-body">System prompt con los 5 chunks como contexto + reglas estrictas (max 3 oraciones, sin código, en español). Luego los turnos de historial y el nuevo mensaje del usuario.</div>
+          </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">04 → Groq → respuesta</div>
+            <div class="arch-flow-body">Groq (<code style="font-family:var(--mono);font-size:11px">gpt-oss-120b</code>, max 1000 tokens, temp 0.3) genera la respuesta. La API devuelve el texto junto con los contadores de tokens (input / output / total).</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Infraestructura -->
+    <div class="arch-section-label">Infraestructura de despliegue</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:2rem">
+      <div class="arch-flow-card">
+        <div class="arch-flow-title">Docker Compose</div>
+        <div class="arch-flow-body">Dos servicios en red bridge <code style="font-family:var(--mono);font-size:11px">riesgovial_net</code>: <code style="font-family:var(--mono);font-size:11px">riesgovial_api</code> (FastAPI, puerto 8000 interno) y <code style="font-family:var(--mono);font-size:11px">riesgovial_nginx</code> (puerto 80). Nginx espera a que la API pase el healthcheck antes de arrancar.</div>
+      </div>
+      <div class="arch-flow-card">
+        <div class="arch-flow-title">Variables de entorno</div>
+        <div class="arch-flow-body"><code style="font-family:var(--mono);font-size:11px">GROQ_API_KEY</code> — requerida para Chat e Explain.<br><code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code> — opcional, fallback del Explain.<br><code style="font-family:var(--mono);font-size:11px">MODELS_DIR</code>, <code style="font-family:var(--mono);font-size:11px">RAG_DIR</code>, <code style="font-family:var(--mono);font-size:11px">WORKERS</code> — configuración de rutas y concurrencia.</div>
+      </div>
+      <div class="arch-flow-card">
+        <div class="arch-flow-title">Caché en memoria</div>
+        <div class="arch-flow-body">Heatmap cacheado por <code style="font-family:var(--mono);font-size:11px">(city, fecha)</code>: primera carga ~4 s (370 × 12 inferencias), caché ~30 ms. Índice TF-IDF del chat construido en primera consulta por ciudad. Descripciones de barrios cacheadas por ciudad.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== PAGE 7: ACERCA DE ===================== -->
+<div id="page-about" class="page">
+  <div class="about-page">
+
+    <div class="about-hero">
+      <div class="about-hero-title">Acerca de RiesgoVial</div>
+      <div class="about-hero-sub">Plataforma académica de predicción de riesgo vial urbano desarrollada en el marco del <strong style="color:var(--text)">Programa Talento Tech 2026</strong>. Construida a partir de datos reales de accidentalidad de la ciudad de Medellín (2008–2025).</div>
+      <div style="margin-top:1.25rem;display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:0.5px solid rgba(124,109,250,0.3);padding:6px 14px;border-radius:8px">
+        <span style="font-size:13px;font-weight:600;color:var(--accent2)">Talento Tech 2026</span>
+        <span style="font-size:12px;color:var(--text2)">— Gobernación Nacional</span>
+      </div>
+    </div>
+
+    <!-- Desarrolladores -->
+    <div class="about-section-label">Equipo de desarrollo</div>
+    <div class="about-grid" style="margin-bottom:2rem">
+      <div class="about-card">
+        <div>
+          <div class="about-card-role">Desarrollador</div>
+          <div class="about-card-name">Juan Camilo <span class="about-placeholder" style="font-size:13px;font-weight:400">(apellido por definir)</span></div>
+        </div>
+        <div class="about-card-detail about-placeholder">Institución, semestre, rol en el proyecto…</div>
+        <div class="about-card-links">
+          <span class="about-link">GitHub</span>
+          <span class="about-link">LinkedIn</span>
+        </div>
+      </div>
+      <div class="about-card">
+        <div>
+          <div class="about-card-role">Desarrollador</div>
+          <div class="about-card-name">David Alejandro Restrepo Madrid</div>
+        </div>
+        <div class="about-card-detail about-placeholder">Institución, semestre, rol en el proyecto…</div>
+        <div class="about-card-links">
+          <span class="about-link">GitHub</span>
+          <span class="about-link">LinkedIn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Docentes / Asesores -->
+    <div class="about-section-label">Docentes y asesores</div>
+    <div class="about-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:2rem">
+      <div class="about-card">
+        <div>
+          <div class="about-card-role">Profesora — Ingeniería / Datos</div>
+          <div class="about-card-name">Diana Catalina Lopera</div>
+        </div>
+        <div class="about-card-detail about-placeholder">Institución, materia o línea de investigación…</div>
+        <div class="about-card-links">
+          <span class="about-link">Perfil institucional</span>
+        </div>
+      </div>
+      <div class="about-card">
+        <div>
+          <div class="about-card-role">Profesor — Ingeniería / Datos</div>
+          <div class="about-card-name">Marcelo <span class="about-placeholder" style="font-size:13px;font-weight:400">(apellido por definir)</span></div>
+        </div>
+        <div class="about-card-detail about-placeholder">Institución, materia o línea de investigación…</div>
+        <div class="about-card-links">
+          <span class="about-link">Perfil institucional</span>
+        </div>
+      </div>
+      <div class="about-card">
+        <div>
+          <div class="about-card-role">Profesora — Psicología</div>
+          <div class="about-card-name about-placeholder">Nombre por definir</div>
+        </div>
+        <div class="about-card-detail about-placeholder">Institución, materia o línea de investigación…</div>
+        <div class="about-card-links">
+          <span class="about-link">Perfil institucional</span>
+        </div>
+      </div>
+      <div class="about-card">
+        <div>
+          <div class="about-card-role">Monitor</div>
+          <div class="about-card-name about-placeholder">Nombre por definir</div>
+        </div>
+        <div class="about-card-detail about-placeholder">Institución, área de apoyo…</div>
+        <div class="about-card-links">
+          <span class="about-link">Perfil institucional</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dataset -->
+    <div class="about-section-label">Fuente del dataset</div>
+    <div class="about-dataset-card">
+      <div class="about-dataset-title">Sistema de Información de Accidentalidad Vial — Medellín</div>
+      <div class="about-dataset-body" style="margin-bottom:1rem">
+        El dataset utilizado para entrenar el modelo contiene <strong style="color:var(--text)">674,394 registros reales</strong> de incidentes viales ocurridos en Medellín entre 2008 y 2025. Los datos fueron entregados en formato Excel (<code style="font-family:var(--mono);font-size:11px">Fatal_Road_Traffic_Normalizado.xlsx</code>) e incluyen localización por barrio, fecha, hora y tipo de incidente.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <div class="about-card-role" style="margin-bottom:4px">Propietario / Proveedor</div>
+          <div class="about-card-name" style="font-size:14px">Cristian David Correa Álvarez</div>
+          <div class="about-card-detail" style="margin-top:4px">Universidad Nacional de Colombia<br><a href="mailto:crdcorreaal@unal.edu.co" style="color:var(--accent2);text-decoration:none;font-family:var(--mono);font-size:11px">crdcorreaal@unal.edu.co</a></div>
+        </div>
+        <div>
+          <div class="about-card-role" style="margin-bottom:4px">Licencia y uso</div>
+          <div class="about-card-detail">
+            <span style="color:var(--text);font-weight:600">CC BY 4.0</span> — Creative Commons Attribution 4.0 International.<br><br>
+            Puedes compartir, copiar y modificar este dataset siempre que otorgues el crédito apropiado, incluyas un enlace a la licencia CC BY e indiques si realizaste cambios. No puedes hacerlo de manera que sugiera que el titular de los derechos respalda tu uso. Puede requerirse permiso adicional para contenido dentro del dataset identificado como de terceros.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tecnologías -->
+    <div class="about-section-label">Tecnologías utilizadas</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem">
+      <span class="tech-tag">Python 3.11</span>
+      <span class="tech-tag">XGBoost 2.1</span>
+      <span class="tech-tag">FastAPI 0.115</span>
+      <span class="tech-tag">scikit-learn 1.5</span>
+      <span class="tech-tag">SHAP 0.46</span>
+      <span class="tech-tag">Groq</span>
+      <span class="tech-tag">Anthropic Claude</span>
+      <span class="tech-tag">pandas 2.2</span>
+      <span class="tech-tag">Docker</span>
+      <span class="tech-tag">Nginx</span>
+      <span class="tech-tag">Leaflet 1.9</span>
+      <span class="tech-tag">Chart.js 4</span>
     </div>
 
   </div>
@@ -1312,7 +1777,7 @@ function renderHeatmap(data) {
       const activeClass= isActive ? ' active-cell' : '';
       const nbEsc      = nb.replace(/'/g,"\\'");
       return `<div class="hm-cell${activeClass}"
-        style="flex:1;background:rgba(${t[0]},${t[1]},${t[2]},${a});color:rgba(255,255,255,${v>0.3?0.9:0.5})"
+        style="background:rgba(${t[0]},${t[1]},${t[2]},${a});color:rgba(255,255,255,${v>0.3?0.9:0.5})"
         title="${nb} · ${franja} → ${pct}% riesgo — clic para consultar"
         onclick="selectFromHeatmap('${nbEsc}','${franja}')">${pct}</div>`;
     }).join('');
@@ -1323,7 +1788,7 @@ function renderHeatmap(data) {
     </div>`;
   }).join('');
 
-  wrap.innerHTML = colLabels + rows;
+  wrap.innerHTML = `<div style="min-width:500px">${colLabels + rows}</div>`;
 }
 
 function selectFromHeatmap(nb, franja) {
@@ -1374,9 +1839,9 @@ function buildHeatmapStatic() {
   const colLabels=`<div class="hm-col-labels">${franjas.map(f=>`<div class="hm-col-label">${f}</div>`).join('')}</div>`;
   const rows=days.map((d,di)=>`<div class="hm-row"><span class="hm-row-label">${d}</span>${risk[di].map(v=>{
     const t=v>50?[255,77,109]:v>35?[255,169,64]:v>20?[124,109,250]:[54,207,201];
-    return`<div class="hm-cell" style="flex:1;background:rgba(${t[0]},${t[1]},${t[2]},${(v/65).toFixed(2)});color:rgba(255,255,255,${v>30?.9:.5})">${v}</div>`;
+    return`<div class="hm-cell" style="background:rgba(${t[0]},${t[1]},${t[2]},${(v/65).toFixed(2)});color:rgba(255,255,255,${v>30?.9:.5})">${v}</div>`;
   }).join('')}</div>`).join('');
-  wrap.innerHTML=colLabels+rows;
+  wrap.innerHTML=`<div style="min-width:500px">${colLabels+rows}</div>`;
 }
 
 function buildZonesTableStatic() {
@@ -1649,12 +2114,35 @@ function updateMapRisk(nbAvgScores) {
     mapMarkers[nb] = circle;
   }
 
-  // Actualizar fecha y contador
+  // Fecha y contador
   const today = new Date().toLocaleDateString('es-CO', { weekday:'long', day:'numeric', month:'long' });
   const dateEl = document.getElementById('mapDateLabel');
   if (dateEl) dateEl.textContent = '· ' + today;
-  const cntEl = document.getElementById('mapBarrioCount');
-  if (cntEl) cntEl.textContent = visible;
+
+  // Rankings top 5 por nivel
+  const all = Object.entries(nbAvgScores)
+    .filter(([nb]) => BARRIO_COORDS[nb])
+    .sort((a,b) => b[1] - a[1]);
+
+  const high = all.filter(([,s]) => s >= 0.70).slice(0,5);
+  const med  = all.filter(([,s]) => s >= 0.40 && s < 0.70).slice(0,5);
+  const low  = all.filter(([,s]) => s < 0.40).sort((a,b) => a[1]-b[1]).slice(0,5);
+
+  function renderRank(items, elId, color) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = items.length
+      ? items.map(([nb, s]) =>
+          `<div class="map-rank-item" onclick="selectFromMap('${nb.replace(/'/g,"\\'")}')">
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px">${nb}</span>
+            <span class="rank-pct" style="color:${color}">${Math.round(s*100)}%</span>
+          </div>`
+        ).join('')
+      : `<div style="font-size:11px;color:var(--text3);padding:4px 6px">Sin datos</div>`;
+  }
+  renderRank(high, 'rankHigh', '#ff4d6d');
+  renderRank(med,  'rankMed',  '#ffa940');
+  renderRank(low,  'rankLow',  '#52c41a');
 }
 
 function selectFromMap(nb) {
