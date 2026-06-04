@@ -39,6 +39,7 @@ COPY --from=builder /install /usr/local
 COPY main.py model_loader.py explainer.py ./
 COPY rag/ ./rag/
 COPY models/ ./models/
+COPY frontend/ ./frontend/
 
 RUN mkdir -p /app/logs
 

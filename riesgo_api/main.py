@@ -4,6 +4,7 @@ Pydantic v2 compatible: sin @validator, sin model_config, sin prefijo model_
 """
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from typing import Optional, List, Annotated
 from datetime import date, datetime
@@ -126,6 +127,15 @@ def parse_date(s: Optional[str]) -> Optional[date]:
         return date.fromisoformat(s)
     except ValueError:
         raise HTTPException(status_code=422, detail=f"Fecha inválida '{s}'. Formato: YYYY-MM-DD")
+
+
+# ── Frontend ─────────────────────────────────────────────────────────
+
+_FRONTEND = _Path(__file__).parent / "frontend" / "index.html"
+
+@app.get("/", include_in_schema=False)
+def serve_frontend():
+    return FileResponse(_FRONTEND)
 
 
 # ── Health ───────────────────────────────────────────────────────────
