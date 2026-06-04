@@ -99,6 +99,34 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.85);backdrop-fi
 
 /* Explanation card */
 .explain-card{background:var(--surface);border:0.5px solid var(--border2);border-radius:12px;padding:1.25rem;width:100%}
+.chat-msg{display:flex;flex-direction:column;max-width:82%}
+.chat-msg.user{align-self:flex-end;align-items:flex-end}
+.chat-msg.assistant{align-self:flex-start;align-items:flex-start}
+.chat-bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.chat-msg.user .chat-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:3px}
+.chat-msg.assistant .chat-bubble{background:var(--surface);border:0.5px solid var(--border2);color:var(--text2);border-bottom-left-radius:3px}
+.chat-msg .chat-time{font-size:10px;color:var(--text3);margin-top:3px;font-family:var(--mono);display:flex;flex-direction:column;gap:1px}
+.chat-tokens{font-size:10px;color:var(--text3);font-family:var(--mono);opacity:.7}
+.chat-suggest{background:var(--surface);border:0.5px solid var(--border2);color:var(--text2);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:var(--body);transition:border-color .15s}
+.chat-suggest:hover{border-color:var(--accent);color:var(--accent2)}
+.chat-typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
+.chat-typing span{width:7px;height:7px;border-radius:50%;background:var(--text3);animation:typingDot 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.chat-bubble h1,.chat-bubble h2,.chat-bubble h3{font-size:13px;font-weight:600;color:var(--text);margin:10px 0 4px}
+.chat-bubble h1{font-size:14px}
+.chat-bubble p{margin:4px 0}
+.chat-bubble ul,.chat-bubble ol{margin:4px 0;padding-left:18px}
+.chat-bubble li{margin:2px 0}
+.chat-bubble strong{color:var(--text);font-weight:600}
+.chat-bubble code{font-family:var(--mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:3px}
+.chat-bubble pre{background:var(--surface2);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:6px 0}
+.chat-bubble pre code{background:none;padding:0}
+.chat-bubble table{border-collapse:collapse;width:100%;font-size:12px;margin:8px 0}
+.chat-bubble th{background:var(--surface2);color:var(--text);font-weight:500;padding:5px 8px;text-align:left;border:0.5px solid var(--border2)}
+.chat-bubble td{padding:4px 8px;border:0.5px solid var(--border2);color:var(--text2)}
+.chat-bubble tr:nth-child(even) td{background:rgba(255,255,255,.02)}
 .explain-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .explain-icon{width:28px;height:28px;border-radius:6px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:14px}
 .explain-title{font-size:13px;font-weight:500}
@@ -283,6 +311,7 @@ canvas{border-radius:4px}
     <button class="nav-link active" onclick="showPage('consult',this)">Consulta</button>
     <button class="nav-link" onclick="showPage('dashboard',this)">Dashboard</button>
     <button class="nav-link" onclick="showPage('models',this)">Modelos</button>
+    <button class="nav-link" onclick="showPage('chat',this)">Chat IA</button>
     <button class="nav-link" onclick="showPage('docs',this)">Documentación</button>
   </div>
   <div class="nav-city">
@@ -553,7 +582,48 @@ canvas{border-radius:4px}
   </div>
 </div>
 
-<!-- ===================== PAGE 4: DOCS ===================== -->
+<!-- ===================== PAGE 4: CHAT ===================== -->
+<div id="page-chat" class="page">
+  <div style="max-width:780px;margin:0 auto;height:calc(100vh - 120px);display:flex;flex-direction:column;gap:0">
+
+    <!-- Header -->
+    <div style="padding:1.5rem 0 1rem">
+      <div style="font-size:20px;font-weight:600;color:var(--text)">Chat con el modelo</div>
+      <div style="font-size:13px;color:var(--text3);margin-top:4px">Preguntá sobre el entrenamiento, los datos, las métricas, los barrios o cómo funciona el sistema.</div>
+    </div>
+
+    <!-- Sugerencias -->
+    <div id="chatSuggestions" style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:12px">
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Cuál es el barrio más peligroso?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Qué tan preciso es el modelo?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Por qué se usaron franjas de 2 horas?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Qué impacto tuvo el COVID en el modelo?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Cuántos barrios cubre el modelo?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">Explicame el target encoding</button>
+    </div>
+
+    <!-- Mensajes -->
+    <div id="chatMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:4px 2px 12px">
+      <div class="chat-msg assistant">
+        <div class="chat-bubble">Hola, soy el asistente de RiesgoVial. Puedo responder preguntas sobre el modelo de predicción de riesgo vial de Medellín, el proceso de entrenamiento, las métricas, los barrios y cómo funciona la plataforma. ¿En qué te puedo ayudar?</div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div style="border-top:0.5px solid var(--border);padding-top:12px;display:flex;gap:8px;align-items:flex-end">
+      <textarea id="chatInput" placeholder="Escribe tu pregunta aquí…"
+        style="flex:1;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 12px;font-family:var(--body);font-size:13px;resize:none;height:44px;max-height:120px;outline:none;line-height:1.5"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"
+        oninput="this.style.height='44px';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+      <button onclick="sendChat()" id="chatSendBtn"
+        style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-family:var(--body);cursor:pointer;height:44px;white-space:nowrap;font-weight:500">
+        Enviar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 5: DOCS ===================== -->
 <div id="page-docs" class="page">
   <div class="docs-page">
 
@@ -830,6 +900,7 @@ canvas{border-radius:4px}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
 // ─── STATE ───────────────────────────────────────────────────────
 let selectedNeighborhood = null;   // barrio activo de la última predicción
@@ -1666,6 +1737,133 @@ async function loadNeighborhoods(city) {
     }
   }
 })();
+
+// ─── CHAT IA ──────────────────────────────────────────────────────
+const chatHistory = [];
+let CHAT_HISTORY_TURNS = 10;
+
+fetch('/api/v1/chat/config').then(r=>r.json()).then(d=>{ CHAT_HISTORY_TURNS = d.history_turns || 10; }).catch(()=>{});
+
+const RIESGOVIAL_KEYWORDS = [
+  // dominio vial
+  "accidente","vial","tráfico","trafico","riesgo","barrio","barrios","zona","comunas","medellin","medellín",
+  "incidente","siniestro","atropello","choque","colisión","colision",
+  // modelo ML
+  "modelo","predicción","prediccion","xgboost","feature","variable","entrenamiento","train","precisión",
+  "precision","recall","auc","f1","accuracy","métrica","metrica","dataset","datos","registro",
+  "franja","hora","franja horaria","probabilidad","clasificador","overfitting","split",
+  // sistema
+  "riesgovial","api","dashboard","heatmap","mapa","consulta","explicación","explicacion","rag","shap",
+  "groq","llm","chatbot","chat","barrio más","peligros","segur","tasa",
+  // contexto colombia
+  "medellín","antioquia","colombia","secretaría de movilidad","movilidad","urbano","ciudad",
+  // preguntas naturales sobre el proyecto
+  "cómo funciona","como funciona","qué hace","que hace","para qué","para que","cuántos","cuantos",
+  "cuál es","cual es","por qué","porque","covid","pandemia","docker","fastapi",
+  // notebook y proceso de ciencia de datos
+  "notebook","jupyter","celda","paso","limpieza","explorat","eda","visualización","visualizacion",
+  "pandas","numpy","matplotlib","seaborn","sklearn","scikit","pickle","serializ",
+  "grilla","espacio-temporal","slot","target encoding","encoding","log-odds","smoothing",
+  "balance","desbalance","scale_pos_weight","stratif","cross-val","validación","validacion",
+  "importancia","feature importance","shap","árbol","arbol","boosting","gradient",
+  "curva roc","matriz de confusión","matriz de confusion","clasificación","clasificacion",
+  "multiíndice","multiindice","merge","groupby","pivot","dummies","one-hot",
+  "sin coseno","ciclica","ciclico","estacionalidad","dia del año","dia del anio",
+  "experimento","historial completo","post-covid","resumen","conclusión","conclusion",
+];
+
+function isRelevant(msg) {
+  const q = msg.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  return RIESGOVIAL_KEYWORDS.some(kw =>
+    q.includes(kw.normalize("NFD").replace(/[̀-ͯ]/g, ""))
+  );
+}
+
+function chatTime() {
+  return new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'});
+}
+
+function appendMessage(role, text, tokIn, tokOut, tokTotal) {
+  const box = document.getElementById('chatMessages');
+  const wrap = document.createElement('div');
+  wrap.className = `chat-msg ${role}`;
+  const content = role === 'assistant'
+    ? marked.parse(text)
+    : text.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const tokenInfo = (role === 'assistant' && tokTotal)
+    ? `<div class="chat-tokens">↑ ${tokIn} · ↓ ${tokOut} · total ${tokTotal} tokens</div>`
+    : '';
+  wrap.innerHTML = `<div class="chat-bubble">${content}</div><div class="chat-time">${chatTime()}${tokenInfo}</div>`;
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+  return wrap;
+}
+
+function appendTyping() {
+  const box = document.getElementById('chatMessages');
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-msg assistant';
+  wrap.id = 'chatTyping';
+  wrap.innerHTML = `<div class="chat-bubble"><div class="chat-typing"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('chatTyping');
+  if (t) t.remove();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  input.style.height = '44px';
+  document.getElementById('chatSuggestions').style.display = 'none';
+
+  appendMessage('user', msg);
+
+  if (!isRelevant(msg)) {
+    appendMessage('assistant',
+      'Solo puedo responder preguntas relacionadas con **RiesgoVial**: el modelo de predicción de accidentes, los barrios de Medellín, las métricas, el entrenamiento o cómo funciona la plataforma.');
+    return;
+  }
+
+  document.getElementById('chatSendBtn').disabled = true;
+  chatHistory.push({role: 'user', content: msg});
+  appendTyping();
+
+  try {
+    const city = document.getElementById('cityGlobal')?.value || 'medellin';
+    const r = await fetch('/api/v1/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        message: msg,
+        city,
+        history: chatHistory.slice(-(CHAT_HISTORY_TURNS * 2)),
+      })
+    });
+    removeTyping();
+    if (!r.ok) throw new Error(`Error ${r.status}`);
+    const d = await r.json();
+    appendMessage('assistant', d.response, d.tokens_input, d.tokens_output, d.tokens_total);
+    chatHistory.push({role: 'assistant', content: d.response});
+  } catch(e) {
+    removeTyping();
+    appendMessage('assistant', `Error al conectar con el asistente: ${e.message}`);
+  }
+
+  document.getElementById('chatSendBtn').disabled = false;
+  document.getElementById('chatInput').focus();
+}
+
+function sendSuggestion(btn) {
+  document.getElementById('chatInput').value = btn.textContent;
+  sendChat();
+}
 </script>
 </body>
 </html>

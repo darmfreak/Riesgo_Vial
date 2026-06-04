@@ -23,7 +23,8 @@ HOUR_CONTEXT = {
 }
 
 RAG_DIR    = Path(os.getenv("RAG_DIR", Path(__file__).parent / "rag"))
-GROQ_MODEL = "openai/gpt-oss-120b"
+GROQ_MODEL      = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+RAG_MAX_TOKENS  = int(os.getenv("RAG_MAX_TOKENS", "400"))
 
 
 def hour_label(h: int) -> str:
@@ -142,7 +143,7 @@ class RiskExplainer:
             completion = client.chat.completions.create(
                 model=GROQ_MODEL,
                 messages=[{"role": "user", "content": self._build_prompt(context, neighborhood, day, hour)}],
-                max_tokens=400,
+                max_tokens=RAG_MAX_TOKENS,
                 temperature=0.4,
             )
             return completion.choices[0].message.content.strip()
@@ -156,7 +157,7 @@ class RiskExplainer:
             client = anthropic.Anthropic()
             msg = client.messages.create(
                 model="claude-sonnet-4-6",
-                max_tokens=400,
+                max_tokens=RAG_MAX_TOKENS,
                 messages=[{"role": "user", "content": self._build_prompt(context, neighborhood, day, hour)}],
             )
             return msg.content[0].text

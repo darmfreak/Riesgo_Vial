@@ -38,9 +38,9 @@ COPY --from=builder /install /usr/local
 # Copiar código de la aplicación
 COPY main.py model_loader.py explainer.py ./
 COPY rag/ ./rag/
+COPY models/ ./models/
 
-# Directorio para modelos (.pkl) — montar como volumen en producción
-RUN mkdir -p /app/models /app/logs
+RUN mkdir -p /app/logs
 
 # Variables de entorno
 ENV MODELS_DIR=/app/models \

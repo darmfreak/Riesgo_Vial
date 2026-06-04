@@ -87,6 +87,22 @@ class ExplainResponse(BaseModel):
     top_features:    List[dict]
 
 
+class ChatMessage(BaseModel):
+    role:    str   # "user" | "assistant"
+    content: str
+
+class ChatRequest(BaseModel):
+    message:  str
+    city:     str = "medellin"
+    history:  List[ChatMessage] = []
+
+class ChatResponse(BaseModel):
+    response:     str
+    tokens_input: int = 0
+    tokens_output: int = 0
+    tokens_total: int = 0
+
+
 class HeatmapResponse(BaseModel):
     city:     str
     fecha:    str
@@ -351,3 +367,181 @@ def job_status(job_id: str):
     if status is None:
         raise HTTPException(status_code=404, detail="Job no encontrado")
     return status
+
+
+# ── POST /api/v1/chat ─────────────────────────────────────────────
+
+# ── RAG con TF-IDF para el chat ───────────────────────────────────
+# Usa scikit-learn (ya en el proyecto) — sin dependencias nuevas.
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+CHAT_RAG_TOP_K = int(os.getenv("CHAT_RAG_TOP_K", "5"))
+
+_rag_cache: dict = {}   # {city: {"chunks": [...], "vectorizer": ..., "matrix": ...}}
+
+def _build_chunks(data: dict) -> list[str]:
+    """Convierte el knowledge JSON en chunks de texto independientes."""
+    m  = data.get("metricas", {})
+    b  = data.get("barrios", {})
+    ds = data.get("dataset", {})
+    r  = m.get("resultados", {})
+    chunks = []
+
+    # Proyecto y objetivo
+    chunks.append(
+        f"Proyecto: {data.get('proyecto','')}. Objetivo: {data.get('objetivo','')}. Ciudad: {data.get('ciudad','')}."
+    )
+
+    # Dataset
+    bc = ds.get("balance_clases", {}).get("nota", "")
+    chunks.append(
+        f"Dataset: {ds.get('fuente','')}. Período {ds.get('periodo','')}. "
+        f"{ds.get('registros_originales',0):,} registros originales, {ds.get('registros_post_limpieza',0):,} post-limpieza. "
+        f"Slots de modelado: {ds.get('slots_modelado',0):,}. {bc}. "
+        f"Eliminados en limpieza: {', '.join(ds.get('motivos_eliminacion', []))}."
+    )
+
+    # Métricas y modelo
+    comp = "; ".join(
+        f"{c['modelo']} {c['escenario']}: AUC={c['auc']} F1={c['f1']}"
+        for c in m.get("comparativa", [])
+    )
+    chunks.append(
+        f"Modelo: {m.get('modelo_final','')}. Hiperparámetros: {m.get('hiperparametros',{})}. "
+        f"Split: {m.get('split','')}. "
+        f"Métricas: ROC AUC={r.get('ROC_AUC','')} F1={r.get('F1','')} "
+        f"Precisión={r.get('Precision','')} Recall={r.get('Recall','')} Accuracy={r.get('Accuracy','')}. "
+        f"Comparativa de modelos: {comp}."
+    )
+
+    # Features
+    imp = "; ".join(
+        f"{f['nombre']} ({f['importancia']}): {f['descripcion']}"
+        for f in data.get("features", {}).get("mas_importantes", [])
+    )
+    chunks.append(
+        f"Features del modelo ({data.get('features',{}).get('total',26)} variables): "
+        f"{', '.join(data.get('features',{}).get('list',[]))}. "
+        f"Las más importantes: {imp}."
+    )
+
+    # Barrios
+    top_r = ", ".join(f"{x['nombre']} {x['tasa']:.0%}" for x in b.get("top10_mayor_riesgo", []))
+    top_s = ", ".join(f"{x['nombre']} {x['tasa']:.0%}" for x in b.get("top10_menor_riesgo", []))
+    chunks.append(
+        f"Barrios: {b.get('total',0)} barrios y comunas en Medellín. "
+        f"Tasa promedio de accidentabilidad: {b.get('tasa_promedio_ciudad',0):.1%}. "
+        f"Distribución por nivel: {b.get('distribucion',{})}. "
+        f"Barrios con mayor riesgo: {top_r}. "
+        f"Barrios con menor riesgo: {top_s}."
+    )
+
+    # Una chunk por decisión de diseño
+    for d in data.get("decisiones_diseno", []):
+        chunks.append(
+            f"Decisión de diseño — {d['decision']}: {d['razon']} "
+            f"Impacto: {d['impacto']}."
+        )
+
+    # Tech stack
+    chunks.append(f"Stack tecnológico: {data.get('tech_stack',{})}.")
+
+    # Una chunk por FAQ
+    for fq in data.get("preguntas_frecuentes", []):
+        chunks.append(f"Pregunta: {fq['pregunta']} Respuesta: {fq['respuesta']}")
+
+    # Una chunk por sección del notebook (solo título + descripción)
+    for s in data.get("secciones_notebook", []):
+        desc = s.get("descripcion", "")[:400]
+        if desc:
+            chunks.append(f"Notebook — {s['titulo']}: {desc}")
+
+    return chunks
+
+def _get_rag(city: str) -> dict | None:
+    if city in _rag_cache:
+        return _rag_cache[city]
+    kb_path = _Path(os.getenv("RAG_DIR", _Path(__file__).parent / "rag")) / "documents" / city / "model_knowledge.json"
+    if not kb_path.exists():
+        return None
+    data = _json.loads(kb_path.read_text(encoding="utf-8"))
+    chunks = _build_chunks(data)
+    vectorizer = TfidfVectorizer(ngram_range=(1, 2), min_df=1, sublinear_tf=True)
+    matrix = vectorizer.fit_transform(chunks)
+    _rag_cache[city] = {"chunks": chunks, "vectorizer": vectorizer, "matrix": matrix}
+    logger.info(f"RAG chat: {len(chunks)} chunks indexados para {city}")
+    return _rag_cache[city]
+
+def _retrieve_context(question: str, city: str, top_k: int = CHAT_RAG_TOP_K) -> str:
+    rag = _get_rag(city)
+    if not rag:
+        return ""
+    q_vec = rag["vectorizer"].transform([question])
+    scores = cosine_similarity(q_vec, rag["matrix"]).flatten()
+    top_idx = np.argsort(scores)[::-1][:top_k]
+    retrieved = [rag["chunks"][i] for i in top_idx if scores[i] > 0]
+    return "\n\n".join(retrieved) if retrieved else "\n\n".join(rag["chunks"][:top_k])
+
+CHAT_HISTORY_TURNS = int(os.getenv("CHAT_HISTORY_TURNS", "10"))
+GROQ_MODEL         = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+CHAT_MAX_TOKENS    = int(os.getenv("CHAT_MAX_TOKENS", "1000"))
+
+CHAT_SYSTEM = """Eres el asistente de RiesgoVial, una plataforma de predicción de riesgo vial en Medellín, Colombia.
+
+Usa este contexto para responder:
+
+{context}
+
+Reglas estrictas:
+- Responde siempre en español, de forma clara y en lenguaje natural.
+- Máximo 3 oraciones por respuesta. Ve al grano.
+- NUNCA incluyas código fuente, comandos, fragmentos de programación ni nombres de funciones.
+- NUNCA uses términos técnicos sin explicarlos en palabras simples.
+- NUNCA menciones librerías, paquetes ni nombres de archivos.
+- Si la pregunta es sobre un barrio, menciona su nivel de riesgo y tasa histórica.
+- Si no tienes la información, dilo en una oración.
+- No inventes datos que no estén en el contexto.
+"""
+
+@app.get("/api/v1/chat/config", tags=["chat"])
+def chat_config():
+    return {"history_turns": CHAT_HISTORY_TURNS, "rag_top_k": CHAT_RAG_TOP_K}
+
+@app.post("/api/v1/chat", response_model=ChatResponse, tags=["chat"])
+def chat(req: ChatRequest):
+    groq_key = os.getenv("GROQ_API_KEY")
+    if not groq_key:
+        raise HTTPException(status_code=503, detail="LLM no disponible — configura GROQ_API_KEY")
+
+    context = _retrieve_context(req.message, req.city)
+    if not context:
+        raise HTTPException(status_code=404, detail=f"Base de conocimiento no disponible para: {req.city}")
+
+    try:
+        from groq import Groq
+        client = Groq(api_key=groq_key)
+
+        messages = [{"role": "system", "content": CHAT_SYSTEM.format(context=context)}]
+        for msg in req.history[-(CHAT_HISTORY_TURNS * 2):]:
+            messages.append({"role": msg.role, "content": msg.content})
+        messages.append({"role": "user", "content": req.message})
+
+        completion = client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=messages,
+            max_tokens=CHAT_MAX_TOKENS,
+            temperature=0.3,
+        )
+        usage = completion.usage
+        return ChatResponse(
+            response=completion.choices[0].message.content.strip(),
+            tokens_input=usage.prompt_tokens,
+            tokens_output=usage.completion_tokens,
+            tokens_total=usage.total_tokens,
+        )
+    except Exception as e:
+        logger.error(f"Chat error: {e}")
+        raise HTTPException(status_code=500, detail=f"Error al procesar la consulta: {str(e)}")

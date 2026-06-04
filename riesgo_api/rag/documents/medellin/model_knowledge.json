@@ -1,0 +1,2475 @@
+{
+  "proyecto": "RiesgoVial — Sistema de predicción de riesgo de accidentes de tráfico en Medellín, Colombia",
+  "version": "1.0",
+  "ciudad": "Medellín, Antioquia, Colombia",
+  "objetivo": "Predecir la probabilidad de que ocurra un accidente de tráfico en un barrio específico, en un día de la semana y una franja horaria determinados.",
+  "dataset": {
+    "fuente": "Fatal_Road_Traffic_Normalizado.xlsx — registros de la Secretaría de Movilidad de Medellín",
+    "periodo": "2008 – 2025",
+    "registros_originales": 702540,
+    "registros_post_limpieza": 674394,
+    "eliminados_limpieza": 28146,
+    "motivos_eliminacion": [
+      "Nulos en BARRIO o UBICACION (11,683)",
+      "Fechas inválidas o mal formateadas",
+      "Horas fuera del rango 0–23"
+    ],
+    "columnas_originales": [
+      "LLAVE",
+      "AÑO",
+      "CLASE_INCIDENTE",
+      "MES",
+      "DIA",
+      "HORA_INCIDENTE",
+      "DIA_NOMBRE",
+      "BARRIO",
+      "COMUNA"
+    ],
+    "slots_modelado": 372960,
+    "ubicaciones": 370,
+    "balance_clases": {
+      "positivos": "~51% de slots con al menos un incidente",
+      "negativos": "~49% sin incidentes",
+      "nota": "Balance natural — no requirió SMOTE ni undersampling, solo scale_pos_weight en XGBoost"
+    }
+  },
+  "features": {
+    "total": 26,
+    "categorias": {
+      "temporales_basicas": [
+        "DIA_SEMANA",
+        "MES",
+        "ES_FIN_SEMANA",
+        "ES_LABORAL",
+        "HORA_PUNTO_MEDIO"
+      ],
+      "ciclicas": [
+        "DIA_SEMANA_SIN",
+        "DIA_SEMANA_COS",
+        "MES_SIN",
+        "MES_COS",
+        "DIA_ANIO_SIN",
+        "DIA_ANIO_COS"
+      ],
+      "ubicacion": [
+        "UBICACION_TARGET_ENC",
+        "UBICACION_LOG_ODDS"
+      ],
+      "franjas_horarias": [
+        "FRANJA_00-02h",
+        "FRANJA_02-04h",
+        "FRANJA_04-06h",
+        "FRANJA_06-08h",
+        "FRANJA_08-10h",
+        "FRANJA_10-12h",
+        "FRANJA_12-14h",
+        "FRANJA_14-16h",
+        "FRANJA_16-18h",
+        "FRANJA_18-20h",
+        "FRANJA_20-22h",
+        "FRANJA_22-24h"
+      ],
+      "interacciones": [
+        "INTERACCION_FINDE_NOCHE"
+      ]
+    },
+    "mas_importantes": [
+      {
+        "nombre": "UBICACION_TARGET_ENC",
+        "importancia": "muy alta",
+        "descripcion": "Tasa histórica del barrio — el factor más predictivo"
+      },
+      {
+        "nombre": "HORA_PUNTO_MEDIO",
+        "importancia": "alta",
+        "descripcion": "Hora del día como valor numérico continuo"
+      },
+      {
+        "nombre": "UBICACION_LOG_ODDS",
+        "importancia": "alta",
+        "descripcion": "Log-odds de la tasa del barrio — complementa target_enc"
+      },
+      {
+        "nombre": "FRANJA_18-20h",
+        "importancia": "media-alta",
+        "descripcion": "Hora pico vespertina — mayor volumen de tráfico"
+      },
+      {
+        "nombre": "INTERACCION_FINDE_NOCHE",
+        "importancia": "media",
+        "descripcion": "Combinación fin de semana + noche — riesgo amplificado"
+      }
+    ]
+  },
+  "metricas": {
+    "modelo_final": "XGBoost — histórico completo 2008-2025",
+    "hiperparametros": {
+      "n_estimators": 200,
+      "max_depth": 8,
+      "scale_pos_weight": "neg/pos (auto)",
+      "random_state": 42
+    },
+    "split": "80% entrenamiento / 20% prueba — estratificado por target",
+    "resultados": {
+      "ROC_AUC": 0.9181543161413145,
+      "F1": 0.8383777556684296,
+      "Precision": 0.8400713592360364,
+      "Recall": 0.8366909670507695,
+      "Accuracy": 0.834486271986272
+    },
+    "comparativa": [
+      {
+        "modelo": "Regresión Logística",
+        "escenario": "Histórico",
+        "auc": 0.9129,
+        "f1": 0.8362
+      },
+      {
+        "modelo": "Regresión Logística",
+        "escenario": "Post-COVID",
+        "auc": 0.8215,
+        "f1": 0.6143
+      },
+      {
+        "modelo": "Random Forest",
+        "escenario": "Histórico",
+        "auc": 0.9177,
+        "f1": 0.8386
+      },
+      {
+        "modelo": "Random Forest",
+        "escenario": "Post-COVID",
+        "auc": 0.8485,
+        "f1": 0.6389
+      },
+      {
+        "modelo": "XGBoost",
+        "escenario": "Histórico",
+        "auc": 0.9182,
+        "f1": 0.8384,
+        "ganador": true
+      },
+      {
+        "modelo": "XGBoost",
+        "escenario": "Post-COVID",
+        "auc": 0.8502,
+        "f1": 0.6417
+      }
+    ]
+  },
+  "barrios": {
+    "total": 369,
+    "tasa_promedio_ciudad": 0.5131,
+    "distribucion": {
+      "muy_alto_gte70": 150,
+      "alto_55_70": 53,
+      "moderado_40_55": 27,
+      "bajo_20_40": 45,
+      "muy_bajo_lt20": 94
+    },
+    "top10_mayor_riesgo": [
+      {
+        "nombre": "La Candelaria",
+        "tasa": 0.9609,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villa Nueva",
+        "tasa": 0.9552,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Caribe",
+        "tasa": 0.9486,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Perpetuo Socorro",
+        "tasa": 0.9486,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Castilla",
+        "tasa": 0.9363,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Campo Amor",
+        "tasa": 0.9354,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Benito",
+        "tasa": 0.9307,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Carlos E. Restrepo",
+        "tasa": 0.9288,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Terminal de Transporte",
+        "tasa": 0.9278,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Barrio Colón",
+        "tasa": 0.9269,
+        "nivel": "muy alto"
+      }
+    ],
+    "top10_menor_riesgo": [
+      {
+        "nombre": "El Jardín",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Ilusión",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Suiza",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José de La Montaña",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano La Aldea",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Potrera Miserenga",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Urquitá",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Boquerón",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Plan",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Sucia",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      }
+    ],
+    "todos": [
+      {
+        "nombre": "La Candelaria",
+        "tasa": 0.9609,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villa Nueva",
+        "tasa": 0.9552,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Caribe",
+        "tasa": 0.9486,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Perpetuo Socorro",
+        "tasa": 0.9486,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Castilla",
+        "tasa": 0.9363,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Campo Amor",
+        "tasa": 0.9354,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Benito",
+        "tasa": 0.9307,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Carlos E. Restrepo",
+        "tasa": 0.9288,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Terminal de Transporte",
+        "tasa": 0.9278,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Barrio Colón",
+        "tasa": 0.9269,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Los Conquistadores",
+        "tasa": 0.9259,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Belén",
+        "tasa": 0.925,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Poblado",
+        "tasa": 0.9184,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Boston",
+        "tasa": 0.9156,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Robledo",
+        "tasa": 0.9127,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Santa Fé",
+        "tasa": 0.9127,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Prado",
+        "tasa": 0.9108,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Estación Villa",
+        "tasa": 0.9099,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Chagualo",
+        "tasa": 0.9042,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Moravia",
+        "tasa": 0.9042,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Cristo Rey",
+        "tasa": 0.9033,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Manrique Central No. 1",
+        "tasa": 0.9033,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Guayabal",
+        "tasa": 0.8948,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Corazón de Jesús",
+        "tasa": 0.8938,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Campo Valdés No. 1",
+        "tasa": 0.8919,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Rosales",
+        "tasa": 0.8919,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Joaquín",
+        "tasa": 0.8881,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Girardot",
+        "tasa": 0.8872,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Aguacatala",
+        "tasa": 0.8872,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Diego",
+        "tasa": 0.8853,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Buenos Aires",
+        "tasa": 0.8834,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Progreso",
+        "tasa": 0.8825,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Suramericana",
+        "tasa": 0.8796,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Trinidad",
+        "tasa": 0.8787,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Guayaquil",
+        "tasa": 0.8759,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Patio Bonito",
+        "tasa": 0.874,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Kennedy",
+        "tasa": 0.8721,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villa Carlota",
+        "tasa": 0.8702,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Toscana",
+        "tasa": 0.8683,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Gloria",
+        "tasa": 0.8673,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Alpujarra",
+        "tasa": 0.8626,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Naranjal",
+        "tasa": 0.8626,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Universidad Nacional",
+        "tasa": 0.8598,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "B. Cerro El Volador",
+        "tasa": 0.8588,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La América",
+        "tasa": 0.857,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Las Granjas",
+        "tasa": 0.857,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Colina",
+        "tasa": 0.856,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Las Palmas",
+        "tasa": 0.8551,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Calasanz",
+        "tasa": 0.8541,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Lorena",
+        "tasa": 0.8513,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Jesús Nazareno",
+        "tasa": 0.8503,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Los Colores",
+        "tasa": 0.8484,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Los Mangos",
+        "tasa": 0.8475,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Manila",
+        "tasa": 0.8456,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Brasilia",
+        "tasa": 0.8409,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Cabecera San Antonio de Prado",
+        "tasa": 0.8409,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Campo Valdés No. 2",
+        "tasa": 0.838,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Cuarta Brigada",
+        "tasa": 0.8352,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Sevilla",
+        "tasa": 0.8343,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Laureles",
+        "tasa": 0.8333,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Parque Juan Pablo II",
+        "tasa": 0.8333,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Las Acacias",
+        "tasa": 0.8305,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Tricentenario",
+        "tasa": 0.8305,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Bomboná No. 1",
+        "tasa": 0.8295,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Miraflores",
+        "tasa": 0.8267,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Esperanza",
+        "tasa": 0.8258,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Diamante",
+        "tasa": 0.8248,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Picacho",
+        "tasa": 0.8201,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Universidad de Antioquia",
+        "tasa": 0.8182,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Oleoducto",
+        "tasa": 0.8163,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Castellana",
+        "tasa": 0.8154,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Aranjuez",
+        "tasa": 0.8135,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Florida Nueva",
+        "tasa": 0.8125,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Fátima",
+        "tasa": 0.8116,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Bernardo",
+        "tasa": 0.8116,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Alfonso López",
+        "tasa": 0.8106,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Centro Administrativo",
+        "tasa": 0.8087,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Manrique Oriental",
+        "tasa": 0.8078,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Área de Expansión Pajarito",
+        "tasa": 0.8078,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Ferrini",
+        "tasa": 0.8069,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Aures No. 1",
+        "tasa": 0.805,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Las Brisas",
+        "tasa": 0.805,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Barrio Colombia",
+        "tasa": 0.804,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Pedregal",
+        "tasa": 0.804,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Tenche",
+        "tasa": 0.804,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Castropol",
+        "tasa": 0.8021,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Calle Nueva",
+        "tasa": 0.8002,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Bolivariana",
+        "tasa": 0.7983,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Loreto",
+        "tasa": 0.7955,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Isidro",
+        "tasa": 0.7955,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Rincón",
+        "tasa": 0.7936,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Piñuela",
+        "tasa": 0.788,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Cucaracho",
+        "tasa": 0.7861,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Hospital San Vicente de Paúl",
+        "tasa": 0.7851,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Javier No.1",
+        "tasa": 0.7832,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Doce de Octubre No.1",
+        "tasa": 0.7823,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Francisco Antonio Zea",
+        "tasa": 0.7766,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Germán",
+        "tasa": 0.7738,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Berlín",
+        "tasa": 0.769,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Loma de los Bernal",
+        "tasa": 0.7662,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Los Pinos",
+        "tasa": 0.7643,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Pinal",
+        "tasa": 0.7615,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Florida",
+        "tasa": 0.7615,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Miguel",
+        "tasa": 0.7605,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Altamira",
+        "tasa": 0.7596,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Salvador",
+        "tasa": 0.7587,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Salle",
+        "tasa": 0.7577,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Cerro Nutibara",
+        "tasa": 0.7568,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Facultad de Minas U. Nacional U. Nacional",
+        "tasa": 0.7549,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Floresta",
+        "tasa": 0.7511,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Enciso",
+        "tasa": 0.7501,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Barrio Caicedo",
+        "tasa": 0.7483,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "U.D. Atanasio Girardot",
+        "tasa": 0.7483,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Milagrosa",
+        "tasa": 0.7473,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villa Hermosa",
+        "tasa": 0.7473,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Asomadera No. 2",
+        "tasa": 0.7464,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Las Lomas No.1",
+        "tasa": 0.7454,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Santa María de los Ángeles",
+        "tasa": 0.7454,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Popular",
+        "tasa": 0.7435,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Tejelo",
+        "tasa": 0.7416,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Estadio",
+        "tasa": 0.7407,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Parque Norte",
+        "tasa": 0.7407,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Miranda",
+        "tasa": 0.7397,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villatina",
+        "tasa": 0.7388,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "La Palma",
+        "tasa": 0.7379,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Palermo",
+        "tasa": 0.736,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Sucre",
+        "tasa": 0.735,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Cabecera Urbana San Cristobal",
+        "tasa": 0.7341,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Aures No. 2",
+        "tasa": 0.7322,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Astorga",
+        "tasa": 0.7294,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Gerona",
+        "tasa": 0.7275,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Pablo",
+        "tasa": 0.7265,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Asomadera No. 1",
+        "tasa": 0.7256,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Raizal",
+        "tasa": 0.7237,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Velódromo",
+        "tasa": 0.7218,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Manrique Central No. 2",
+        "tasa": 0.7218,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Santo Domingo Savio No. 1",
+        "tasa": 0.7218,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Las Playas",
+        "tasa": 0.7199,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Los Naranjos",
+        "tasa": 0.718,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Plaza de Ferias",
+        "tasa": 0.7161,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "San Pedro",
+        "tasa": 0.7104,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "El Nogal-Los Almendros",
+        "tasa": 0.7095,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Héctor Abad Gómez",
+        "tasa": 0.7095,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Santander",
+        "tasa": 0.7095,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Bosques de San Pablo",
+        "tasa": 0.7076,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Laureles Estadio",
+        "tasa": 0.7076,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villa Guadalupe",
+        "tasa": 0.7057,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Palenque",
+        "tasa": 0.7019,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Versalles No. 1",
+        "tasa": 0.701,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Villa del Socorro",
+        "tasa": 0.7001,
+        "nivel": "muy alto"
+      },
+      {
+        "nombre": "Santa Inés",
+        "tasa": 0.6991,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Los Cerros El Vergel",
+        "tasa": 0.6953,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Campo Alegre",
+        "tasa": 0.6934,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La Pilarica",
+        "tasa": 0.6934,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Doce de Octubre No.2",
+        "tasa": 0.6897,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Santa Cruz",
+        "tasa": 0.6897,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "El Tesoro",
+        "tasa": 0.6868,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Moscú No. 2",
+        "tasa": 0.6868,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Villa Flora",
+        "tasa": 0.6849,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "San Martín de Porres",
+        "tasa": 0.6821,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Barrio de Jesús",
+        "tasa": 0.6802,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La Mansión",
+        "tasa": 0.667,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Las Violetas",
+        "tasa": 0.6641,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Simón Bolívar",
+        "tasa": 0.6632,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La mota",
+        "tasa": 0.6604,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La Frontera",
+        "tasa": 0.6585,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Corregimiento de San Cristóbal",
+        "tasa": 0.6575,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Boyacá",
+        "tasa": 0.6471,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Diego Echavarría",
+        "tasa": 0.6471,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Los Balsos No.2",
+        "tasa": 0.6452,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Los Balsos No.1",
+        "tasa": 0.6433,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Veinte de Julio",
+        "tasa": 0.6405,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Altos del Poblado",
+        "tasa": 0.6377,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "El Danubio",
+        "tasa": 0.6348,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Los Alpes",
+        "tasa": 0.6348,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Los Alcázares",
+        "tasa": 0.6301,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Bomboná No. 2",
+        "tasa": 0.6263,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Suburbano La Loma",
+        "tasa": 0.6244,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Cataluña",
+        "tasa": 0.6235,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Belalcázar",
+        "tasa": 0.6225,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La Francia",
+        "tasa": 0.6216,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La Pradera",
+        "tasa": 0.6178,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Los Ángeles",
+        "tasa": 0.6159,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Lalinde",
+        "tasa": 0.614,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Las Mercedes",
+        "tasa": 0.6131,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Andalucía",
+        "tasa": 0.6112,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Calasanz Parte Alta",
+        "tasa": 0.6074,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "López de Mesa",
+        "tasa": 0.6074,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "El Pesebre",
+        "tasa": 0.6065,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Florencia",
+        "tasa": 0.6027,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Las Estancias",
+        "tasa": 0.6027,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Alejandro Echavarría",
+        "tasa": 0.5999,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Cementerio Universal",
+        "tasa": 0.5961,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Granizal",
+        "tasa": 0.5942,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "La Rosa",
+        "tasa": 0.5895,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Nueva Villa de la Iguaná",
+        "tasa": 0.5866,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Las Esmeraldas",
+        "tasa": 0.5791,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Santa Lucía",
+        "tasa": 0.5781,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Santa Mónica",
+        "tasa": 0.5687,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "El Diamante No. 2",
+        "tasa": 0.5639,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Altavista",
+        "tasa": 0.5621,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Bello Horizonte",
+        "tasa": 0.5573,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "El Pomar",
+        "tasa": 0.5545,
+        "nivel": "alto"
+      },
+      {
+        "nombre": "Altavista Sector Central",
+        "tasa": 0.5469,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "El Castillo",
+        "tasa": 0.5403,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "La Isla",
+        "tasa": 0.5394,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Granada",
+        "tasa": 0.5365,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Olaya Herrera",
+        "tasa": 0.5356,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Bermejal-Los Álamos",
+        "tasa": 0.5233,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Corregimiento de Santa Elena",
+        "tasa": 0.5214,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "San Lucas",
+        "tasa": 0.5186,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "La Hondonada",
+        "tasa": 0.5176,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Santa Margarita",
+        "tasa": 0.5176,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Santa Teresita",
+        "tasa": 0.5129,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Jardín Botánico",
+        "tasa": 0.512,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "El Salado",
+        "tasa": 0.511,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Alejandría",
+        "tasa": 0.5082,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Antonio Nariño",
+        "tasa": 0.5063,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Moscú No. 1",
+        "tasa": 0.5025,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "El Rodeo",
+        "tasa": 0.5006,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "La Libertad",
+        "tasa": 0.4987,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Belencito",
+        "tasa": 0.4694,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Pajarito",
+        "tasa": 0.4666,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Betania",
+        "tasa": 0.4458,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "San Javier No.2",
+        "tasa": 0.442,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Área De Expansion Belen Rincon",
+        "tasa": 0.4373,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "La Cruz",
+        "tasa": 0.4297,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Juan XXIII La Quiebra",
+        "tasa": 0.4288,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Córdoba",
+        "tasa": 0.4278,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Las Lomas No.2",
+        "tasa": 0.4269,
+        "nivel": "moderado"
+      },
+      {
+        "nombre": "Nueva Villa del Aburrá",
+        "tasa": 0.3938,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Villa Niza",
+        "tasa": 0.3938,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Playón de Los Comuneros",
+        "tasa": 0.3863,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "La Avanzada",
+        "tasa": 0.3853,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Fuente Clara",
+        "tasa": 0.374,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "San Antonio de Prado",
+        "tasa": 0.373,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Llanaditas",
+        "tasa": 0.3721,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Miravalle",
+        "tasa": 0.3721,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "SUBURB El Plan",
+        "tasa": 0.3683,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "La Esperanza No. 2",
+        "tasa": 0.3655,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Corregimiento de San Sebastián de Palmitas",
+        "tasa": 0.3551,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Blanquizal",
+        "tasa": 0.3447,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Carpinelo",
+        "tasa": 0.3409,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Corregimiento de San Antonio de Prado",
+        "tasa": 0.3343,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Las Independencias",
+        "tasa": 0.3333,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Mirador del Doce",
+        "tasa": 0.3248,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "El Corazón",
+        "tasa": 0.3144,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Villa Liliam",
+        "tasa": 0.3144,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Nuevos Conquistadores",
+        "tasa": 0.3087,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Facultad Veterinaria y Zootecnia U.de.A.",
+        "tasa": 0.304,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "San Javier",
+        "tasa": 0.2993,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Suburbano Travesias",
+        "tasa": 0.2927,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Piedras Blancas",
+        "tasa": 0.2917,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Monteclaro",
+        "tasa": 0.288,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "U.P.B..",
+        "tasa": 0.2813,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "El Picacho",
+        "tasa": 0.2719,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Doce de Octubre",
+        "tasa": 0.2709,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Suburbano Mirador del Poblado",
+        "tasa": 0.2709,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "El Compromiso",
+        "tasa": 0.269,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Pablo VI",
+        "tasa": 0.269,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Santo Domingo Savio No. 2",
+        "tasa": 0.269,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Barrio Cristóbal",
+        "tasa": 0.2662,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "El Progreso No.2",
+        "tasa": 0.2634,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Picachito",
+        "tasa": 0.2568,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Manrique",
+        "tasa": 0.2549,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "El Socorro",
+        "tasa": 0.2256,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Pedregal Alto",
+        "tasa": 0.2256,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Suburbano Altavista",
+        "tasa": 0.2246,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Santa María de Los Ángeles",
+        "tasa": 0.2142,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Trece de Noviembre",
+        "tasa": 0.2142,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Área de Expansión San Antonio de Prado",
+        "tasa": 0.2142,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "San Antonio",
+        "tasa": 0.2123,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "María Cano Carambolas",
+        "tasa": 0.2114,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "Santa Rosa de Lima",
+        "tasa": 0.2086,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "La Ladera",
+        "tasa": 0.2019,
+        "nivel": "bajo"
+      },
+      {
+        "nombre": "La Loma",
+        "tasa": 0.1953,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Loma Oriental",
+        "tasa": 0.1906,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Área de Expansion Altos de Calasanz",
+        "tasa": 0.1868,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Juan Pablo II",
+        "tasa": 0.1859,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Asomadera No. 3",
+        "tasa": 0.184,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Piedras Blancas Represa",
+        "tasa": 0.183,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Villa Turbay",
+        "tasa": 0.183,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Ocho de Marzo",
+        "tasa": 0.1755,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Versalles No. 2",
+        "tasa": 0.1708,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano La Palma-El Patio",
+        "tasa": 0.1613,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Corazon El Morro ",
+        "tasa": 0.1604,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Eduardo Santos",
+        "tasa": 0.1575,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Triunfo",
+        "tasa": 0.1528,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Estadio",
+        "tasa": 0.1462,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Aguas Frías",
+        "tasa": 0.1433,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Área De Expansion Altavista",
+        "tasa": 0.1414,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Corregimiento de Altavista",
+        "tasa": 0.1386,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Aldea Pablo VI",
+        "tasa": 0.1367,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Cerro",
+        "tasa": 0.1358,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José la Cima No. 1",
+        "tasa": 0.1301,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano el Tesoro",
+        "tasa": 0.1282,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Oriente",
+        "tasa": 0.1254,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Media Luna",
+        "tasa": 0.1244,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Vergel",
+        "tasa": 0.1207,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Facultad de Minas U. Nacional",
+        "tasa": 0.1169,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Pedregal Bajo",
+        "tasa": 0.1159,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Buga Patio Bonito",
+        "tasa": 0.1103,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Mota",
+        "tasa": 0.1065,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Cabecera Urbana Corregimiento San Cristóbal",
+        "tasa": 0.1055,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Metropolitano",
+        "tasa": 0.1055,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Yolombo",
+        "tasa": 0.1055,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano El Llano",
+        "tasa": 0.0857,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José del Manzanillo",
+        "tasa": 0.0791,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Santa Elena Sector Central",
+        "tasa": 0.0791,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Loma de Los Bernal",
+        "tasa": 0.0734,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Sierra",
+        "tasa": 0.0715,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Batallón Girardot",
+        "tasa": 0.0706,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Verde",
+        "tasa": 0.0677,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Oculta",
+        "tasa": 0.0658,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Área De Expansion El Noral",
+        "tasa": 0.0658,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Sin Nombre",
+        "tasa": 0.0649,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Chacaltaya",
+        "tasa": 0.063,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Travesías",
+        "tasa": 0.0611,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Astillero",
+        "tasa": 0.0602,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Llano SE",
+        "tasa": 0.0545,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Yarumalito",
+        "tasa": 0.0545,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Pedregal alto",
+        "tasa": 0.0507,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Barro Blanco",
+        "tasa": 0.0498,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano La Cuchilla",
+        "tasa": 0.0479,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Área de Expansión Altavista",
+        "tasa": 0.0479,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Progreso No.2",
+        "tasa": 0.045,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Área de Expansión San Cristóbal",
+        "tasa": 0.045,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Ecoparque Cerro El Volador",
+        "tasa": 0.0441,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Nueva Villa de La Iguaná",
+        "tasa": 0.0441,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Cuchilla",
+        "tasa": 0.0422,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Área de Expansión Belén Rincón",
+        "tasa": 0.0422,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José la Cima No. 2",
+        "tasa": 0.0403,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Volcana Guayabal",
+        "tasa": 0.0403,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Llano",
+        "tasa": 0.0394,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Boqueron",
+        "tasa": 0.0384,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Piedra Gorda",
+        "tasa": 0.0375,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Potrerito",
+        "tasa": 0.0365,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano El Placer",
+        "tasa": 0.0365,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Potrerito",
+        "tasa": 0.0365,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Corazón El Morro",
+        "tasa": 0.0356,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Palmitas Sector Central",
+        "tasa": 0.0346,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José",
+        "tasa": 0.0337,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "U.P.B.",
+        "tasa": 0.0328,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Uvito",
+        "tasa": 0.0318,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Piedras Blancas - Matasano",
+        "tasa": 0.0318,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José de la Montaña",
+        "tasa": 0.0309,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Patio",
+        "tasa": 0.029,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Frisola",
+        "tasa": 0.029,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Montañita",
+        "tasa": 0.029,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Piedra Gorda",
+        "tasa": 0.028,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Potrera Miserenga",
+        "tasa": 0.028,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Batallón Cuarta Brigada",
+        "tasa": 0.0271,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Carmelo",
+        "tasa": 0.0271,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Placer",
+        "tasa": 0.0271,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Aldea",
+        "tasa": 0.0271,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Palma-El Patio",
+        "tasa": 0.0271,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Boquerón",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Plan",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Sucia",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Mazo",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Palmitas",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Urquita",
+        "tasa": 0.0261,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "El Jardín",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Ilusión",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "La Suiza",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "San José de La Montaña",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano La Aldea",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Suburbano Potrera Miserenga",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      },
+      {
+        "nombre": "Urquitá",
+        "tasa": 0.0252,
+        "nivel": "muy bajo"
+      }
+    ]
+  },
+  "decisiones_diseno": [
+    {
+      "decision": "Grilla espacio-temporal en lugar de registros crudos",
+      "razon": "Los accidentes son eventos esporádicos. Usar registros crudos genera desbalance extremo. La grilla completa (370 ubicaciones × 7 días × 12 franjas × 12 meses = 372,960 slots) permite al modelo aprender tanto de cuándo SÍ ocurrió un accidente como de cuándo NO ocurrió.",
+      "impacto": "Permite generalizar a combinaciones no vistas en el histórico"
+    },
+    {
+      "decision": "Franjas horarias de 2 horas en lugar de horas individuales",
+      "razon": "Las franjas de 2h reducen el ruido estadístico en slots con pocos eventos y capturan mejor los patrones de movilidad (hora pico, noche, madrugada). Granularidad de 1h genera demasiado ruido; granularidad de 4h pierde detalle.",
+      "impacto": "12 franjas diarias vs 24 horas — mejor balance señal/ruido"
+    },
+    {
+      "decision": "Target encoding suavizado (m=50) para UBICACION",
+      "razon": "Barrios con pocos registros tendrían estimaciones de tasa inestables. El suavizado con m=50 mezcla la tasa del barrio con la tasa global, dando más peso a la global cuando hay pocos datos.",
+      "impacto": "Evita sobreajuste en barrios con menos de 50 registros históricos"
+    },
+    {
+      "decision": "Codificación cíclica (sin/cos) para variables temporales",
+      "razon": "Variables como DIA_SEMANA y MES son cíclicas: el domingo (6) es 'cercano' al lunes (0). Usar valores numéricos lineales rompe esta continuidad. Sin/cos preserva la distancia circular.",
+      "impacto": "El modelo aprende correctamente que diciembre y enero son similares estacionalmente"
+    },
+    {
+      "decision": "XGBoost sobre Random Forest y Regresión Logística",
+      "razon": "XGBoost tuvo el mejor ROC AUC (0.9182 vs 0.9177 RF vs 0.9129 LR) con manejo nativo de desbalance (scale_pos_weight). Además es más rápido en inferencia que RF para producción.",
+      "impacto": "AUC superior y menor latencia de predicción en API"
+    },
+    {
+      "decision": "Historial completo 2008-2025 sobre dataset post-COVID",
+      "razon": "El experimento COVID mostró que el modelo post-COVID (2020+) tiene AUC 0.85 vs 0.92 del histórico. El COVID redujo la movilidad temporalmente pero los patrones volvieron. El dataset completo tiene más generalización.",
+      "impacto": "AUC histórico 0.9182 vs post-COVID 0.8502"
+    }
+  ],
+  "tech_stack": {
+    "lenguaje": "Python 3.11",
+    "ml": [
+      "XGBoost 2.1.3",
+      "scikit-learn 1.5.2",
+      "SHAP 0.46.0"
+    ],
+    "datos": [
+      "pandas 2.2.3",
+      "numpy 1.26.4",
+      "openpyxl"
+    ],
+    "api": [
+      "FastAPI 0.115",
+      "Gunicorn",
+      "Uvicorn",
+      "Pydantic v2"
+    ],
+    "llm": [
+      "Groq API (openai/gpt-oss-120b)",
+      "Anthropic Claude (fallback)"
+    ],
+    "infraestructura": [
+      "Docker",
+      "Docker Compose",
+      "Nginx"
+    ],
+    "notebook": "Jupyter — modelo_riesgo_enriquecido_covid.ipynb"
+  },
+  "secciones_notebook": [
+    {
+      "titulo": "Modelo de Riesgo de Accidente de Tráfico — Medellín",
+      "descripcion": "--- Construir un modelo de machine learning que prediga la **probabilidad de que ocurra al menos un accidente** de tráfico en una ubicación específica, un **día de la semana** y una **franja horaria** determinada, **incorporando estacionalidad anual** (diferenciando invierno de verano, festividades, etc.). Un modelo que solo usa `DIA_SEMANA` (0=Lunes...6=Domingo) trata **todos los sábados como iguales**. Pero la realidad no es así: - Un **sábado 14 de febrero** (San Valentín) → más salidas nocturnas → más riesgo - Un **sábado 25 de diciembre** (Navidad) → menos tráfico → menos riesgo - Un **lunes 1 de enero** (Año Nuevo) → menos tráfico que un lunes normal Para capturar estos efectos, usamos **seno y coseno del día del año**, que mapean el tiempo a un círculo. Así el 1 de enero y el 31 de diciembre están cerca en el espacio numérico. Para no explotar la RAM, **NO agrupamos por día exacto** (lo que multiplicaría filas por 365). En su lugar: 1. Agrupamos por `MES` (12 categorías) 2. Asignamos a cada mes el **día 15** como representante (ej: enero → día 15) 3. Calculamos `DIA_ANIO_SIN` y `DIA_ANIO_COS` sobre ese día representativo 4. El modelo aprende estacionalidad suave sin explotar la memoria - **Fuente:** Registros administrativos de incidentes de tráfico en Medellín, Colombia - **Período:** 2008-01-01 a 2025-08-31 - **Volumen:** Aproximadamente 700,000 registros - **Formato:** Archivo Excel (`Fatal_Road_Traffic.xlsx`) El dataset original solo contiene registros donde **sí ocurrió un accidente** (eventos positivos). Para entrenar un modelo de clasificación necesitamos también ejemplos de **no accidentes**. **Enfoque (\"El truco del target\"):** 1. Crear una **grilla** con todas las combinaciones posibles de ubicación × día_semana × franja_horaria × mes 2. Las combinaciones que aparecen en el dataset original → etiqueta **1** (hubo accidente) 3. Las combinaciones que **no** aparecen → etiqueta **0** (no hubo accidente) 4. Entrenar modelos de clasificación para distinguir condiciones de riesgo Eliminamos todos los registros con valores nulos en columnas críticas: - Fecha del incidente - Hora del incidente - Ubicación (barrio o comuna)",
+      "codigo_explicacion": [],
+      "outputs_clave": []
+    },
+    {
+      "titulo": "Paso 0: Configuración del entorno",
+      "descripcion": "---",
+      "codigo_explicacion": [
+        "import pandas as pd import numpy as np import matplotlib.pyplot as plt import seaborn as sns import gc import warnings from sklearn.model_selection import train_test_split from sklearn.linear_model import LogisticRegression from sklearn.ensemble import RandomForestClassifier from sklearn.metrics im"
+      ],
+      "outputs_clave": [
+        "✅ Entorno configurado correctamente\n   Pandas 3.0.3\n   XGBoost: 3.2.0"
+      ]
+    },
+    {
+      "titulo": "Paso 1: Carga del dataset",
+      "descripcion": "--- Cargamos el archivo Excel optimizando tipos de datos para ahorrar memoria.",
+      "codigo_explicacion": [
+        "# Diccionario con tipos de datos optimizados dtype_dict = { 'LLAVE': 'int32', 'AÑO': 'int16', 'CLASE_INCIDENTE': 'category', 'GRAVEDAD_INCIDENTE': 'category', 'Codigo Comuna Planeacion': 'str', 'Comuna Planeacion': 'category', 'Codigo Barrio Planeacion': 'str', 'Barri",
+        "# Mostrar primeras filas para entender la estructura print(\"📋 Vista previa de los datos:\") df.head()"
+      ],
+      "outputs_clave": [
+        "⏳ Cargando dataset (~700,000 registros)...\n✅ Dataset cargado: 702,540 filas × 10 columnas\n📊 Memoria usada: 156.3 MB\n📅 Período: 2008 - 2025",
+        "📋 Vista previa de los datos:\nLLAVE   AÑO FECHA_INCIDENTE HORA_INCIDENTE CLASE_INCIDENTE  \\\n0   92541  2010      2010-06-13       18:30:00       Atropello   \n1  105973  2010      2010-10-19       15:10:00     Volcamiento   \n2  203150  2013      2013-01-06       15:00:00          Choque   \n3  231663  2013      2013-08-09       15:00:00            Otro   \n4  239968  2013      2013-10-09       19:30:00     Volcamiento   \n\n  GRAVEDAD_INCIDENTE Codigo Comuna Planeacion Comuna Planeacion  \\\n0             HERIDO                        6   Doce de Octubre   \n1             HERIDO                       13        San Javier   \n2             HERIDO                        6   Doce de Octubre   \n3             HERIDO                        6   Doce de Octubre   \n4             HERIDO                        6   Doce de Octubre   \n\n  Codigo Barrio Planeacion Barrio Planeacion  \n0                     0609                 0  \n1                        0                 0  \n2                     0609                 0  \n3                     0609                 0  \n4                      609                 0"
+      ]
+    },
+    {
+      "titulo": "Profundización: Estructura del dato crudo",
+      "descripcion": "--- Antes de limpiar, conviene entender exactamente qué tiene cada campo, cuántos valores únicos hay, y ver ejemplos reales del dataset original.",
+      "codigo_explicacion": [
+        "print('📋 PERFIL DEL DATASET ORIGINAL') print('=' * 70) print(f'\\n🗂 Dimensiones: {df.shape[0]:,} filas × {df.shape[1]} columnas') print(f'\\n📦 Tipos y valores únicos por columna:') for col in df.columns: n_unique = df[col].nunique() ejemplo = str(df[col].dropna().iloc[0]) if df[col].notna().a"
+      ],
+      "outputs_clave": [
+        "📋 PERFIL DEL DATASET ORIGINAL\n======================================================================\n\n🗂  Dimensiones: 702,540 filas × 10 columnas\n\n📦 Tipos y valores únicos por columna:\n   LLAVE                               dtype=int32        702540 únicos   ej: 92541\n   AÑO                                 dtype=int16            18 únicos   ej: 2010\n   FECHA_INCIDENTE                     dtype=datetime64[us]   6450 únicos   ej: 2010-06-13 00:00:00\n   HORA_INCIDENTE                      dtype=object         2863 únicos   ej: 18:30:00\n   CLASE_INCIDENTE                     dtype=category          6 únicos   ej: Atropello\n   GRAVEDAD_INCIDENTE                  dtype=category          3 únicos   ej: HERIDO\n   Codigo Comuna Planeacion            dtype=str              22 únicos   ej: 6\n   Comuna Planeacion                   dtype=category         22 únicos   ej: Doce de Octubre\n   Codigo Barrio Planeacion            dtype=str             476 únicos   ej: 0609\n   Barrio Planeacion                   dtype=str             362 únicos   ej: 0\n\n📊 Distribución de GRAVEDAD_INCIDENTE:\nGRAVEDAD_INCIDENTE\nHERIDO        400373\nSOLO DAÑOS    299405\nMUERTO          2762\n\n📊 Distribución de CLASE_INCIDENTE (top 10):\nCLASE_INCIDENTE\nChoque            460807\nOtro               91254\nAtropello          74663\nCaida Ocupante     53555\nVolcamiento        22164\nIncendio              97\n\n📅 Rango temporal: 2008 – 2025\n\n🏘  Top 10 Barrios con más registros:\nBarrio Planeacion\nSin inf             35049\nLa Can"
+      ]
+    },
+    {
+      "titulo": "Paso 2: Diagnóstico de valores nulos",
+      "descripcion": "---",
+      "codigo_explicacion": [
+        "print(\"🔍 DIAGNÓSTICO DE VALORES NULOS\") print(\"=\" * 70) nulos_df = pd.DataFrame({ 'Columna': df.columns, 'Nulos': df.isnull().sum(), 'Porcentaje': (df.isnull().sum() / len(df) * 100).round(2) }).sort_values('Nulos', ascending=False) print(nulos_df.to_string(index=False)) print(f\"\\n📊 To",
+        "# Visualización de valores nulos fig, ax = plt.subplots(figsize=(10, 5)) nulos_plot = nulos_df[nulos_df['Nulos'] > 0] if len(nulos_plot) > 0: bars = ax.barh(nulos_plot['Columna'], nulos_plot['Porcentaje'], color='coral', edgecolor='white') ax.set_xlabel('Porcentaje de valores nulos', fontsi"
+      ],
+      "outputs_clave": [
+        "🔍 DIAGNÓSTICO DE VALORES NULOS\n======================================================================\n                 Columna  Nulos  Porcentaje\n       Barrio Planeacion  11683      1.6600\nCodigo Barrio Planeacion  11683      1.6600\n                     AÑO      0      0.0000\n                   LLAVE      0      0.0000\n         FECHA_INCIDENTE      0      0.0000\n          HORA_INCIDENTE      0      0.0000\n      GRAVEDAD_INCIDENTE      0      0.0000\n         CLASE_INCIDENTE      0      0.0000\n       Comuna Planeacion      0      0.0000\nCodigo Comuna Planeacion      0      0.0000\n\n📊 Total de registros antes de limpieza: 702,540"
+      ]
+    },
+    {
+      "titulo": "Paso 3: Limpieza de datos",
+      "descripcion": "--- Eliminamos registros con valores nulos en columnas críticas. **Columnas críticas:** - `FECHA_INCIDENTE` — Sin fecha no podemos ubicar temporalmente - `HORA_INCIDENTE` — Sin hora no podemos asignar franja - `UBICACION` — Sin ubicación no hay análisis espacial **Estrategia de ubicación:** - Si el barrio es `\"Sin inf\"` o nulo → usamos la comuna - Si ambos son inválidos → eliminamos el registro",
+      "codigo_explicacion": [
+        "registros_iniciales = len(df) # ----- 3.1 Limpieza de fechas ----- print(\"📅 Procesando fechas...\") df['FECHA_INCIDENTE'] = pd.to_datetime(df['FECHA_INCIDENTE'], errors='coerce') df = df.dropna(subset=['FECHA_INCIDENTE']) perdidos_fecha = registros_iniciales - len(df) print(f\" Eliminados por fecha"
+      ],
+      "outputs_clave": [
+        "📅 Procesando fechas...\n   Eliminados por fecha inválida: 0\n⏰ Procesando horas...\n   Eliminados por hora inválida: 0\n📍 Procesando ubicaciones...\n   Eliminados por ubicación desconocida: 28,146\n\n======================================================================\n📊 RESUMEN DE LIMPIEZA\n======================================================================\nRegistros iniciales:           702,540\nRegistros eliminados:           28,146 (4.0%)\nRegistros finales válidos:     674,394 (96.0%)\n\n✅ Limpieza completada — Dataset listo para feature engineering"
+      ]
+    },
+    {
+      "titulo": "Profundización: Impacto visual de la limpieza",
+      "descripcion": "--- Visualizamos la distribución horaria y por año **después** de la limpieza. Esto valida que no se introdujeron sesgos y permite identificar patrones globales.",
+      "codigo_explicacion": [
+        "print('🔍 DISTRIBUCIONES POST-LIMPIEZA') print('=' * 70) fig, axes = plt.subplots(1, 2, figsize=(16, 5)) hora_dist = df['HORA_NUM'].value_counts().sort_index() axes[0].bar(hora_dist.index, hora_dist.values, color='#2980b9', edgecolor='white', width=0.8) axes[0].set_title('Distribución de incidentes"
+      ],
+      "outputs_clave": [
+        "🔍 DISTRIBUCIONES POST-LIMPIEZA\n======================================================================\n💡 Dos picos diarios: 6-8am (inicio jornada) y 5-8pm (fin jornada)\n   El valle de 1-4am es el período de menor riesgo absoluto.\n   La caída en 2020 refleja las restricciones de movilidad por COVID-19."
+      ]
+    },
+    {
+      "titulo": "Paso 4: Feature Engineering temporal",
+      "descripcion": "--- Creamos variables derivadas de la fecha y hora que capturan patrones temporales. **Features creadas:** | Feature | Descripción | |---------|-------------| | `DIA_SEMANA` | 0=Lunes ... 6=Domingo | | `ES_FIN_SEMANA` | 1 si es sábado o domingo | | `MES` | 1-12 | | `FRANJA_2H` | Franjas de 2 horas (12 categorías) |",
+      "codigo_explicacion": [
+        "print(\"🔧 CREANDO FEATURES TEMPORALES\") print(\"=\" * 70) # Día de la semana (0=Lunes, 6=Domingo) df['DIA_SEMANA'] = df['FECHA_INCIDENTE'].dt.dayofweek.astype('int8') # Nombre del día (para visualización) dias_nombre = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] df['DIA"
+      ],
+      "outputs_clave": [
+        "🔧 CREANDO FEATURES TEMPORALES\n======================================================================\n✅ Features temporales creadas:\n   • DIA_SEMANA (0-6): 0 a 6\n   • ES_FIN_SEMANA: 168,311 fines de semana\n   • MES: 1 a 12\n   • FRANJA_2H: 12 categorías"
+      ]
+    },
+    {
+      "titulo": "Profundización: ¿Por qué pivotear en franjas de 2 horas?",
+      "descripcion": "--- Esta es una decisión de diseño clave. Aquí comparamos el impacto de elegir distintos tamaños de franja (1h, 2h, 3h, 4h, 6h, 12h) sobre la señal del modelo. **El tradeoff:** más granularidad → más resolución temporal, pero también más celdas vacías en la grilla y más riesgo de overfitting.",
+      "codigo_explicacion": [
+        "print('📐 ANÁLISIS: IMPACTO DE LA GRANULARIDAD DE FRANJAS HORARIAS') print('=' * 70) fig, axes = plt.subplots(2, 3, figsize=(18, 11)) axes = axes.flatten() sizes = [1, 2, 3, 4, 6, 12] titles = [ '1h (24 franjas)', '2h (12 franjas) ← ELEGIDO', '3h (8 franjas)', '4h (6 franjas)',"
+      ],
+      "outputs_clave": [
+        "📐 ANÁLISIS: IMPACTO DE LA GRANULARIDAD DE FRANJAS HORARIAS\n======================================================================\n📊 TABLA RESUMEN:\nFranja  N_franjas     CV  Min_incidentes  Max_incidentes\n    1h         24 0.5124            4737           48866\n    2h         12 0.5154           10199           92690\n    3h          8 0.5166           21283          134727\n    4h          6 0.4892           26020          172085\n    6h          4 0.5227           49500          258118\n   12h          2 0.3614          251038          423356\n\n💡 RAZONAMIENTO PARA ELEGIR 2 HORAS:\n   1h → máxima resolución, pero muchas celdas con pocos datos (ruidoso)\n   2h → captura picos reales (6-8am, 6-8pm) con buen volumen por celda\n   6h+ → demasiado grueso, mezcla madrugada de riesgo con madrugada tranquila\n   El CV (coeficiente de variación) mide qué tan diferenciadas son las franjas:\n   un CV más alto indica más señal temporal capturada."
+      ]
+    },
+    {
+      "titulo": "Paso 5: Análisis Exploratorio de Datos (EDA)",
+      "descripcion": "--- Visualizamos los patrones temporales en los incidentes de tráfico. **¿Qué buscamos?** 1. ¿Hay más accidentes en ciertas horas? (picos: 6-8am, 6-8pm) 2. ¿Los fines de semana son más peligrosos? 3. ¿Hay estacionalidad anual? (más accidentes en ciertos meses) 4. ¿Dónde ocurren más accidentes? (top ubicaciones)",
+      "codigo_explicacion": [
+        "print(\"📊 ANÁLISIS EXPLORATORIO VISUAL\") print(\"=\" * 70) fig, axes = plt.subplots(2, 3, figsize=(18, 12)) # ----- Gráfico 1: Incidentes por franja horaria ----- franja_counts = df.groupby('FRANJA_2H').size() axes[0, 0].bar(range(len(franja_counts)), franja_counts.values, color='steelblue', edgecolo",
+        "# ============================================ # MATRIZ DE CORRELACIÓN ENTRE VARIABLES NUMÉRICAS # ============================================ print(\"📊 MATRIZ DE CORRELACIÓN\") print(\"=\" * 70) # Seleccionar variables numéricas relevantes para correlación # (excluimos variables categóricas y identif"
+      ],
+      "outputs_clave": [
+        "📊 ANÁLISIS EXPLORATORIO VISUAL\n======================================================================\n💡 INSIGHTS DEL EDA:\n   • Franja con más incidentes: 16-18h\n   • Día con más incidentes: Viernes\n   • Mes con más incidentes: Ago (60,893)\n   • Mes con menos incidentes: Ene (50,329)\n   • Ubicación más riesgosa: La Candelaria (17,965 incidentes)",
+        "📊 MATRIZ DE CORRELACIÓN\n======================================================================\n📈 CORRELACIONES SIGNIFICATIVAS (|r| > 0.3):\n--------------------------------------------------\n   • DIA_SEMANA ↔ ES_FIN_SEMANA: +0.760 (correlación positiva)\n\n💡 Interpretación:\n   • Correlación positiva: cuando una variable aumenta, la otra también tiende a aumentar\n   • Correlación negativa: cuando una variable aumenta, la otra tiende a disminuir\n   • Valores cercanos a 0: no hay relación lineal entre las variables\n   • Los modelos de ML pueden capturar relaciones no lineales que esta matriz no muestra"
+      ]
+    },
+    {
+      "titulo": "Paso 6: Construcción del dataset de modelado",
+      "descripcion": "--- Este es el paso más crítico. Transformamos el registro de eventos en un dataset de clasificación binaria con eventos positivos y negativos. **El \"truco del target\":** 1. Agrupamos por ubicación × día_semana × franja_2h × mes 2. Creamos una grilla con todas las combinaciones posibles 3. Las combinaciones con incidentes → etiqueta 1 4. Las combinaciones sin incidentes → etiqueta 0",
+      "codigo_explicacion": [
+        "print(\"🔨 CONSTRUCCIÓN DEL DATASET DE MODELADO\") print(\"=\" * 70) # Agrupar incidentes reales target_agg = df.groupby( ['UBICACION_KEY', 'DIA_SEMANA', 'FRANJA_2H', 'MES'], observed=False ).agg( NUM_INCIDENTES=('LLAVE', 'count'), INCIDENTES_FATALES=('GRAVEDAD_INCIDENTE', lambda x: (x =",
+        "# Mostrar muestra del dataset de modelado print(\"\\n📋 Vista previa del dataset de modelado:\") model_df.head(10)"
+      ],
+      "outputs_clave": [
+        "🔨 CONSTRUCCIÓN DEL DATASET DE MODELADO\n======================================================================\nSlots con al menos un incidente: 313,044\nDimensiones: 370 ubicaciones × 7 días × 12 franjas × 12 meses\nTotal combinaciones posibles: 372,960\n\n⏳ Generando grilla completa...\n\n✅ Dataset de modelado construido:\n   Total slots: 372,960\n   Slots con incidentes: 191,357 (51.31%)\n   Slots sin incidentes: 181,603 (48.69%)\n   Memoria usada: 47.1 MB",
+        "📋 Vista previa del dataset de modelado:\nUBICACION_KEY  DIA_SEMANA FRANJA_2H  MES  NUM_INCIDENTES  \\\n0             0           0    00-02h    1               0   \n1             0           0    00-02h    2               0   \n2             0           0    00-02h    3               0   \n3             0           0    00-02h    4               1   \n4             0           0    00-02h    5               2   \n5             0           0    00-02h    6               0   \n6             0           0    00-02h    7               0   \n7             0           0    00-02h    8               0   \n8             0           0    00-02h    9               1   \n9             0           0    00-02h   10               0   \n\n   INCIDENTES_FATALES  HUBO_INCIDENTE  \n0                   0               0  \n1                   0               0  \n2                   0               0  \n3                   0               1  \n4                   0               1  \n5                   0               0  \n6                   0               0  \n7                   0               0  \n8                   0               1  \n9                   0               0"
+      ]
+    },
+    {
+      "titulo": "Profundización: Dataset de modelado — Ejemplos reales y balance de clases",
+      "descripcion": "--- El 'truco del target' genera filas positivas (hubo accidente) y negativas (no hubo). Aquí vemos registros concretos de ambas clases y analizamos el desbalance, que es uno de los principales desafíos de este tipo de problema de clasificación.",
+      "codigo_explicacion": [
+        "print('📊 ANÁLISIS DEL DATASET DE MODELADO') print('=' * 70) cols_m = ['UBICACION_KEY','DIA_SEMANA','FRANJA_2H','MES','NUM_INCIDENTES','INCIDENTES_FATALES','HUBO_INCIDENTE'] dia_map = {0:'Lun',1:'Mar',2:'Mié',3:'Jue',4:'Vie',5:'Sáb',6:'Dom'} print('\\n✅ Ejemplos: Slots CON incidente (target=1)') pos"
+      ],
+      "outputs_clave": [
+        "📊 ANÁLISIS DEL DATASET DE MODELADO\n======================================================================\n\n✅ Ejemplos: Slots CON incidente (target=1)\nUBICACION_KEY DIA FRANJA_2H  MES  NUM_INCIDENTES  INCIDENTES_FATALES\n            0 Lun    00-02h    4               1                   0\n            0 Lun    00-02h    5               2                   0\n            0 Lun    00-02h    9               1                   0\n            0 Lun    04-06h    1               1                   0\n            0 Lun    04-06h    5               1                   0\n            0 Lun    04-06h    6               1                   0\n            0 Lun    06-08h    1               2                   0\n            0 Lun    06-08h    2               3                   0\n\n❌ Ejemplos: Slots SIN incidente (target=0)\n                UBICACION_KEY DIA FRANJA_2H  MES  NUM_INCIDENTES  INCIDENTES_FATALES\n          Suburbano Potrerito Jue    06-08h    7               0                   0\nCabecera Urbana San Cristobal Vie    00-02h    7               0                   0\n              Santa Margarita Lun    20-22h    2               0                   0\n              Bello Horizonte Dom    02-04h   11               0                   0\n           Suburbano La Aldea Dom    06-08h    2               0                   0\n                   Llanaditas Vie    18-20h    4               0                   0\n                    La Sierra Vie    14-16h    4               0                   0\n     "
+      ]
+    },
+    {
+      "titulo": "Profundización: Tabla de coordenadas circulares por mes",
+      "descripcion": "--- Visualizamos de forma numérica y gráfica qué valores exactos toman `DIA_ANIO_SIN` y `DIA_ANIO_COS` para cada mes, y por qué Diciembre queda geométricamente cerca de Enero en el espacio de features.",
+      "codigo_explicacion": [
+        "print('🌐 TABLA: Coordenadas circulares por mes') print('=' * 70) dia_rep_d = {1:15,2:46,3:74,4:105,5:135,6:166,7:196,8:227,9:258,10:288,11:319,12:349} meses_nombres = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']"
+      ],
+      "outputs_clave": [
+        "🌐 TABLA: Coordenadas circulares por mes\n======================================================================\n  Mes          DiaRep   Ángulo°    SIN        COS        Dist.Enero   Cercanía\n---------------------------------------------------------------------------\n  Enero        15       14.8       +0.2554    +0.9668    0.0000       [████████████]\n  Febrero      46       45.4       +0.7117    +0.7025    0.5273       [████████░░░░]\n  Marzo        74       73.0       +0.9562    +0.2926    0.9725       [██████░░░░░░]\n  Abril        105      103.6      +0.9721    -0.2345    1.3989       [███░░░░░░░░░]\n  Mayo         135      133.2      +0.7296    -0.6839    1.7175       [█░░░░░░░░░░░]\n  Junio        166      163.7      +0.2802    -0.9599    1.9269       [░░░░░░░░░░░░]\n  Julio        196      193.3      -0.2303    -0.9731    1.9998       [░░░░░░░░░░░░]\n  Agosto       227      223.9      -0.6933    -0.7207    1.9359       [░░░░░░░░░░░░]\n  Septiembre   258      254.5      -0.9635    -0.2678    1.7349       [█░░░░░░░░░░░]\n  Octubre      288      284.1      -0.9701    +0.2428    1.4233       [███░░░░░░░░░]\n  Noviembre    319      314.6      -0.7117    +0.7025    1.0025       [█████░░░░░░░]\n  Diciembre    349      344.2      -0.2720    +0.9623    0.5273       [████████░░░░]\n\n(Barra llena = más cercano a Enero en el espacio circular)"
+      ]
+    },
+    {
+      "titulo": "Paso 6.5: Añadir estacionalidad (DÍA DEL AÑO)",
+      "descripcion": "--- **¿Por qué esto es importante?** Hasta ahora tenemos `MES` (1-12), que es una variable categórica. Pero el modelo no entiende que diciembre y enero están cerca (circularidad). Tampoco puede diferenciar el 14 de febrero del 28 de febrero dentro del mismo mes. **La solución:** Usamos **seno y coseno del día del año**, que mapean el tiempo a un círculo. Así, el 1 de enero y el 31 de diciembre terminan en posiciones cercanas. **Ahorro de memoria:** En lugar de agrupar por día exacto (365 valores), usamos el **día 15 de cada mes** como representante. Esto captura estacionalidad suave sin explotar la RAM.",
+      "codigo_explicacion": [
+        "print(\"🌙 AÑADIENDO ESTACIONALIDAD (DÍA DEL AÑO VÍA SENO/COSENO)\") print(\"=\" * 70) # Día representativo para cada mes (día 15) # Ejemplo: Enero → día 15, Febrero → día 46, Marzo → día 74, etc. dia_representativo_por_mes = { 1: 15, 2: 46, 3: 74, 4: 105, 5: 135, 6: 166, 7: 196, 8: 227, 9: 258,"
+      ],
+      "outputs_clave": [
+        "🌙 AÑADIENDO ESTACIONALIDAD (DÍA DEL AÑO VÍA SENO/COSENO)\n======================================================================\n✅ Estacionalidad añadida:\n   • DIA_ANIO_REP: día representativo del mes (1-365)\n   • DIA_ANIO_SIN: rango [-0.970, 0.972]\n   • DIA_ANIO_COS: rango [-0.973, 0.967]\n\n💡 Interpretación:\n   • Enero (día 15): SIN≈0.26, COS≈0.97 → cerca de (0,1)\n   • Julio (día 196): SIN≈0.97, COS≈-0.26 → cerca de (1,0)\n   • Diciembre (día 349): SIN≈-0.26, COS≈0.97 → cerca de (0,1), cerca de enero\n   • Esto permite al modelo entender la circularidad del año"
+      ]
+    },
+    {
+      "titulo": "Paso 7: Feature Engineering para el modelo",
+      "descripcion": "--- Transformamos las variables en features numéricas que los modelos pueden entender. **Features creadas:** | Feature | Tipo | Propósito | |---------|------|-----------| | `ES_FIN_SEMANA` | Binaria | Acelerar aprendizaje de patrón fin de semana | | `HORA_PUNTO_MEDIO` | Numérica | Convertir franja en número (ej: 08-10h → 9) | | `DIA_SEMANA_SIN/COS` | Cíclica | Capturar circularidad de la semana | | `MES_SIN/COS` | Cíclica | Capturar circularidad del año (gruesa) | | `DIA_ANIO_SIN/COS` | Cíclica | Capturar estacionalidad fina (¡NUEVO!) | | `UBICACION_TARGET_ENC` | Numérica | Tasa de incidentes por ubicación (suavizada) | | `FRANJA_*` | One-Hot | Efecto específico de cada franja | | `INTERACCION_FINDE_NOCHE` | Binaria | Efecto combinado: fin de semana + noche |",
+      "codigo_explicacion": [
+        "print(\"⚙️ FEATURE ENGINEERING\") print(\"=\" * 70) # ----- 7.1 Features básicas ----- model_df['ES_FIN_SEMANA'] = model_df['DIA_SEMANA'].isin([5, 6]).astype('int8') model_df['ES_LABORAL'] = (~model_df['DIA_SEMANA'].isin([5, 6])).astype('int8') # Hora central de la franja (ej: '08-10h' → 9) franja_a_",
+        "# Mostrar las features finales print(\"\\n📋 Features finales del modelo:\") feature_cols = [col for col in model_df.columns if col not in ['UBICACION_KEY', 'FRANJA_2H', 'NUM_INCIDENTES', 'INCIDENTES_FATALES', 'HUBO_INCIDENTE', 'DIA_ANIO_REP']] for i, col in enumerate(feature_cols, 1): print(f\" {i"
+      ],
+      "outputs_clave": [
+        "⚙️  FEATURE ENGINEERING\n======================================================================\n✅ Feature Engineering completado\n   Dataset final: 372,960 filas × 32 columnas\n   Memoria: 64.9 MB\n\n   Features incluyen: ES_FIN_SEMANA, HORA_PUNTO_MEDIO, DIA_SEMANA_SIN/COS,\n   MES_SIN/COS, DIA_ANIO_SIN/COS, UBICACION_TARGET_ENC, UBICACION_LOG_ODDS,\n   12 columnas FRANJA_XX-YYh, INTERACCION_FINDE_NOCHE",
+        "📋 Features finales del modelo:\n    1. DIA_SEMANA\n    2. MES\n    3. DIA_ANIO_SIN\n    4. DIA_ANIO_COS\n    5. ES_FIN_SEMANA\n    6. ES_LABORAL\n    7. HORA_PUNTO_MEDIO\n    8. DIA_SEMANA_SIN\n    9. DIA_SEMANA_COS\n   10. MES_SIN\n   11. MES_COS\n   12. UBICACION_TARGET_ENC\n   13. UBICACION_LOG_ODDS\n   14. FRANJA_00-02h\n   15. FRANJA_02-04h\n   16. FRANJA_04-06h\n   17. FRANJA_06-08h\n   18. FRANJA_08-10h\n   19. FRANJA_10-12h\n   20. FRANJA_12-14h\n   21. FRANJA_14-16h\n   22. FRANJA_16-18h\n   23. FRANJA_18-20h\n   24. FRANJA_20-22h\n   25. FRANJA_22-24h\n   26. INTERACCION_FINDE_NOCHE"
+      ]
+    },
+    {
+      "titulo": "Profundización: Efecto de cada variable sobre la tasa de accidentes",
+      "descripcion": "--- Antes de entrenar el modelo, podemos calcular la **tasa observada de accidentes** para cada valor de cada variable. Esto es un análisis univariado que nos da intuición sobre qué tan predictiva es cada feature y en qué dirección actúa.",
+      "codigo_explicacion": [
+        "print('🎯 EFECTO DE CADA VARIABLE SOBRE LA TASA DE ACCIDENTES') print('=' * 70) fig, axes = plt.subplots(2, 3, figsize=(18, 12)) # 1. Por hora if 'HORA_PUNTO_MEDIO' in model_df.columns: rh = model_df.groupby('HORA_PUNTO_MEDIO')['HUBO_INCIDENTE'].mean() * 100 axes[0,0].plot(rh.index, rh.valu",
+        "# ============================================ # VISUALIZACIÓN DE CODIFICACIÓN CÍCLICA (SENO Y COSENO) # ============================================ print(\"📐 VISUALIZACIÓN DE LA CODIFICACIÓN CÍCLICA\") print(\"=\" * 70) fig, axes = plt.subplots(2, 3, figsize=(18, 12)) # ----- 1. DÍA DE LA SEMANA: Re"
+      ],
+      "outputs_clave": [
+        "🎯 EFECTO DE CADA VARIABLE SOBRE LA TASA DE ACCIDENTES\n======================================================================\n💡 Interpretación:\n   • Ubicación: mayor predictor de riesgo (varía según historial del barrio)\n   • Hora: patrón bimodal — picos 6-8am y 5-8pm (tráfico laboral)\n   • Fin de semana + noche: el escenario de mayor riesgo combinado\n   • Mes: refleja estacionalidad — el modelo la captura con SIN/COS",
+        "📐 VISUALIZACIÓN DE LA CODIFICACIÓN CÍCLICA\n======================================================================\n📖 EXPLICACIÓN DE LA CODIFICACIÓN CÍCLICA\n======================================================================\n\n¿POR QUÉ NO USAR SIMPLEMENTE 0,1,2,3,4,5,6 para los días?\n\nProblema:\n- Lunes=0, Martes=1, ..., Domingo=6\n- El modelo cree que Domingo (6) está MUY LEJOS de Lunes (0)\n- Pero en realidad, ¡el domingo está pegado al lunes!\n\nSOLUCIÓN: SENO y COSENO\n- Mapeamos cada día a un punto en un CÍRCULO\n- Domingo y Lunes terminan cerca en el círculo\n- El modelo entiende que son días consecutivos\n\n¿POR QUÉ NECESITAMOS AMBAS (seno Y coseno)?\n\nSolo con SENO:\n- Lunes (SIN=0) es igual a Domingo (SIN≈0)\n- ¡No podemos distinguirlos!\n\nSolo con COSENO:\n- Lunes (COS=1) es similar a Domingo (COS≈0.6)\n- Aún hay ambigüedad\n\nCon AMBAS coordenadas (SENO, COSENO):\n- Cada día tiene una posición ÚNICA en el círculo\n- El modelo puede aprender patrones como \"los fines de semana\" o \"días laborales\"\n\nMISMA LÓGICA para MESES y DÍA DEL AÑO:\n- Enero (mes 1) debe estar cerca de Diciembre (mes 12)\n- El 1 de enero debe estar cerca del 31 de diciembre\n- El SENO y COSENO del ángulo (2π × día/período) resuelven esto\n\n\n📊 TABLA COMPARATIVA: Días de la semana\n----------------------------------------------------------------------\nDía        Num    Ángulo(rad)  SENO     COSENO   Posición en círculo\n----------------------------------------------------------------------\nLun        0      0.000        +0.0"
+      ]
+    },
+    {
+      "titulo": "Paso 8: Preparación para entrenamiento",
+      "descripcion": "---",
+      "codigo_explicacion": [
+        "print(\"🎯 PREPARACIÓN PARA ENTRENAMIENTO\") print(\"=\" * 70) X = model_df[feature_cols].copy() y = model_df['HUBO_INCIDENTE'].copy() # División estratificada (mantiene proporción de clases) X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.2, random_state=42, stratify=y ) pr"
+      ],
+      "outputs_clave": [
+        "🎯 PREPARACIÓN PARA ENTRENAMIENTO\n======================================================================\nFeatures totales: 26\nTrain: 298,368 muestras (positivos: 51.31%)\nTest:  74,592 muestras (positivos: 51.31%)"
+      ]
+    },
+    {
+      "titulo": "Paso 9: Entrenamiento de modelos",
+      "descripcion": "--- Entrenamos tres modelos de complejidad creciente: - **Regresión Logística:** Baseline interpretable - **Random Forest:** Captura interacciones no lineales - **XGBoost:** Mejor performance esperada",
+      "codigo_explicacion": [
+        "print(\"🤖 ENTRENAMIENTO DE MODELOS\") print(\"=\" * 70) resultados = {} # ----- Modelo 1: Regresión Logística ----- print(\"\\n📈 Regresión Logística...\") logreg = LogisticRegression( max_iter=2000, class_weight='balanced', C=0.1, random_state=42, solver='saga', n_jobs=-1 ) logreg"
+      ],
+      "outputs_clave": [
+        "🤖 ENTRENAMIENTO DE MODELOS\n======================================================================\n\n📈 Regresión Logística...\n   ✅\n\n🌲 Random Forest...\n   ✅\n\n🚀 XGBoost...\n   ✅\n\n✅ Todos los modelos entrenados correctamente"
+      ]
+    },
+    {
+      "titulo": "Paso 10: Evaluación de modelos",
+      "descripcion": "---",
+      "codigo_explicacion": [
+        "print(\"📊 EVALUACIÓN DE MODELOS\") print(\"=\" * 70) metricas = {} for nombre, res in resultados.items(): report = classification_report(y_test, res['y_pred'], target_names=['Sin incidente', 'Con incidente'], output_dict=True) roc_auc = roc_auc_score(y_test, res['y_proba']) metricas[nombre]",
+        "# Curvas ROC fig, ax = plt.subplots(1, 2, figsize=(16, 6)) for nombre, res in resultados.items(): fpr, tpr, _ = roc_curve(y_test, res['y_proba']) ax[0].plot(fpr, tpr, linewidth=2, label=f\"{nombre} (AUC={metricas[nombre]['ROC AUC']:.4f})\") ax[0].plot([0, 1], [0, 1], 'k--', alpha=0.5, label="
+      ],
+      "outputs_clave": [
+        "📊 EVALUACIÓN DE MODELOS\n======================================================================\n\nLogistic Regression:\n   Accuracy:  0.8295\n   Precision: 0.8244\n   Recall:    0.8483\n   F1-score:  0.8362\n   ROC AUC:   0.9129\n\nRandom Forest:\n   Accuracy:  0.8346\n   Precision: 0.8398\n   Recall:    0.8375\n   F1-score:  0.8386\n   ROC AUC:   0.9177\n\nXGBoost:\n   Accuracy:  0.8345\n   Precision: 0.8401\n   Recall:    0.8367\n   F1-score:  0.8384\n   ROC AUC:   0.9182\n\n======================================================================\n🏆 Mejor modelo: XGBoost (ROC AUC: 0.9182)"
+      ]
+    },
+    {
+      "titulo": "Paso 11: Importancia de Features (XGBoost)",
+      "descripcion": "--- Analizamos qué variables contribuyen más a la predicción. Esto nos ayuda a entender los factores de riesgo más relevantes.",
+      "codigo_explicacion": [
+        "print(\"🔍 IMPORTANCIA DE FEATURES (XGBoost)\") print(\"=\" * 70) importancia = pd.DataFrame({ 'feature': feature_cols, 'importance': xgb_model.feature_importances_ }).sort_values('importance', ascending=False) print(\"\\nTop 15 features más importantes:\\n\") for i, row in importancia.head(15).ite"
+      ],
+      "outputs_clave": [
+        "🔍 IMPORTANCIA DE FEATURES (XGBoost)\n======================================================================\n\nTop 15 features más importantes:\n\n   UBICACION_TARGET_ENC                → 0.2403\n   HORA_PUNTO_MEDIO                    → 0.1449\n   FRANJA_00-02h                       → 0.1338\n   UBICACION_LOG_ODDS                  → 0.1234\n   FRANJA_02-04h                       → 0.0778\n   FRANJA_22-24h                       → 0.0503\n   ES_FIN_SEMANA                       → 0.0397\n   FRANJA_04-06h                       → 0.0391\n   ES_LABORAL                          → 0.0350\n   DIA_SEMANA                          → 0.0162\n   DIA_SEMANA_SIN                      → 0.0116\n   FRANJA_16-18h                       → 0.0093\n   FRANJA_18-20h                       → 0.0092\n   FRANJA_08-10h                       → 0.0083\n   FRANJA_14-16h                       → 0.0068\n⚠️ Las features de día del año no aparecen en el top 10.\n   Esto puede deberse a que la ubicación y hora son más relevantes."
+      ]
+    },
+    {
+      "titulo": "Paso 12: Función de predicción",
+      "descripcion": "--- Creamos una función que recibe ubicación, día, hora y opcionalmente una fecha, y devuelve la probabilidad de accidente.",
+      "codigo_explicacion": [
+        "def predecir_riesgo(ubicacion, dia_semana_nombre, hora, fecha_str=None): \"\"\" Predice la probabilidad de accidente. Parámetros: - ubicacion: str, nombre del barrio o comuna - dia_semana_nombre: str, 'Lunes' a 'Domingo' (ignorado si fecha_str está presente) - hora: int (0-23)",
+        "print(\"🧪 PRUEBAS DE PREDICCIÓN\") print(\"=\" * 70) pruebas = [ ('Laureles Estadio', 'Viernes', 23, None, '🌙 Noche de viernes normal'), ('Laureles Estadio', None, 23, '2024-12-24', '🎄 Nochebuena'), ('Laureles Estadio', None, 23, '2024-06-24', '☀️ Noche de verano'), ('Corregimiento de S"
+      ],
+      "outputs_clave": [
+        "✅ Función de predicción definida\n\n📝 Ejemplo de uso:\n   riesgo = predecir_riesgo('Laureles Estadio', 'Viernes', 23, '2024-12-24')",
+        "🧪 PRUEBAS DE PREDICCIÓN\n======================================================================\n\n📍 Laureles Estadio (Viernes)\n   🌙 Noche de viernes normal\n   Riesgo: [██████████████████████████░░░░░░░░░░░░░░] 67.1%\n\n📍 Laureles Estadio (2024-12-24)\n   🎄 Nochebuena\n   Riesgo: [█████████████████████░░░░░░░░░░░░░░░░░░░] 54.3%\n\n📍 Laureles Estadio (2024-06-24)\n   ☀️ Noche de verano\n   Riesgo: [███████████████████░░░░░░░░░░░░░░░░░░░░░] 47.6%\n\n📍 Corregimiento de San Cristóbal (Martes)\n   🌅 Madrugada rural\n   Riesgo: [███████████████░░░░░░░░░░░░░░░░░░░░░░░░░] 38.9%\n\n📍 La Candelaria (Domingo)\n   ☀️ Tarde de domingo en el centro\n   Riesgo: [███████████████████████████████████████░] 99.9%\n\n======================================================================\n💡 El modelo diferencia correctamente entre:\n   • Nochebuena (alta actividad, mayor riesgo)\n   • Noche de verano (menor actividad, menor riesgo)\n   • Gracias a DIA_ANIO_SIN y DIA_ANIO_COS"
+      ]
+    },
+    {
+      "titulo": "Paso 13: Mapa de Riesgo",
+      "descripcion": "--- Visualizamos la matriz de riesgo promedio por día de la semana y franja horaria.",
+      "codigo_explicacion": [
+        "print(\"🗺️ MAPA DE RIESGO POR DÍA Y FRANJA HORARIA\") print(\"=\" * 70) riesgo_promedio = model_df.groupby(['DIA_SEMANA', 'FRANJA_2H'])['HUBO_INCIDENTE'].mean().unstack() riesgo_promedio.index = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'] plt.figure(figsize=(16, 7)) sns.heatmap(riesgo_promedio *"
+      ],
+      "outputs_clave": [
+        "🗺️ MAPA DE RIESGO POR DÍA Y FRANJA HORARIA\n======================================================================\n💡 Slot con mayor riesgo promedio: Sáb a las 14-16h (64.8%)"
+      ]
+    },
+    {
+      "titulo": "Paso 14: Resumen y Conclusiones",
+      "descripcion": "--- Resumen ejecutivo del proyecto y métricas clave.",
+      "codigo_explicacion": [
+        "print(\"\\n\" + \"=\" * 70) print(\"📋 RESUMEN Y CONCLUSIONES\") print(\"=\" * 70) print(f\"\"\" ✅ PROYECTO COMPLETADO EXITOSAMENTE 📊 DATOS PROCESADOS: • Registros originales: {registros_iniciales:,} • Registros después de limpieza: {len(df):,} • Registros eliminados: {registros_iniciales - len(df):,}"
+      ],
+      "outputs_clave": [
+        "======================================================================\n📋 RESUMEN Y CONCLUSIONES\n======================================================================\n\n✅ PROYECTO COMPLETADO EXITOSAMENTE\n\n📊 DATOS PROCESADOS:\n   • Registros originales: 702,540\n   • Registros después de limpieza: 674,394\n   • Registros eliminados: 28,146\n   • Ubicaciones únicas: 370\n   • Período: 2008 - 2025\n\n🎯 MEJOR MODELO: XGBoost\n   • ROC AUC: 0.9182\n   • Precision: 0.8401\n   • Recall: 0.8367\n\n🌟 NOVEDADES INCORPORADAS:\n   1. Estacionalidad mediante DIA_ANIO_SIN / DIA_ANIO_COS\n   2. Capacidad de diferenciar fechas especiales (Navidad vs verano)\n   3. Gráficos de accidentabilidad por mes en el EDA\n   4. Función de predicción con fecha real\n   5. Versión eficiente en memoria (sin explosión combinatoria)\n\n💡 INSIGHTS CLAVE:\n   1. La ubicación es el predictor más fuerte de riesgo de accidente\n   2. Los fines de semana en horario nocturno presentan mayor riesgo\n   3. Existe estacionalidad anual: ciertos meses tienen más accidentes\n   4. El día del año (con seno/coseno) permite capturar efectos de festividades\n\n🚀 PRÓXIMOS PASOS SUGERIDOS:\n   1. Añadir features externas: clima (lluvia), tráfico, eventos especiales\n   2. Exportar modelo para aplicación web de predicción en tiempo real\n   3. Segmentar por tipo de incidente (fatal vs no fatal)\n\n======================================================================\n🎉 Notebook ejecutado correctamente\n========================================================"
+      ]
+    },
+    {
+      "titulo": "Experimento: Historial Completo (2008–2025) vs Post-COVID (2020–2025)",
+      "descripcion": "--- El COVID-19 produjo un **quiebre estructural** en los patrones de movilidad y accidentabilidad de Medellín: - **2020**: cuarentenas estrictas → caída abrupta de incidentes - **2021-2025**: reactivación gradual con nuevos patrones (teletrabajo, cambio modal, etc.) La hipótesis es que un modelo entrenado **solo con datos 2020+** aprenderá patrones más recientes y relevantes para predecir el presente, aunque con menos datos de entrenamiento. En cambio, el modelo entrenado con **todo el histórico** tiene más datos pero puede estar influenciado por patrones pre-pandemia que ya no aplican. **Este experimento cuantifica ese tradeoff.**",
+      "codigo_explicacion": [
+        "# ============================================================ # EXPERIMENTO COVID: Análisis exploratorio del quiebre temporal # ============================================================ print('🔍 ANÁLISIS DEL QUIEBRE COVID EN LOS DATOS') print('=' * 70) # Reconstruir serie temporal de incidentes",
+        "# ============================================================ # CONSTRUIR LOS DOS DATASETS DE ENTRENAMIENTO # df original NO se modifica — se crean vistas/subconjuntos nuevos # ============================================================ print('🔨 CONSTRUCCIÓN DE LOS DOS DATASETS DE ENTRENAMIENTO')",
+        "# ============================================================ # ENTRENAMIENTO PARALELO: Histórico completo vs Post-COVID # Mismos hiperparámetros para comparación justa # ============================================================ print('🤖 ENTRENAMIENTO: HISTÓRICO COMPLETO vs POST-COVID (2020+)')",
+        "# ============================================================ # COMPARACIÓN DE RESULTADOS: Histórico completo vs Post-COVID # ============================================================ print('📊 COMPARACIÓN DE RESULTADOS') print('=' * 70) # Tabla resumen print(f'\\n{\"Modelo\":<25} {\"Escenario\":<25}",
+        "# ============================================================ # CONCLUSIONES DEL EXPERIMENTO # ============================================================ print('📋 CONCLUSIONES DEL EXPERIMENTO') print('=' * 70) # Calcular ganancia/pérdida promedio entre escenarios for m in ['Logistic Regression',",
+        "# ============================================================ # EXPORTAR MODELOS PARA LA API (Sesión 1) # ============================================================ import sys, pickle, numpy as np, pandas as pd from pathlib import Path sys.path.insert(0, 'riesgo_api') from export_models import",
+        "# ============================================================ # DEEP LEARNING: TabNet (Sesión 4) # ============================================================ # !pip install pytorch-tabnet -q try: from pytorch_tabnet.tab_model import TabNetClassifier import torch import numpy as np"
+      ],
+      "outputs_clave": [
+        "🔍 ANÁLISIS DEL QUIEBRE COVID EN LOS DATOS\n======================================================================\n\n📅 Incidentes por año:\n  Año      N_Incidentes     Cambio %     Período\n  -------------------------------------------------------\n  2008     34,894             —          Pre-COVID (2008-2019)\n  2009     35,019           +0.4%        Pre-COVID (2008-2019)\n  2010     34,984           -0.1%        Pre-COVID (2008-2019)\n  2011     37,372           +6.8%        Pre-COVID (2008-2019)\n  2012     41,773           +11.8%       Pre-COVID (2008-2019)\n  2013     45,515           +9.0%        Pre-COVID (2008-2019)\n  2014     43,676           -4.0%        Pre-COVID (2008-2019)\n  2015     45,184           +3.5%        Pre-COVID (2008-2019)\n  2016     46,823           +3.6%        Pre-COVID (2008-2019)\n  2017     45,905           -2.0%        Pre-COVID (2008-2019)\n  2018     43,131           -6.0%        Pre-COVID (2008-2019)\n  2019     45,578           +5.7%        Pre-COVID (2008-2019)\n  2020     31,803           -30.2%       Post-COVID (2020+) ◀ QUIEBRE COVID\n  2021     40,546           +27.5%       Post-COVID (2020+)\n  2022     38,663           -4.6%        Post-COVID (2020+)\n  2023     24,505           -36.6%       Post-COVID (2020+)\n  2024     22,548           -8.0%        Post-COVID (2020+)\n  2025     16,475           -26.9%       Post-COVID (2020+)\n\n📊 Estadísticas por período:\n  Pre-COVID  (2008-2019): media=41,654  std=4,733  total=499,854\n  Post-COVID (2020-2025): media",
+        "🔨 CONSTRUCCIÓN DE LOS DOS DATASETS DE ENTRENAMIENTO\n======================================================================\n\n📦 Dataset A — Histórico completo (2008-2025):\n   Slots totales:   372,960\n   Con incidente:   191,357 (51.31%)\n\n📦 Dataset B — Post-COVID (2020-2025):\n   Registros base (df filtrado 2020+): 174,540\n   Slots totales:   371,952\n   Con incidente:   105,384 (28.33%)\n\n📊 Comparativa de tamaño:\n   Histórico completo: 372,960 slots   (51.31% positivos)\n   Post-COVID 2020+:   371,952 slots   (28.33% positivos)\n   Reducción de datos: 0.3%",
+        "🤖 ENTRENAMIENTO: HISTÓRICO COMPLETO vs POST-COVID (2020+)\n======================================================================\n\n--- Escenario: Histórico completo (2008-2025) ---\n   Train: 298,368 | Test: 74,592 | Tasa positivos (train): 51.31%\n   📈 Regresión Logística...\n   🌲 Random Forest...\n   🚀 XGBoost...\n   Logistic Regression: AUC=0.9129 | F1=0.8362 | Recall=0.8483\n   Random Forest: AUC=0.9177 | F1=0.8386 | Recall=0.8375\n   XGBoost: AUC=0.9182 | F1=0.8384 | Recall=0.8367\n\n--- Escenario: Post-COVID (2020-2025) ---\n   Train: 297,561 | Test: 74,391 | Tasa positivos (train): 28.33%\n   📈 Regresión Logística...\n   🌲 Random Forest...\n   🚀 XGBoost...\n   Logistic Regression: AUC=0.8458 | F1=0.6372 | Recall=0.8157\n   Random Forest: AUC=0.8498 | F1=0.6402 | Recall=0.8123\n   XGBoost: AUC=0.8501 | F1=0.6421 | Recall=0.8062\n\n✅ Entrenamiento completado en ambos escenarios",
+        "📊 COMPARACIÓN DE RESULTADOS\n======================================================================\n\nModelo                    Escenario                  ROC AUC       F1  Precision   Recall\n------------------------------------------------------------------------------------------\nLogistic Regression       Histórico (2008-2025)       0.9129   0.8362     0.8244   0.8483 ⭐\n                          Post-COVID  (2020-2025)     0.8458   0.6372     0.5229   0.8157   \n\nRandom Forest             Histórico (2008-2025)       0.9177   0.8386     0.8398   0.8375 ⭐\n                          Post-COVID  (2020-2025)     0.8498   0.6402     0.5282   0.8123   \n\nXGBoost                   Histórico (2008-2025)       0.9182   0.8384     0.8401   0.8367 ⭐\n                          Post-COVID  (2020-2025)     0.8501   0.6421     0.5335   0.8062",
+        "📋 CONCLUSIONES DEL EXPERIMENTO\n======================================================================\n  Logistic Regression        AUC: ▼0.0671  |  F1: ▼0.1989  |  Recall: ▼0.0326\n  Random Forest              AUC: ▼0.0679  |  F1: ▼0.1984  |  Recall: ▼0.0252\n  XGBoost                    AUC: ▼0.0680  |  F1: ▼0.1963  |  Recall: ▼0.0305\n\n======================================================================\n⚠️  RECOMENDACIÓN: El modelo Histórico completo es superior.\n   El mayor volumen de datos compensa el ruido de patrones pre-COVID.\n   El período 2020+ tiene insuficientes datos para generalizar bien.\n   → Usar model_df_completo para producción.\n\n💡 INTERPRETACIÓN ADICIONAL:\n   • Datos usados en histórico: 372,960 slots\n   • Datos usados en post-COVID: 371,952 slots (99.7% del total)\n   • Si los patrones son estables: el histórico no añade mucha señal nueva\n   • Si los patrones cambiaron: el histórico introduce ruido\n   • La diferencia de AUC entre escenarios cuantifica cuánto cambió el mundo"
+      ]
+    }
+  ],
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿Qué tan preciso es el modelo?",
+      "respuesta": "El modelo XGBoost logra un ROC AUC de 0.9182, F1 de 0.8384 y precisión de 0.8401 sobre el dataset histórico 2008-2025 de Medellín."
+    },
+    {
+      "pregunta": "¿Cuántos barrios cubre el modelo?",
+      "respuesta": "El modelo cubre 369 barrios y comunas de Medellín, con una tasa promedio de accidentabilidad del 51.3%."
+    },
+    {
+      "pregunta": "¿Qué variable influye más en la predicción?",
+      "respuesta": "La tasa histórica del barrio (UBICACION_TARGET_ENC) es el factor más predictivo, seguido de la hora del día (HORA_PUNTO_MEDIO). Esto significa que el historial de accidentes del barrio es más determinante que el momento del día."
+    },
+    {
+      "pregunta": "¿Por qué se usaron franjas de 2 horas?",
+      "respuesta": "Las franjas de 2h reducen el ruido estadístico manteniendo suficiente granularidad para capturar los patrones de movilidad (hora pico matutina 6-8h, vespertina 17-20h, noche, madrugada)."
+    },
+    {
+      "pregunta": "¿Qué impacto tuvo el COVID en el modelo?",
+      "respuesta": "El experimento mostró que el modelo entrenado solo con datos post-COVID (2020+) tiene AUC 0.85 vs 0.92 del histórico completo. El COVID redujo la movilidad temporalmente pero los patrones volvieron a la normalidad."
+    },
+    {
+      "pregunta": "¿Cuál es el barrio más peligroso de Medellín?",
+      "respuesta": "Según el modelo, La Candelaria tiene la mayor tasa histórica de accidentabilidad con 96.1%."
+    },
+    {
+      "pregunta": "¿Cuál es el barrio más seguro?",
+      "respuesta": "Según el modelo, El Jardín tiene la menor tasa histórica de accidentabilidad con 2.5%."
+    }
+  ]
+}

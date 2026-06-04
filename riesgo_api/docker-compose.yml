@@ -20,8 +20,13 @@ services:
       - PORT=8000
       - WORKERS=2
       - LOG_LEVEL=info
-      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - GROQ_API_KEY=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
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - CHAT_HISTORY_TURNS=10
+      - GROQ_MODEL=openai/gpt-oss-120b
+      - RAG_MAX_TOKENS=400
+      - CHAT_MAX_TOKENS=1000
+      - CHAT_RAG_TOP_K=5
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s

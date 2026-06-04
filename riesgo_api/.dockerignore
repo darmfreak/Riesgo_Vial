@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+logs/
+*.log
+.env
+tests/
+*.md
+nginx.conf
+docker-compose.yml
+riesgo_urbano_platform.html
+PLAN_CLAUDE_CODE.md

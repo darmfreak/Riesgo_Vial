@@ -2,12 +2,17 @@
 
 ## Requisitos previos
 
-- **Docker** y **Docker Compose** instalados
+### Linux
+- **Docker Engine** y **Docker Compose** instalados
 - Usuario en el grupo `docker`:
   ```bash
   sudo usermod -aG docker $USER
   # Cerrar sesión y volver a entrar (o ejecutar: newgrp docker)
   ```
+
+### Windows
+- **Docker Desktop** instalado y corriendo (icono en la barra del sistema)
+- Usar **PowerShell** o **Git Bash** como terminal
 
 ---
 
@@ -19,18 +24,14 @@
 docker info
 ```
 
-Si aparece `dial unix /var/run/docker.sock: no such file or directory`, el daemon está apagado. Iniciarlo:
+Si aparece `dial unix /var/run/docker.sock: no such file or directory`:
 
 ```bash
+# Linux
 sudo systemctl start docker
-# o si lo anterior no funciona:
-sudo service docker start
-```
 
-Verificar que quedó activo:
-
-```bash
-sudo systemctl status docker
+# Windows
+# Abrir Docker Desktop desde el menú de inicio
 ```
 
 **Paso 2 — Levantar los contenedores:**
@@ -68,70 +69,76 @@ docker compose logs -f api
 # Parar los contenedores
 docker compose down
 
+# Reiniciar solo la API (sin reconstruir imagen)
+docker compose restart api
+
 # Reiniciar solo nginx (cambios en HTML)
 docker compose restart nginx
 ```
 
 ---
 
-## Instalar en otro computador
+## Variables de configuración
 
-### Opción A — Copiar el proyecto completo (recomendado)
+Todas se definen en `docker-compose.yml` bajo `environment`. Cambiar y ejecutar `docker compose up -d` (sin `--build`):
 
-Desde este computador:
+| Variable | Default | Descripción |
+|---|---|---|
+| `GROQ_API_KEY` | — | API key de Groq (requerida para IA) |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` | Modelo LLM usado para explicaciones y chat |
+| `RAG_MAX_TOKENS` | `400` | Tokens máximos en explicaciones de barrios |
+| `CHAT_MAX_TOKENS` | `1000` | Tokens máximos en respuestas del chatbot |
+| `CHAT_HISTORY_TURNS` | `10` | Turnos de historial que se envían al chat |
+| `CHAT_RAG_TOP_K` | `5` | Chunks relevantes que se recuperan por pregunta |
+
+---
+
+## Funcionalidades
+
+### Consulta de riesgo
+Predice la probabilidad de accidente para un barrio, fecha y hora. Deriva el día automáticamente de la fecha seleccionada. Muestra porcentaje de riesgo, gráfico gauge, gráfico de barras SHAP y explicación generada por IA (Groq).
+
+### Dashboard
+- **KPIs**: total incidentes, hora pico, barrio más crítico, días desde último incidente
+- **Gráfico por hora**: distribución histórica 0–23h con rangos 7d / 30d / 90d
+- **Tendencia diaria**: evolución día a día del período seleccionado
+- **Mapa de riesgo**: hasta 315 barrios con círculos coloreados por nivel de riesgo del día actual. Hover muestra nombre y %. Clic abre consulta directa.
+- **Heatmap**: matriz barrio × franja horaria con riesgo predicho
+
+### Chat IA
+Chatbot sobre el modelo, los datos, los barrios y el proceso de entrenamiento. Usa RAG con TF-IDF sobre el knowledge JSON para enviar solo el contexto relevante (~500–700 tokens por pregunta). Muestra tokens consumidos por iteración. Filtra preguntas no relacionadas con RiesgoVial.
+
+### Modelos
+Gestión de modelos por ciudad. Métricas, distribución de riesgo, top 10 barrios más/menos peligrosos y tabla comparativa cargados dinámicamente desde la API.
+
+### Documentación
+Guía completa de uso, arquitectura, visualizaciones y referencia técnica.
+
+---
+
+## Archivos de conocimiento (RAG)
+
+Ubicados en `rag/documents/medellin/`:
+
+| Archivo | Descripción |
+|---|---|
+| `todos_los_barrios.txt` | 369 barrios con tasa histórica y descripción (generado del modelo) |
+| `coordinates.json` | Coordenadas geográficas de 315 barrios (geocodificadas con Nominatim) |
+| `model_knowledge.json` | Knowledge base completo del modelo para el chatbot (96 KB) |
+
+Para regenerar `model_knowledge.json` después de reentrenar:
 
 ```bash
 cd ~/Proyectos/Notebooks
-tar -czf riesgovial_completo.tar.gz \
-  riesgo_api/ \
-  Fatal_Road_Traffic_Normalizado.xlsx \
-  modelo_riesgo_enriquecido_covid.ipynb
-
-scp riesgovial_completo.tar.gz usuario@ip-destino:~/
+python3 export_model_knowledge.py
+docker compose up --build -d
 ```
 
-En el otro computador:
+Para agregar coordenadas faltantes:
 
 ```bash
-tar -xzf riesgovial_completo.tar.gz
-cd riesgo_api
-docker compose up -d
-```
-
-### Opción B — Solo el código (requiere reentrenar)
-
-Si solo se transfiere el código sin el modelo `.pkl`:
-
-```bash
-# 1. Instalar dependencias Python
-pip install xgboost scikit-learn pandas numpy openpyxl \
-            langchain langchain-community faiss-cpu \
-            sentence-transformers
-
-# 2. Colocar Fatal_Road_Traffic_Normalizado.xlsx en ~/Proyectos/Notebooks/
-
-# 3. Regenerar el script del notebook
-cd ~/Proyectos/Notebooks
-python3 -c "
-import json
-with open('modelo_riesgo_enriquecido_covid.ipynb') as f:
-    nb = json.load(f)
-cells = [c for c in nb['cells'] if c['cell_type']=='code' and ''.join(c['source']).strip()]
-script = '\n'.join('# Celda ' + str(i) + '\n' + ''.join(c['source']) for i, c in enumerate(cells))
-open('run_notebook.py','w').write(script)
-"
-
-# 4. Entrenar el modelo (tarda ~10 min)
-python3 run_notebook.py
-
-# 5. Copiar el modelo generado
-cp models/medellin_xgboost.pkl riesgo_api/models/
-
-# 6. Construir el índice RAG
-cd riesgo_api
-python rag/build_index.py
-
-# 7. Levantar Docker
+cd ~/Proyectos/Notebooks/riesgo_api
+python3 rag/geocode_barrios.py
 docker compose up --build -d
 ```
 
@@ -141,23 +148,93 @@ docker compose up --build -d
 
 ```
 riesgo_api/
-├── main.py                  ← API FastAPI (endpoints)
-├── model_loader.py          ← Carga del modelo y predicciones
-├── explainer.py             ← RAG + SHAP
+├── main.py                     ← API FastAPI (endpoints)
+├── model_loader.py             ← Carga del modelo y predicciones
+├── explainer.py                ← Explicaciones con Groq + RAG de barrios
 ├── requirements.txt
 ├── Dockerfile
-├── docker-compose.yml
+├── docker-compose.yml          ← Variables de configuración
 ├── nginx.conf
 ├── models/
-│   └── medellin_xgboost.pkl ← Modelo entrenado (2.4 MB)
+│   └── medellin_xgboost.pkl   ← Modelo XGBoost entrenado (~2.4 MB)
 ├── rag/
-│   ├── build_index.py       ← Reconstruir índice FAISS
-│   ├── documents/medellin/  ← Documentos de conocimiento
-│   └── index/medellin/      ← Índice vectorial FAISS
+│   ├── geocode_barrios.py      ← Geocodifica barrios con Nominatim
+│   └── documents/medellin/
+│       ├── todos_los_barrios.txt
+│       ├── coordinates.json
+│       └── model_knowledge.json
 ├── frontend/
-│   └── index.html           ← Aplicación web
+│   └── index.html              ← Aplicación web (5 páginas)
 └── tests/
-    └── test_api.py          ← pytest (17 tests)
+    └── test_api.py             ← pytest (17 tests)
+```
+
+---
+
+## Endpoints principales
+
+| Método | Endpoint | Descripción |
+|---|---|---|
+| `GET` | `/health` | Estado de la API |
+| `POST` | `/api/v1/predict` | Predicción de riesgo para barrio/fecha/hora |
+| `POST` | `/api/v1/explain` | Explicación SHAP + RAG con Groq |
+| `GET` | `/api/v1/heatmap/{city}/{date}` | Matriz de riesgo por barrio y franja |
+| `GET` | `/api/v1/neighborhoods/{city}` | Lista de barrios válidos |
+| `GET` | `/api/v1/model-info/{city}` | Métricas, distribución y top barrios |
+| `GET` | `/api/v1/coordinates/{city}` | Coordenadas geográficas por ciudad |
+| `POST` | `/api/v1/chat` | Chat IA con RAG TF-IDF |
+| `GET` | `/api/v1/chat/config` | Configuración del chat (turns, top_k) |
+
+---
+
+## Instalar en otro computador
+
+### Opción A — Copiar el proyecto completo (recomendado)
+
+```bash
+cd ~/Proyectos/Notebooks
+tar -czf riesgovial_completo.tar.gz \
+  riesgo_api/ \
+  Fatal_Road_Traffic_Normalizado.xlsx \
+  modelo_riesgo_enriquecido_covid.ipynb \
+  export_model_knowledge.py
+
+scp riesgovial_completo.tar.gz usuario@ip-destino:~/
+```
+
+En el destino:
+
+```bash
+tar -xzf riesgovial_completo.tar.gz
+cd riesgo_api
+# Editar GROQ_API_KEY en docker-compose.yml
+docker compose up -d
+```
+
+### Opción B — Solo el código (requiere reentrenar)
+
+```bash
+# 1. Instalar Python y dependencias
+pip install xgboost scikit-learn pandas numpy openpyxl groq
+
+# 2. Colocar Fatal_Road_Traffic_Normalizado.xlsx en ~/Proyectos/Notebooks/
+
+# 3. Ejecutar el notebook para entrenar
+jupyter nbconvert --to script modelo_riesgo_enriquecido_covid.ipynb
+python3 modelo_riesgo_enriquecido_covid.py
+
+# 4. Copiar el modelo generado
+cp models/medellin_xgboost.pkl riesgo_api/models/
+
+# 5. Generar knowledge base del chatbot
+python3 export_model_knowledge.py
+
+# 6. Geocodificar barrios (opcional, tarda ~8 min)
+python3 riesgo_api/rag/geocode_barrios.py
+
+# 7. Levantar Docker
+cd riesgo_api
+docker compose up --build -d
 ```
 
 ---
@@ -166,12 +243,16 @@ riesgo_api/
 
 | Problema | Solución |
 |---|---|
+| Docker daemon apagado (Linux) | `sudo systemctl start docker` |
+| Docker daemon apagado (Windows) | Abrir Docker Desktop |
 | `permission denied docker.sock` | `newgrp docker` o abrir terminal nueva |
-| `docker: command not found` | Instalar Docker Engine |
 | Puerto 80 ocupado | Cambiar `"80:80"` → `"8080:80"` en `docker-compose.yml` |
 | Página no actualiza | `Ctrl+Shift+R` en el browser |
 | Heatmap tarda (primera vez) | Normal — ~4s, luego caché instantáneo |
-| Docker daemon apagado | `sudo systemctl start docker` |
+| Chat responde "Error 500" | Verificar `GROQ_API_KEY` en `docker-compose.yml` |
+| Chat sin respuesta de IA | Sin `GROQ_API_KEY` usa RAG local sin LLM |
+| Mapa sin barrios | Verificar que `coordinates.json` esté en `rag/documents/medellin/` |
+| Contenedor no inicia | `docker compose logs api` para ver el error |
 
 ---
 
