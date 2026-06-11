@@ -17,7 +17,12 @@
       "Bash(python3 -c \"import json,sys; print\\(json.load\\(sys.stdin\\)['rag_explanation']\\)\")",
       "Bash(python3 -m py_compile main.py explainer.py)",
       "Bash(python3 -m py_compile main.py)",
-      "Bash(python3 -m pytest tests/ -q)"
+      "Bash(python3 -m pytest tests/ -q)",
+      "Bash(git check-ignore *)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(git status *)",
+      "Bash(git rev-list *)",
+      "Bash(git config *)"
     ]
   }
 }
