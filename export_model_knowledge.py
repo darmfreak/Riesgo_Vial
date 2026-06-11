@@ -256,6 +256,12 @@ def main():
              "respuesta": f"Según el modelo, {all_nb[0]['nombre']} tiene la mayor tasa histórica de accidentabilidad con {all_nb[0]['tasa']*100:.1f}%."},
             {"pregunta": "¿Cuál es el barrio más seguro?",
              "respuesta": f"Según el modelo, {sorted(all_nb, key=lambda x: x['tasa'])[0]['nombre']} tiene la menor tasa histórica de accidentabilidad con {sorted(all_nb, key=lambda x: x['tasa'])[0]['tasa']*100:.1f}%."},
+            {"pregunta": "¿Cómo está construida la plataforma?",
+             "respuesta": "RiesgoVial tiene un frontend (SPA en HTML, CSS y JavaScript con Leaflet y Chart.js), un servidor Nginx que sirve esa página y redirige las peticiones /api/ hacia el backend, y un backend en FastAPI (Python) que carga el modelo XGBoost y los índices RAG. Todo corre empaquetado con Docker y Docker Compose."},
+            {"pregunta": "¿Qué tecnologías usa el backend?",
+             "respuesta": "El backend está construido con FastAPI (Python 3.11) y servido con Gunicorn. Carga el modelo de predicción XGBoost y usa SHAP para las explicaciones, TF-IDF (scikit-learn) para el RAG del Chat IA, y Groq y/o Anthropic Claude como modelos de lenguaje."},
+            {"pregunta": "¿Se guarda el historial del chat?",
+             "respuesta": "No, el backend no tiene base de datos: es sin estado. El historial de la conversación se mantiene en memoria del navegador y se reenvía en cada pregunta como contexto; el servidor no lo guarda y se pierde al recargar la página."},
         ]
     }
 

@@ -751,6 +751,9 @@ canvas{border-radius:4px}
       <button class="chat-suggest" onclick="sendSuggestion(this)">¿Qué impacto tuvo el COVID en el modelo?</button>
       <button class="chat-suggest" onclick="sendSuggestion(this)">¿Cuántos barrios cubre el modelo?</button>
       <button class="chat-suggest" onclick="sendSuggestion(this)">Explicame el target encoding</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Cómo está construida la plataforma?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Qué tecnologías usa el backend?</button>
+      <button class="chat-suggest" onclick="sendSuggestion(this)">¿Se guarda el historial del chat?</button>
     </div>
 
     <!-- Mensajes -->
@@ -1143,7 +1146,7 @@ canvas{border-radius:4px}
         <div class="arch-block-icon" style="background:rgba(124,109,250,0.12);color:#a594fb">💬</div>
         <div class="arch-block-body">
           <div class="arch-block-name">RAG de Chat — TF-IDF + Groq + historial</div>
-          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">main.py /chat</code> usa <code style="font-family:var(--mono);font-size:11px">TfidfVectorizer</code> (scikit-learn, bigramas, <code style="font-family:var(--mono);font-size:11px">sublinear_tf</code>) indexado sobre <code style="font-family:var(--mono);font-size:11px">model_knowledge.json</code>. Recupera top-5 chunks por similitud coseno y los inyecta en el system prompt. Groq genera la respuesta manteniendo hasta 10 turnos de historial. El índice se construye en memoria la primera vez que se consulta la ciudad.</div>
+          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">main.py /chat</code> usa <code style="font-family:var(--mono);font-size:11px">TfidfVectorizer</code> (scikit-learn, bigramas, <code style="font-family:var(--mono);font-size:11px">sublinear_tf</code>) indexado sobre <code style="font-family:var(--mono);font-size:11px">model_knowledge.json</code>. Recupera top-5 chunks por similitud coseno y los inyecta en el system prompt. Groq genera la respuesta manteniendo hasta 10 turnos de historial. El índice se construye en memoria al arrancar la API (precalentado por ciudad).</div>
         </div>
         <div class="arch-block-tags">
           <span class="arch-block-tag" data-tip="Técnica que mide qué tan relevante es cada fragmento de texto frente a la pregunta del usuario, sin necesidad de IA.">TF-IDF (sklearn)</span>
@@ -1152,7 +1155,7 @@ canvas{border-radius:4px}
         </div>
       </div>
 
-      <div class="arch-connector">Lee de disco al arrancar (modelo) / en primera consulta (RAG)</div>
+      <div class="arch-connector">Lee de disco al arrancar (modelo + índice RAG del chat)</div>
 
       <div class="arch-block">
         <div class="arch-block-icon" style="background:rgba(54,207,201,0.12);color:#36cfc9">🗄️</div>
@@ -1220,6 +1223,10 @@ canvas{border-radius:4px}
             <div class="arch-flow-num">04 → Groq → respuesta</div>
             <div class="arch-flow-body">Groq (<code style="font-family:var(--mono);font-size:11px">gpt-oss-120b</code>, max 1000 tokens, temp 0.3) genera la respuesta. La API devuelve el texto junto con los contadores de tokens (input / output / total).</div>
           </div>
+          <div class="arch-flow-card">
+            <div class="arch-flow-num">05 → Sin persistencia</div>
+            <div class="arch-flow-body">El backend es <em>stateless</em>: no guarda la conversación. El historial vive solo en memoria del navegador (arreglo <code style="font-family:var(--mono);font-size:11px">chatHistory</code>) y se pierde al recargar la página — es una ventana de contexto deslizante, no una base de datos.</div>
+          </div>
         </div>
       </div>
 
@@ -1238,7 +1245,7 @@ canvas{border-radius:4px}
       </div>
       <div class="arch-flow-card">
         <div class="arch-flow-title">Caché en memoria</div>
-        <div class="arch-flow-body">Heatmap cacheado por <code style="font-family:var(--mono);font-size:11px">(city, fecha)</code>: primera carga ~4 s (370 × 12 inferencias), caché ~30 ms. Índice TF-IDF del chat construido en primera consulta por ciudad. Descripciones de barrios cacheadas por ciudad.</div>
+        <div class="arch-flow-body">Heatmap cacheado por <code style="font-family:var(--mono);font-size:11px">(city, fecha)</code>: primera carga ~4 s (370 × 12 inferencias), caché ~30 ms. Índice TF-IDF del chat precalentado al arrancar la API por ciudad. Descripciones de barrios cacheadas por ciudad.</div>
       </div>
     </div>
 
@@ -1254,7 +1261,7 @@ canvas{border-radius:4px}
       <div class="about-hero-sub">Plataforma académica de predicción de riesgo vial urbano desarrollada en el marco del <strong style="color:var(--text)">Programa Talento Tech 2026</strong>. Construida a partir de datos reales de accidentalidad de la ciudad de Medellín (2008–2025).</div>
       <div style="margin-top:1.25rem;display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:0.5px solid rgba(124,109,250,0.3);padding:6px 14px;border-radius:8px">
         <span style="font-size:13px;font-weight:600;color:var(--accent2)">Talento Tech 2026</span>
-        <span style="font-size:12px;color:var(--text2)">— Gobernación Nacional</span>
+        <span style="font-size:12px;color:var(--text2)">— MinTIC</span>
       </div>
     </div>
 
@@ -2239,7 +2246,7 @@ const RIESGOVIAL_KEYWORDS = [
   "franja","hora","franja horaria","probabilidad","clasificador","overfitting","split",
   // sistema
   "riesgovial","api","dashboard","heatmap","mapa","consulta","explicación","explicacion","rag","shap",
-  "groq","llm","chatbot","chat","barrio más","peligros","segur","tasa",
+  "groq","llm","chatbot","chat","barrio más","peligros","segur","tasa","plataforma","historial",
   // arquitectura y tecnologías
   "arquitectura","frontend","front-end","backend","back-end","servidor","proxy","nginx",
   "desplega","despliegue","contenedor","contenedores","infraestructura","tecnología","tecnologia",

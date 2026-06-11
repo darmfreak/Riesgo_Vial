@@ -203,12 +203,23 @@ Archivo fuente: `rag/documents/medellin/model_knowledge.json` (generado por `exp
 
 Flujo (`main.py`, función `_build_chunks` / `_get_rag` / `_retrieve_context`):
 1. El JSON y los `.txt` se dividen en **chunks de texto** (uno por sección: dataset, métricas, features, barrios, decisiones de diseño, FAQs, secciones del notebook, estadísticas viales, movilidad, **arquitectura web**).
-2. `TfidfVectorizer` (scikit-learn, bigramas, `sublinear_tf`) indexa esos chunks **en memoria**, la primera vez que se consulta cada ciudad.
+2. `TfidfVectorizer` (scikit-learn, bigramas, `sublinear_tf`) indexa esos chunks **en memoria**, en el evento `startup` de la API (precalentado para cada ciudad con modelo cargado), de modo que la primera pregunta del chat no paga el costo de indexado.
 3. Cuando llega una pregunta, se vectoriza con TF-IDF y se calcula **similitud coseno** contra todos los chunks.
 4. Se recuperan los **top-K chunks** (`CHAT_RAG_TOP_K`, default 5) y se inyectan en el `{context}` del system prompt.
 5. Groq genera la respuesta final, manteniendo hasta `CHAT_HISTORY_TURNS` (default 10) turnos de historial de la conversación.
 
 > El Chat IA **solo funciona con Groq** (no tiene fallback a Anthropic). Si `GROQ_API_KEY` no está configurada, el endpoint `/api/v1/chat` responde error 503.
+
+### 7.3 Historial de la conversación (sin base de datos)
+
+El backend es **stateless**: no guarda mensajes en disco ni en memoria entre peticiones. La "memoria" de la conversación es una **ventana deslizante** que viaja en cada request:
+
+1. El frontend mantiene `chatHistory` como un arreglo JS en memoria del navegador (vive solo mientras la pestaña está abierta; no usa `localStorage`).
+2. En cada envío, el frontend manda los últimos `CHAT_HISTORY_TURNS * 2` mensajes (usuario + asistente) junto con la pregunta nueva.
+3. El backend vuelve a recortar ese historial a `CHAT_HISTORY_TURNS * 2` mensajes (`main.py`, endpoint `/api/v1/chat`) como medida de seguridad y los antepone al mensaje del usuario para dárselos a Groq como contexto.
+4. La respuesta se devuelve y no se persiste en ningún lado.
+
+`GET /api/v1/chat/config` expone `history_turns` y `rag_top_k` para que el frontend sincronice su recorte con la configuración del servidor.
 
 ---
 
@@ -265,7 +276,7 @@ SPA en HTML/CSS/JS sin dependencias de build. Cinco secciones:
 - **Consulta**: formulario (barrio, fecha, hora) → gauge de riesgo + gráfico SHAP + explicación IA.
 - **Dashboard**: KPIs, gráfico por hora, tendencia diaria, mapa de calor (heatmap), mapa Leaflet con círculos de riesgo por barrio.
 - **Modelos**: métricas del modelo, distribución de riesgo, top 10 barrios más/menos peligrosos, comparativa de algoritmos.
-- **Chat IA**: conversación con historial, contador de tokens.
+- **Chat IA**: conversación con historial (mantenido en el navegador, no se persiste — ver §7.3), contador de tokens.
 - **Documentación / Arquitectura**: este mismo contenido, en formato visual con tooltips.
 
 ### 9.2 Nginx
@@ -273,7 +284,7 @@ Sirve `./frontend` en el puerto 80 con headers `no-cache` (para que los cambios 
 
 ### 9.3 API (FastAPI + Gunicorn)
 - 2 workers Uvicorn asíncronos.
-- Carga el modelo `.pkl` y construye los índices RAG **en memoria** al iniciar / en la primera consulta.
+- Carga el modelo `.pkl` al iniciar y, en el evento `startup`, también construye **en memoria** el índice TF-IDF del Chat IA para cada ciudad, evitando latencia extra en la primera pregunta.
 - Cachea resultados de `/api/v1/heatmap` por `(ciudad, fecha)`: primera carga ~4s (370 barrios × 12 franjas), siguientes ~30ms.
 
 ### 9.4 Docker
@@ -313,6 +324,7 @@ Dos contenedores orquestados con Docker Compose:
 | Histórico completo (2008-2025) sobre post-COVID | Post-COVID tiene AUC 0.85 vs 0.92 del histórico — los patrones volvieron tras la pandemia | Mejor generalización del modelo en producción |
 | RAG basado en texto plano (sin FAISS/embeddings) | Los datasets de contexto son pequeños (cientos de chunks); TF-IDF y lookup exacto son suficientes y evitan dependencias pesadas | Arranque más rápido, sin modelos de embeddings que descargar |
 | LLM configurable (Groq y/o Anthropic) | Evita depender de un único proveedor; Groq es más rápido/económico, Anthropic como respaldo de calidad | Resiliencia ante caídas o ausencia de una de las dos API keys |
+| Historial del Chat IA sin base de datos (ventana deslizante) | El backend es stateless: no requiere usuarios, sesiones ni persistencia para un proyecto académico/demo | Backend escalable sin afinidad de sesión; el historial se pierde al recargar la página |
 
 ---
 
@@ -387,6 +399,9 @@ Más peligroso: **La Candelaria** (96.1% de tasa histórica). Más seguro: **El 
 **¿Por qué no se usó un índice vectorial (FAISS/embeddings) para el RAG?**
 Los documentos de contexto son pequeños (decenas de chunks por ciudad); TF-IDF (para el chat) y coincidencia exacta de nombre (para `/explain`) son suficientes, más livianos y no requieren descargar modelos de embeddings.
 
+**¿Dónde se guarda el historial del Chat IA? ¿Por qué no hay una base de datos?**
+No se guarda en ningún lado de forma permanente. El navegador mantiene los últimos turnos de la conversación en memoria (se pierden al recargar la página) y los reenvía completos en cada pregunta; el backend solo los usa como contexto para esa petición y no los almacena. Es una "ventana deslizante" de contexto, no un historial persistente — suficiente para un asistente conversacional sin necesidad de cuentas de usuario ni base de datos.
+
 ---
 
 ## 15. Glosario de términos técnicos
@@ -411,9 +426,9 @@ Los documentos de contexto son pequeños (decenas de chunks por ciudad); TF-IDF 
 
 ## 16. Equipo y créditos
 
-- **Desarrollador:** Juan Camilo Ramirez
+- **Desarrolladores:** Camilo Ernesto Ramirez Rodriguez, David Alejandro Restrepo Madrid
 - **Propietario / proveedor de datos:** Cristian David Correa Álvarez — Universidad Nacional de Colombia
-- **Programa:** Talento Tech 2026 — Gobernación
+- **Programa:** Talento Tech 2026 — MinTIC
 - **Licencia de los datos:** CC BY 4.0 (Creative Commons Attribution 4.0 International)
 - **Fuente de datos:** Sistema de Información de Accidentalidad Vial de Medellín, Secretaría de Movilidad
 

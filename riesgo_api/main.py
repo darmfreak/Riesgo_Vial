@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from typing import Optional, List, Annotated
+from contextlib import asynccontextmanager
 from datetime import date, datetime
 from enum import Enum
 import logging
@@ -21,10 +22,18 @@ from explainer import RiskExplainer
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger("riesgovial")
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Precalienta el índice RAG del Chat IA para cada ciudad con modelo cargado."""
+    for c in registry.city_summary():
+        _get_rag(c["city"])
+    yield
+
 app = FastAPI(
     title="RiesgoVial API",
     description="Predicción de riesgo vial urbano. Multi-ciudad, multi-modelo.",
     version="1.0.0",
+    lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -469,7 +478,10 @@ def _build_chunks(data: dict) -> list[str]:
         "machine learning (XGBoost) en memoria al iniciar. "
         "Toda la aplicación corre empaquetada con Docker y Docker Compose, en dos contenedores: la API y Nginx. "
         "Las explicaciones de riesgo (/explain) y el Chat IA usan modelos de lenguaje configurables: Groq y/o "
-        "Anthropic Claude, según las llaves de API (GROQ_API_KEY, ANTHROPIC_API_KEY) que estén configuradas."
+        "Anthropic Claude, según las llaves de API (GROQ_API_KEY, ANTHROPIC_API_KEY) que estén configuradas. "
+        "El backend no tiene base de datos: es sin estado (stateless). El historial del Chat IA se mantiene en "
+        "memoria del navegador y se reenvía en cada pregunta como ventana de contexto; el servidor no guarda "
+        "conversaciones, por lo que el historial se pierde al recargar la página."
     )
 
     # Una chunk por FAQ

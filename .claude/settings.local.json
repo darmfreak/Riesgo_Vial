@@ -22,7 +22,9 @@
       "Bash(echo \"exit:$?\")",
       "Bash(git status *)",
       "Bash(git rev-list *)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(python -c ' *)",
+      "Bash(python -m pytest tests/ -q)"
     ]
   }
 }
