@@ -118,8 +118,9 @@ Todas se definen en `docker-compose.yml` bajo `environment`. Cambiar y ejecutar 
 
 | Variable | Default | Descripción |
 |---|---|---|
-| `GROQ_API_KEY` | — | API key de Groq (requerida para IA) |
+| `GROQ_API_KEY` | — | API key de Groq (requerida para el Chat IA; para `/explain` es una de las dos opciones) |
 | `GROQ_MODEL` | `openai/gpt-oss-120b` | Modelo LLM usado para explicaciones y chat |
+| `ANTHROPIC_API_KEY` | — | API key de Anthropic Claude (opcional). En `/explain` se usa como proveedor si no hay `GROQ_API_KEY`, o como respaldo automático si Groq falla. El Chat IA no usa Anthropic. |
 | `RAG_MAX_TOKENS` | `400` | Tokens máximos en explicaciones de barrios |
 | `CHAT_MAX_TOKENS` | `1000` | Tokens máximos en respuestas del chatbot |
 | `CHAT_HISTORY_TURNS` | `10` | Turnos de historial que se envían al chat |
@@ -130,7 +131,7 @@ Todas se definen en `docker-compose.yml` bajo `environment`. Cambiar y ejecutar 
 ## Funcionalidades
 
 ### Consulta de riesgo
-Predice la probabilidad de accidente para un barrio, fecha y hora. Deriva el día automáticamente de la fecha seleccionada. Muestra porcentaje de riesgo, gráfico gauge, gráfico de barras SHAP y explicación generada por IA (Groq).
+Predice la probabilidad de accidente para un barrio, fecha y hora. Deriva el día automáticamente de la fecha seleccionada. Muestra porcentaje de riesgo, gráfico gauge, gráfico de barras SHAP y explicación generada por IA (Groq y/o Anthropic Claude, según las API keys configuradas).
 
 ### Dashboard
 - **KPIs**: total incidentes, hora pico, barrio más crítico, días desde último incidente

@@ -459,6 +459,19 @@ def _build_chunks(data: dict) -> list[str]:
     # Tech stack
     chunks.append(f"Stack tecnológico: {data.get('tech_stack',{})}.")
 
+    # Arquitectura web de la aplicación
+    chunks.append(
+        "Arquitectura web de RiesgoVial: el frontend es una aplicación de una sola página (SPA) en HTML, CSS y "
+        "JavaScript puro, sin frameworks, con cinco secciones (Consulta, Dashboard, Modelos, Chat IA y Documentación). "
+        "Usa Leaflet para el mapa interactivo de barrios y Chart.js para los gráficos (gauge, barras SHAP, heatmap, tendencias). "
+        "Un servidor Nginx entrega esa página estática y redirige las peticiones que empiezan por /api/ hacia el backend. "
+        "El backend es una API construida con FastAPI (Python 3.11) y servida con Gunicorn, que carga el modelo de "
+        "machine learning (XGBoost) en memoria al iniciar. "
+        "Toda la aplicación corre empaquetada con Docker y Docker Compose, en dos contenedores: la API y Nginx. "
+        "Las explicaciones de riesgo (/explain) y el Chat IA usan modelos de lenguaje configurables: Groq y/o "
+        "Anthropic Claude, según las llaves de API (GROQ_API_KEY, ANTHROPIC_API_KEY) que estén configuradas."
+    )
+
     # Una chunk por FAQ
     for fq in data.get("preguntas_frecuentes", []):
         chunks.append(f"Pregunta: {fq['pregunta']} Respuesta: {fq['respuesta']}")
@@ -471,14 +484,25 @@ def _build_chunks(data: dict) -> list[str]:
 
     return chunks
 
+def _load_text_chunks(path: _Path) -> list[str]:
+    """Divide un .txt en chunks por bloques separados por línea en blanco."""
+    if not path.exists():
+        return []
+    text = path.read_text(encoding="utf-8")
+    blocks = [b.strip().replace("\n", " ") for b in text.strip().split("\n\n") if b.strip()]
+    return [b for b in blocks if len(b) >= 30]
+
 def _get_rag(city: str) -> dict | None:
     if city in _rag_cache:
         return _rag_cache[city]
-    kb_path = _Path(os.getenv("RAG_DIR", _Path(__file__).parent / "rag")) / "documents" / city / "model_knowledge.json"
+    docs_dir = _Path(os.getenv("RAG_DIR", _Path(__file__).parent / "rag")) / "documents" / city
+    kb_path = docs_dir / "model_knowledge.json"
     if not kb_path.exists():
         return None
     data = _json.loads(kb_path.read_text(encoding="utf-8"))
     chunks = _build_chunks(data)
+    chunks += _load_text_chunks(docs_dir / "estadisticas_viales.txt")
+    chunks += _load_text_chunks(docs_dir / "movilidad_medellin.txt")
     vectorizer = TfidfVectorizer(ngram_range=(1, 2), min_df=1, sublinear_tf=True)
     matrix = vectorizer.fit_transform(chunks)
     _rag_cache[city] = {"chunks": chunks, "vectorizer": vectorizer, "matrix": matrix}
@@ -510,7 +534,8 @@ Reglas estrictas:
 - Máximo 3 oraciones por respuesta. Ve al grano.
 - NUNCA incluyas código fuente, comandos, fragmentos de programación ni nombres de funciones.
 - NUNCA uses términos técnicos sin explicarlos en palabras simples.
-- NUNCA menciones librerías, paquetes ni nombres de archivos.
+- Si preguntan por la arquitectura, el despliegue o las tecnologías de la plataforma (frontend, backend, infraestructura, IA), SÍ puedes nombrar las tecnologías del contexto (FastAPI, Nginx, Docker, Groq, Anthropic Claude, Leaflet, Chart.js, XGBoost, etc.) explicando brevemente para qué sirve cada una.
+- Para preguntas sobre el modelo, los datos o los barrios, evita nombrar archivos internos o librerías de programación y usa lenguaje simple.
 - Si la pregunta es sobre un barrio, menciona su nivel de riesgo y tasa histórica.
 - Si no tienes la información, dilo en una oración.
 - No inventes datos que no estén en el contexto.

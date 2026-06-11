@@ -325,7 +325,17 @@ canvas{border-radius:4px}
 .arch-block-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
 .arch-block-desc{font-size:12px;color:var(--text2)}
 .arch-block-tags{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
-.arch-block-tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:var(--surface);border:0.5px solid var(--border2);color:var(--text3)}
+.arch-block-tag{position:relative;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:var(--surface);border:0.5px dashed var(--border2);color:var(--text3);cursor:help}
+.arch-block-tag:hover{border-color:var(--accent);color:var(--accent2)}
+.arch-block-tag[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;top:calc(100% + 8px);right:0;z-index:60;
+  width:max-content;max-width:240px;
+  background:var(--bg3);border:0.5px solid var(--border2);border-radius:6px;
+  padding:8px 10px;box-shadow:0 6px 20px rgba(0,0,0,.5);
+  font-family:var(--body);font-size:11.5px;font-weight:400;line-height:1.5;
+  color:var(--text2);white-space:normal;text-align:left;
+}
 .arch-connector{text-align:center;color:var(--text3);font-size:12px;line-height:1;margin:0 0 0 18px;height:14px;display:flex;align-items:center;gap:6px}
 .arch-connector::before,.arch-connector::after{content:'';flex:1;height:0.5px;background:var(--border2)}
 .arch-flow-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
@@ -911,11 +921,11 @@ canvas{border-radius:4px}
         </div>
       </div>
       <div class="docs-card">
-        <div class="docs-card-title">Índice RAG (FAISS)</div>
+        <div class="docs-card-title">Recuperación de contexto (RAG)</div>
         <div style="font-size:13px;color:var(--text2);line-height:1.8">
-          El sistema RAG almacena conocimiento contextual en un <strong style="color:var(--text)">índice vectorial FAISS</strong> (<code style="font-family:var(--mono);font-size:11px">riesgo_api/rag/index/medellin/</code>).<br><br>
-          <strong style="color:var(--text)">Documentos indexados:</strong> descripción de los 369 barrios con sus tasas históricas, estadísticas viales generales de Medellín, y contexto de movilidad urbana — 434 chunks de ~400 caracteres.<br><br>
-          Los embeddings se generan con <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">paraphrase-multilingual-MiniLM-L12-v2</code> (384 dims, soporte español). El índice persiste en disco y se carga en memoria al arrancar la API.
+          El sistema usa dos mecanismos de recuperación de texto, sin índice vectorial ni embeddings:<br><br>
+          <strong style="color:var(--text)"><code style="font-family:var(--mono);font-size:11px">/explain</code>:</strong> <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">todos_los_barrios.txt</code> contiene la descripción de los 369 barrios. <code style="font-family:var(--mono);font-size:11px">explainer.py</code> busca el barrio por coincidencia exacta de nombre y obtiene su descripción.<br><br>
+          <strong style="color:var(--text)">Chat IA:</strong> <code style="font-family:var(--mono);font-size:11px;color:var(--accent2)">model_knowledge.json</code> se divide en chunks de texto (dataset, métricas, barrios, decisiones de diseño, FAQs). Un <code style="font-family:var(--mono);font-size:11px">TfidfVectorizer</code> (scikit-learn) indexa esos chunks en memoria y recupera los más relevantes por similitud coseno con la pregunta.
         </div>
       </div>
     </div>
@@ -978,7 +988,7 @@ canvas{border-radius:4px}
         <div style="background:var(--surface);border-radius:8px;padding:12px 8px">
           <div style="font-size:18px;margin-bottom:6px">⑤</div>
           <div style="color:var(--accent2);font-family:var(--mono);font-size:11px;margin-bottom:4px">RAG</div>
-          <div style="color:var(--text3)">FAISS busca los 3 chunks más similares al query. Combina con contexto SHAP para generar explicación.</div>
+          <div style="color:var(--text3)">Busca la descripción del barrio por nombre exacto y la combina con la narrativa SHAP. Un LLM (Groq y/o Anthropic, configurable) redacta la explicación.</div>
         </div>
       </div>
     </div>
@@ -988,10 +998,10 @@ canvas{border-radius:4px}
       <div class="docs-card">
         <div class="docs-card-title">Sistema RAG — cómo genera las explicaciones</div>
         <div style="font-size:13px;color:var(--text2);line-height:1.8">
-          <strong style="color:var(--text)">1. Construcción del query:</strong> se forma una consulta de texto con el barrio, hora y día: <code style="font-family:var(--mono);font-size:11px">"riesgo vial accidente La Candelaria hora 23 noche sábado"</code>.<br><br>
-          <strong style="color:var(--text)">2. Búsqueda vectorial:</strong> el query se convierte en un embedding de 384 dimensiones con sentence-transformers. FAISS encuentra los 3 chunks del knowledge base con mayor similitud coseno.<br><br>
-          <strong style="color:var(--text)">3. Síntesis:</strong> los chunks recuperados se combinan con la narrativa SHAP ("el historial del barrio aumenta el riesgo +3.68, la hora reduce...") para formar la explicación final.<br><br>
-          <strong style="color:var(--text)">4. LLM (opcional):</strong> si hay <code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code> configurada, Claude (claude-sonnet-4-6) sintetiza el contexto en 3 oraciones fluidas. Sin API key, se entrega el contexto crudo del RAG.
+          <strong style="color:var(--text)">1. Contexto del barrio:</strong> <code style="font-family:var(--mono);font-size:11px">explainer.py</code> busca el barrio por coincidencia exacta de nombre en <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> (369 entradas) y obtiene su descripción.<br><br>
+          <strong style="color:var(--text)">2. Narrativa SHAP:</strong> se combina esa descripción con las variables que más influyen en la predicción ("el historial del barrio aumenta el riesgo +3.68, la hora reduce...") y datos de la consulta (día, hora, franja).<br><br>
+          <strong style="color:var(--text)">3. LLM configurable (Groq y/o Anthropic):</strong> si hay <code style="font-family:var(--mono);font-size:11px">GROQ_API_KEY</code>, el modelo de Groq (<code style="font-family:var(--mono);font-size:11px">GROQ_MODEL</code>, por defecto <code style="font-family:var(--mono);font-size:11px">openai/gpt-oss-120b</code>) redacta la explicación en 3 oraciones. Si Groq no está configurada o falla, y existe <code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code>, se usa Claude (<code style="font-family:var(--mono);font-size:11px">claude-sonnet-4-6</code>) como respaldo automático.<br><br>
+          <strong style="color:var(--text)">4. Sin API keys:</strong> se entrega el contexto crudo (descripción del barrio + narrativa SHAP) sin pasar por ningún LLM.
         </div>
       </div>
       <div class="docs-card">
@@ -1057,10 +1067,10 @@ canvas{border-radius:4px}
           <div class="arch-block-desc">SPA en HTML/CSS/JS puro. Cinco módulos: Consulta (formulario + gauge), Dashboard (heatmap + mapa Leaflet + KPIs), Modelos (métricas + comparativa), Chat IA (conversación con historial) y Documentación. Sin frameworks — sin dependencias de build.</div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">HTML5</span>
-          <span class="arch-block-tag">Leaflet 1.9</span>
-          <span class="arch-block-tag">Chart.js 4</span>
-          <span class="arch-block-tag">marked.js</span>
+          <span class="arch-block-tag" data-tip="Lenguaje base con el que se construye la estructura de cualquier página web.">HTML5</span>
+          <span class="arch-block-tag" data-tip="Librería de mapas interactivos: dibuja el mapa del Dashboard con los círculos de riesgo por barrio.">Leaflet 1.9</span>
+          <span class="arch-block-tag" data-tip="Librería para dibujar gráficos en el navegador: el gauge de riesgo, las barras de SHAP, el heatmap y las tendencias.">Chart.js 4</span>
+          <span class="arch-block-tag" data-tip="Convierte texto con formato Markdown en HTML, usado para mostrar las respuestas del Chat IA con buen formato.">marked.js</span>
         </div>
       </div>
 
@@ -1073,8 +1083,8 @@ canvas{border-radius:4px}
           <div class="arch-block-desc">Sirve el HTML estático desde <code style="font-family:var(--mono);font-size:11px">./frontend</code> en el puerto 80 y redirige todas las peticiones <code style="font-family:var(--mono);font-size:11px">/api/*</code> al contenedor FastAPI por proxy reverso. Headers <code style="font-family:var(--mono);font-size:11px">no-cache</code> sobre el HTML para entregas inmediatas de cambios.</div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">nginx 1.27-alpine</span>
-          <span class="arch-block-tag">Docker</span>
+          <span class="arch-block-tag" data-tip="Servidor web ligero: entrega la página al navegador y reenvía las peticiones de la API al backend.">nginx 1.27-alpine</span>
+          <span class="arch-block-tag" data-tip="Empaqueta la aplicación con todo lo que necesita para funcionar igual en cualquier computador o servidor.">Docker</span>
         </div>
       </div>
 
@@ -1087,10 +1097,10 @@ canvas{border-radius:4px}
           <div class="arch-block-desc">Expone 9 endpoints REST: <code style="font-family:var(--mono);font-size:11px">predict</code>, <code style="font-family:var(--mono);font-size:11px">explain</code>, <code style="font-family:var(--mono);font-size:11px">chat</code>, <code style="font-family:var(--mono);font-size:11px">heatmap</code>, <code style="font-family:var(--mono);font-size:11px">neighborhoods</code>, <code style="font-family:var(--mono);font-size:11px">coordinates</code>, <code style="font-family:var(--mono);font-size:11px">cities</code>, <code style="font-family:var(--mono);font-size:11px">model-info</code> y <code style="font-family:var(--mono);font-size:11px">train</code>. Servida con Gunicorn + 2 UvicornWorkers asíncronos. Valida con Pydantic v2.</div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">FastAPI 0.115</span>
-          <span class="arch-block-tag">Gunicorn 22</span>
-          <span class="arch-block-tag">Pydantic v2</span>
-          <span class="arch-block-tag">Python 3.11</span>
+          <span class="arch-block-tag" data-tip="Framework de Python para construir la API: define cada endpoint (predict, explain, chat, etc.) y genera la documentación automática.">FastAPI 0.115</span>
+          <span class="arch-block-tag" data-tip="Ejecuta varias copias de la API en paralelo (workers) para atender más peticiones al mismo tiempo sin bloquearse.">Gunicorn 22</span>
+          <span class="arch-block-tag" data-tip="Revisa que los datos enviados por el usuario (barrio, hora, fecha, etc.) tengan el formato correcto antes de procesarlos.">Pydantic v2</span>
+          <span class="arch-block-tag" data-tip="Lenguaje de programación en el que está escrito todo el backend de la aplicación.">Python 3.11</span>
         </div>
       </div>
 
@@ -1104,9 +1114,9 @@ canvas{border-radius:4px}
           <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">model_loader.py</code> construye un vector de 26 features (target encoding del barrio, codificaciones cíclicas, dummies de franja) y llama a <code style="font-family:var(--mono);font-size:11px">predict_proba()</code> en ~12 ms. Para el endpoint <code style="font-family:var(--mono);font-size:11px">/explain</code>, <code style="font-family:var(--mono);font-size:11px">TreeExplainer</code> calcula los valores SHAP y devuelve el top 5 de variables influyentes.</div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">XGBoost 2.1</span>
-          <span class="arch-block-tag">SHAP 0.46</span>
-          <span class="arch-block-tag">scikit-learn 1.5</span>
+          <span class="arch-block-tag" data-tip="Algoritmo de machine learning entrenado con datos históricos de accidentes: es el que calcula el porcentaje de riesgo.">XGBoost 2.1</span>
+          <span class="arch-block-tag" data-tip="Herramienta de explicabilidad: dice qué tanto influye cada factor (hora, barrio, día) en una predicción concreta.">SHAP 0.46</span>
+          <span class="arch-block-tag" data-tip="Librería de machine learning de propósito general, usada aquí también para medir similitud de texto en el Chat IA.">scikit-learn 1.5</span>
         </div>
       </div>
 
@@ -1117,12 +1127,12 @@ canvas{border-radius:4px}
         <div class="arch-block-icon" style="background:rgba(255,77,109,0.12);color:#ff4d6d">📝</div>
         <div class="arch-block-body">
           <div class="arch-block-name">RAG de explicaciones — lookup de barrios + LLM</div>
-          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">explainer.py</code> recupera la descripción del barrio desde <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> (369 entradas) por coincidencia exacta de nombre. Combina el contexto con la narrativa SHAP y envía al LLM. <strong style="color:var(--text)">Proveedor primario: Groq</strong> (<code style="font-family:var(--mono);font-size:11px">gpt-oss-120b</code>, max 400 tokens, temp 0.4). Fallback: <strong style="color:var(--text)">Anthropic Claude</strong> (<code style="font-family:var(--mono);font-size:11px">claude-sonnet-4-6</code>). Sin API key: devuelve el contexto crudo.</div>
+          <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">explainer.py</code> recupera la descripción del barrio desde <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> (369 entradas) por coincidencia exacta de nombre. Combina el contexto con la narrativa SHAP y envía al LLM. <strong style="color:var(--text)">Proveedor configurable:</strong> si hay <code style="font-family:var(--mono);font-size:11px">GROQ_API_KEY</code>, usa Groq (<code style="font-family:var(--mono);font-size:11px">gpt-oss-120b</code>, max 400 tokens, temp 0.4) como primario. Si no hay Groq o falla, usa <strong style="color:var(--text)">Anthropic Claude</strong> (<code style="font-family:var(--mono);font-size:11px">claude-sonnet-4-6</code>) con <code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code>. Sin ninguna API key: devuelve el contexto crudo.</div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">Groq</span>
-          <span class="arch-block-tag">Anthropic Claude</span>
-          <span class="arch-block-tag">todos_los_barrios.txt</span>
+          <span class="arch-block-tag" data-tip="Servicio en la nube que ejecuta modelos de IA muy rápido. Si está configurado, redacta la explicación de riesgo en lenguaje natural.">Groq</span>
+          <span class="arch-block-tag" data-tip="Modelo de IA de Anthropic. Se usa como alternativa a Groq: si Groq no está configurado o falla, Claude redacta la explicación.">Anthropic Claude</span>
+          <span class="arch-block-tag" data-tip="Archivo de texto con la descripción de cada uno de los 369 barrios, usado para darle contexto a la IA.">todos_los_barrios.txt</span>
         </div>
       </div>
 
@@ -1136,9 +1146,9 @@ canvas{border-radius:4px}
           <div class="arch-block-desc"><code style="font-family:var(--mono);font-size:11px">main.py /chat</code> usa <code style="font-family:var(--mono);font-size:11px">TfidfVectorizer</code> (scikit-learn, bigramas, <code style="font-family:var(--mono);font-size:11px">sublinear_tf</code>) indexado sobre <code style="font-family:var(--mono);font-size:11px">model_knowledge.json</code>. Recupera top-5 chunks por similitud coseno y los inyecta en el system prompt. Groq genera la respuesta manteniendo hasta 10 turnos de historial. El índice se construye en memoria la primera vez que se consulta la ciudad.</div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">TF-IDF (sklearn)</span>
-          <span class="arch-block-tag">Groq gpt-oss-120b</span>
-          <span class="arch-block-tag">model_knowledge.json</span>
+          <span class="arch-block-tag" data-tip="Técnica que mide qué tan relevante es cada fragmento de texto frente a la pregunta del usuario, sin necesidad de IA.">TF-IDF (sklearn)</span>
+          <span class="arch-block-tag" data-tip="Modelo de lenguaje (IA) que ejecuta Groq y genera las respuestas en español del Chat IA.">Groq gpt-oss-120b</span>
+          <span class="arch-block-tag" data-tip="Archivo con toda la información del proyecto (datos, métricas, barrios, decisiones de diseño, preguntas frecuentes) que usa el Chat IA para responder.">model_knowledge.json</span>
         </div>
       </div>
 
@@ -1156,9 +1166,9 @@ canvas{border-radius:4px}
           </div>
         </div>
         <div class="arch-block-tags">
-          <span class="arch-block-tag">pickle p5</span>
-          <span class="arch-block-tag">JSON</span>
-          <span class="arch-block-tag">Docker volume :ro</span>
+          <span class="arch-block-tag" data-tip="Formato en que Python guarda el modelo ya entrenado, para cargarlo rápido cada vez que arranca la API.">pickle p5</span>
+          <span class="arch-block-tag" data-tip="Formato de texto simple y muy usado para guardar e intercambiar datos estructurados entre programas.">JSON</span>
+          <span class="arch-block-tag" data-tip="Carpeta compartida con los contenedores en modo solo lectura: la API puede leer estos archivos pero no modificarlos.">Docker volume :ro</span>
         </div>
       </div>
 
@@ -1185,7 +1195,7 @@ canvas{border-radius:4px}
           </div>
           <div class="arch-flow-card">
             <div class="arch-flow-num">04 → RAG + LLM</div>
-            <div class="arch-flow-body">Lookup en <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> + narrativa SHAP → prompt a Groq → explicación en 3 oraciones. Claude como fallback automático.</div>
+            <div class="arch-flow-body">Lookup en <code style="font-family:var(--mono);font-size:11px">todos_los_barrios.txt</code> + narrativa SHAP → prompt al LLM configurado → explicación en 3 oraciones. Groq como primario, Claude como respaldo automático (o como único proveedor si no hay Groq).</div>
           </div>
         </div>
       </div>
@@ -1224,7 +1234,7 @@ canvas{border-radius:4px}
       </div>
       <div class="arch-flow-card">
         <div class="arch-flow-title">Variables de entorno</div>
-        <div class="arch-flow-body"><code style="font-family:var(--mono);font-size:11px">GROQ_API_KEY</code> — requerida para Chat e Explain.<br><code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code> — opcional, fallback del Explain.<br><code style="font-family:var(--mono);font-size:11px">MODELS_DIR</code>, <code style="font-family:var(--mono);font-size:11px">RAG_DIR</code>, <code style="font-family:var(--mono);font-size:11px">WORKERS</code> — configuración de rutas y concurrencia.</div>
+        <div class="arch-flow-body"><code style="font-family:var(--mono);font-size:11px">GROQ_API_KEY</code> — requerida para el Chat IA; en Explain es una de las dos opciones de LLM.<br><code style="font-family:var(--mono);font-size:11px">ANTHROPIC_API_KEY</code> — opcional. En Explain: proveedor si no hay Groq, o respaldo automático si Groq falla.<br><code style="font-family:var(--mono);font-size:11px">MODELS_DIR</code>, <code style="font-family:var(--mono);font-size:11px">RAG_DIR</code>, <code style="font-family:var(--mono);font-size:11px">WORKERS</code> — configuración de rutas y concurrencia.</div>
       </div>
       <div class="arch-flow-card">
         <div class="arch-flow-title">Caché en memoria</div>
@@ -2026,19 +2036,6 @@ function pipeDetail(step) {
   box.textContent = PIPE_DETAILS[step] || '';
 }
 
-const ARCH_DETAILS = {
-  data:'PostgreSQL / CSV → pandas read_sql · Tipos optimizados (int16, category) · 10 columnas · 156 MB RAM · partición por ciudad',
-  features:'Grilla espacio-temporal: 370 ubicaciones × 7 días × 12 franjas × 12 meses = 372,960 slots · Codificación cíclica sin/cos · Target encoding suavizado m=50',
-  model:'XGBoost: 200 est · depth=8 · scale_pos_weight · AUC=0.9182 · TabNet (próximo): embeddings 32-dim · atención por columna',
-  rag:'FAISS index por ciudad · LangChain RetrievalQA · Documentos: informes SDM, noticias, estadísticas · Claude API para generación',
-  api:'FastAPI + Pydantic · POST /predict → 12ms p95 · GET /heatmap → matriz JSON · POST /explain → RAG 1-2s · Docker multi-stage',
-};
-function archDetail(layer) {
-  const box = document.getElementById('archDetailBox');
-  box.style.display = 'block';
-  box.textContent = ARCH_DETAILS[layer] || '';
-}
-
 function addCity() {
   alert('Funcionalidad: sube un CSV con columnas\n[FECHA, HORA, BARRIO, CLASE, GRAVEDAD]\ny el pipeline entrena automáticamente un nuevo modelo.');
 }
@@ -2243,6 +2240,12 @@ const RIESGOVIAL_KEYWORDS = [
   // sistema
   "riesgovial","api","dashboard","heatmap","mapa","consulta","explicación","explicacion","rag","shap",
   "groq","llm","chatbot","chat","barrio más","peligros","segur","tasa",
+  // arquitectura y tecnologías
+  "arquitectura","frontend","front-end","backend","back-end","servidor","proxy","nginx",
+  "desplega","despliegue","contenedor","contenedores","infraestructura","tecnología","tecnologia",
+  "tecnologías","tecnologias","stack","spa","leaflet","chart.js","marked","gunicorn",
+  "pydantic","tf-idf","tfidf","vectorizer","anthropic","claude","nube","cliente",
+  "endpoint","endpoints","puerto","reverse proxy","contenerizado","contenerización",
   // contexto colombia
   "medellín","antioquia","colombia","secretaría de movilidad","movilidad","urbano","ciudad",
   // preguntas naturales sobre el proyecto
