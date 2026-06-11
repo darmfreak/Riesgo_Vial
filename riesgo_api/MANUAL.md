@@ -10,6 +10,12 @@
   # Cerrar sesión y volver a entrar (o ejecutar: newgrp docker)
   ```
 
+### macOS
+- **Docker Desktop** instalado y corriendo (icono de la ballena en la barra de menú)
+  - Descarga: https://www.docker.com/products/docker-desktop
+  - En Mac con Apple Silicon (M1/M2/M3/M4), Docker Desktop ya soporta imágenes `linux/amd64` vía emulación (Rosetta); no se requiere configuración extra para este proyecto
+- Usar la **Terminal** (zsh) normal — los comandos `docker` y `docker compose` ya quedan disponibles tras instalar Docker Desktop
+
 ### Windows
 - **Docker Desktop** instalado y corriendo (icono en la barra del sistema)
 - Usar **PowerShell** o **Git Bash** como terminal
@@ -64,6 +70,10 @@ Si aparece `dial unix /var/run/docker.sock: no such file or directory`:
 # Linux
 sudo systemctl start docker
 
+# macOS
+open -a Docker
+# Espera a que el icono de la ballena en la barra de menú deje de animarse
+
 # Windows
 # Abrir Docker Desktop desde el menú de inicio
 ```
@@ -88,6 +98,69 @@ docker compose up --build -d
 | Frontend | http://localhost |
 | API (Swagger) | http://localhost:8000/docs |
 | Health check | http://localhost:8000/health |
+
+---
+
+## Alternativa — Ejecutar sin Docker (desarrollo local en macOS)
+
+Útil para desarrollo rápido (recarga automática) sin reconstruir imágenes Docker en cada cambio.
+
+### Requisitos
+
+- Python 3.11+ (Apple Silicon: el de python.org o `brew install python` funcionan bien)
+- `libomp` instalado vía Homebrew (requerido por XGBoost en macOS):
+  ```bash
+  brew install libomp
+  ```
+
+### Paso 1 — Crear entorno virtual e instalar dependencias
+
+```bash
+cd ~/Proyectos/Notebooks/riesgo_api   # o la ruta donde tengas el proyecto
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Paso 2 — Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+Edita `.env` y agrega tus API keys (al menos una de las dos para el Chat IA / `/explain`):
+
+```
+GROQ_API_KEY=gsk_...
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+> `.env` no se carga automáticamente (la app no usa `python-dotenv`). Antes de levantar el servidor, expórtalo en la sesión de terminal:
+> ```bash
+> set -a && source .env && set +a
+> ```
+
+### Paso 3 — Levantar el servidor
+
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+En el log debe aparecer `LLM: Groq activo` (o `Anthropic activo`) si la API key fue detectada; si no, `Sin API key LLM — usando RAG local`.
+
+**Accesos:**
+
+| Servicio | URL |
+|---|---|
+| Frontend + API | http://localhost:8000 |
+| Swagger docs | http://localhost:8000/docs |
+| Health check | http://localhost:8000/health |
+
+> En este modo, frontend y API se sirven desde el mismo proceso (puerto 8000) — no se necesita Nginx ni Docker.
+
+### Apagar el servidor
+
+`Ctrl+C` en la terminal donde corre uvicorn. Para volver a entrar al entorno virtual en una sesión nueva: `source .venv/bin/activate`.
 
 ---
 
@@ -281,6 +354,7 @@ docker compose up --build -d
 | Problema | Solución |
 |---|---|
 | Docker daemon apagado (Linux) | `sudo systemctl start docker` |
+| Docker daemon apagado (macOS) | `open -a Docker` y esperar a que inicie |
 | Docker daemon apagado (Windows) | Abrir Docker Desktop |
 | `permission denied docker.sock` | `newgrp docker` o abrir terminal nueva |
 | Puerto 80 ocupado | Cambiar `"80:80"` → `"8080:80"` en `docker-compose.yml` |
@@ -293,6 +367,9 @@ docker compose up --build -d
 | Chat responde "base de conocimiento no disponible" | Ejecutar `python3 export_model_knowledge.py` para regenerar `model_knowledge.json` |
 | Explicaciones hablan de features que ya no existen | El modelo fue reentrenado pero no se corrió `export_model_knowledge.py` después |
 | Contenedor no inicia | `docker compose logs api` para ver el error |
+| `Library not loaded: .../libomp.dylib` (macOS, sin Docker) | `brew install libomp` |
+| Servidor local no usa la API key del `.env` | Recuerda exportarla antes de `uvicorn`: `set -a && source .env && set +a` |
+| `command not found: uvicorn` | Activa el entorno virtual: `source .venv/bin/activate` |
 
 ---
 
